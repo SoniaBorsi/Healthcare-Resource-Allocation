@@ -1,2 +1,2 @@
-# BDT-Project
-Health Resources Allocation
+# Healthcare Resource Allocation
+BDT-Project
