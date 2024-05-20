@@ -1,5 +1,4 @@
 ReportingUnitName
-Justice Health Services
 The Children's Hospital at Westmead
 Sydney Children's Hospital
 St Vincent's Hospital [Darlinghurst]
@@ -7,7 +6,6 @@ Balmain Hospital
 Canterbury Hospital
 Royal Prince Alfred Hospital
 Concord Repatriation Hospital
-Royal Prince Alfred Institute of Rheumatology & Orthopaedics
 Camden Hospital
 Fairfield Hospital
 Liverpool Hospital
@@ -15,13 +13,11 @@ Campbelltown Hospital
 Bankstown Lidcombe Hospital
 Bowral Hospital
 Sydney Hospital / Sydney Eye Hospital
-Calvary Health Care - Sydney
-War Memorial Hospital
 Prince of Wales Hospital
 St George Hospital NSW
 Sutherland Hospital
-Royal Hospital for Women
 Bulli Hospital
+Coledale Hospital
 Milton Ulladulla Hospital
 Port Kembla Hospital
 Shoalhaven Hospital
@@ -37,16 +33,15 @@ Nepean Hospital
 Springwood Hospital
 Hawkesbury Hospital
 Lithgow Hospital
-Portland Tabulam Health Centre
 Hornsby Ku-ring-gai Hospital
+Manly Hospital
+Mona Vale Hospital
 Royal North Shore Hospital
 Ryde Hospital
 Gosford Hospital
 Wyong Hospital
 Armidale Hospital
 Barraba Multi Purpose Service
-Bingara Multi Purpose Service
-Boggabri Multi Purpose Service
 Glen Innes Hospital
 Gunnedah Hospital
 Guyra Multi Purpose Service
@@ -54,9 +49,8 @@ Inverell Hospital
 Manilla Hospital
 Moree Hospital
 Narrabri Hospital
-Tenterfield Hospital
-Quirindi Hospital
 Tamworth Hospital
+Vegetable Creek Multi Purpose Service Emmaville
 Walcha Multi Purpose Service
 Warialda Multi Purpose Service
 Wee Waa Hospital
@@ -71,30 +65,28 @@ Calvary Mater Newcastle
 Belmont Hospital
 "Scott Memorial Hospital, Scone"
 Singleton Hospital
-"Wilson Memorial Community Hospital, Murrurundi"
 Tomaree Community Hospital
 John Hunter Hospital
 Ballina District Hospital
+Byron Bay Hospital
 Casino and District Memorial Hospital
 Bonalbo Hospital
 Grafton Base Hospital
 Kyogle Multi Purpose Service
 Lismore Base Hospital
-Nimbin Multi Purpose Service
 Maclean District Hospital
+Mullumbimby Hospital
 Murwillumbah District Hospital
 The Tweed Hospital
+Urbenville Multi Purpose Service
 Bellinger River District Hospital
 Coffs Harbour Hospital
-Dorrigo Multi Purpose Service
 Kempsey District Hospital
 Macksville District Hospital
-Wauchope District Memorial Hospital
 Port Macquarie Base Hospital
 Batemans Bay Hospital
 South East Regional Hospital
 Bombala Multi Purpose Service
-Braidwood Multi Purpose Service
 Cooma Hospital and Health Service
 Crookwell District Hospital
 Goulburn Base Hospital
@@ -102,32 +94,24 @@ Moruya Hospital
 Pambula Hospital
 Queanbeyan Hospital
 Yass District Hospital
-Lake Cargelligo Multi Purpose Service
 Wyalong Hospital
-Barham Hospital
 Berrigan Multi Purpose Service
 Culcairn Multi Purpose Service
 Corowa Health Service
 Deniliquin Hospital
 Finley Hospital
-Henty Multi Purpose Service
 Holbrook Hospital
-Jerilderie Multi Purpose Service
-Urana Multi Purpose Service
 Tocumwal Hospital
 Tumbarumba Multi Purpose Service
 Boorowa Multi Purpose Service
 Murrumburrah-Harden Hospital
 Young Hospital
-Batlow/Adelong Multi Purpose Service
 Griffith Base Hospital
 Gundagai Hospital
 Hay Hospital
 Hillston Hospital
 Junee Multi Purpose Service
-Coolamon-Ganmain Multi Purpose Service
 Leeton Hospital
-Lockhart Hospital
 Narrandera Hospital
 Temora Hospital
 Tumut Hospital
@@ -135,97 +119,57 @@ Wagga Wagga Hospital
 Cootamundra Hospital
 Bourke Multi Purpose Service
 Brewarrina Multi Purpose Service
-Cobar Health Service
-Collarenebri Multi Purpose Service
 Coolah Multi Purpose Service
-Coonabarabran Health Service
-Baradine Multi Purpose Service
 Coonamble Multi Purpose Service
 Dubbo Hospital
-Dunedoo Multi Purpose Service
-Gilgandra Multi Purpose Service
 Gulgong Multi Purpose Service
 Mudgee Health Service
 Narromine Health Service
-Nyngan Multi Purpose Service
-Trangie Multi Purpose Service
-Walgett Multipurpose Service
-Warren Multi Purpose Service
 Wellington Health Service
-Lightning Ridge Multi Purpose Service
 Bathurst Base Hospital
-Blayney Multi Purpose Service
 Canowindra Soldiers Memorial Hospital
 Condobolin Health Service
 Cowra Health Service
 Lachlan Health Service - Forbes
 Grenfell Multi Purpose Service
 Molong Health Service
-Oberon Multi Purpose Service
 Orange Health Service
 Lachlan Health Service - Parkes
 Peak Hill Multipurpose Service
-Trundle Multi Purpose Health Service
-Rylstone Multi Purpose Service
-Tottenham Multipurpose Service
 Balranald Multi Purpose Service
-Wentworth Hospital
 Broken Hill Hospital
 Western District Health Service [Hamilton]
 Western District Health Service [Penshurst]
 Colac Area Health
-Hesse Rural Health Service [Winchelsea]
 Otway Health & Community Services [Apollo Bay]
 University Hospital Geelong
 Casterton Memorial Hospital
-Western District Health Service [Coleraine]
 South West Healthcare [Warrnambool]
-Beaufort & Skipton Health Service [Skipton]
-Heywood Rural Health
-Timboon & District Healthcare Service
 Moyne Health Services [Port Fairy]
 Portland District Health
-Lorne Community Hospital
 South West Healthcare [Camperdown]
 Terang & Mortlake Health Service [Terang]
 East Grampians Health Service [Ararat]
-East Grampians Health Service [Willaura]
 Rural Northwest Health [Warracknabeal]
-Rural Northwest Health [Hopetoun]
 Ballarat Health Services [Base Hospital]
 Wimmera Base Hospital [Horsham]
 Stawell Regional Health
 West Wimmera Health Service [Nhill]
-West Wimmera Health Service [Kaniva]
-West Wimmera Health Service [Jeparit]
-West Wimmera Health Service [Rainbow]
 East Wimmera Health Service [St Arnaud]
 Djerriwarrh Health Service [Bacchus Marsh]
-Beaufort & Skipton Health Service [Beaufort]
-Dimboola District Hospital
 Edenhope and District Memorial Hospital
 Daylesford District Hospital
 Creswick District Hospital
 The Bendigo Hospital
 Kyabram & District Health Service
 Kyneton District Health Service
-Heathcote Health
 Maryborough District Health Service [Maryborough]
 Swan Hill District Health [Swan Hill]
-East Wimmera Health Service [Wycheproof]
-Cohuna District Hospital
 Echuca Regional Health
 Kerang District Health
 Mildura Base Hospital
-Mallee Track Health & Community Service [Ouyen]
-Maldon Hospital
-Boort District Health
-Robinvale District Health Services
 Rochester & Elmore District Health Service
 East Wimmera Health Service [Donald]
-Inglewood & District Health Service
-East Wimmera Health Service [Birchip]
-East Wimmera Health Service [Charlton]
 Castlemaine Health
 Goulburn Valley Health [Shepparton]
 Goulburn Valley Health [Tatura]
@@ -234,7 +178,6 @@ Tallangatta Health Service
 Albury Wodonga Health [Wodonga Campus]
 Yarrawonga Health
 Alpine Health [Myrtleford]
-Alpine Health [Bright]
 Alpine Health [Mount Beauty]
 Corryong Health
 Seymour District Memorial Hospital
@@ -243,7 +186,6 @@ Alexandra District Hospital
 Numurkah & District Health Service
 The Kilmore & District Hospital
 Yea & District Memorial Hospital
-Nathalia District Hospital
 Benalla & District Memorial Hospital
 Beechworth Health Service
 Cobram District Health
@@ -255,45 +197,39 @@ Central Gippsland Health Service [Sale]
 Gippsland Southern Health Service - Korumburra
 Gippsland Southern Health Service - Leongatha
 Latrobe Regional Hospital [Traralgon]
-Central Gippsland Health Service [Maffra]
 South Gippsland Hospital [Foster]
 Orbost Regional Health
 Box Hill Hospital
 Monash Medical Centre [Clayton]
 Maroondah Hospital [East Ringwood]
 Angliss Hospital
-St George's Health Service- Aged Care
 Healesville Hospital and Yarra Valley Health
-Yarra Ranges Health
 Monash Medical Centre [Moorabbin]
 Rosebud Hospital
 Sandringham Hospital
-Kooweerup Regional Health Service
+Caulfield Hospital
 Dandenong Hospital
 Frankston Hospital
 Casey Hospital
-The Mornington Centre
 The Alfred
 Austin Hospital [Heidelberg]
-Heidelberg Repatriation Hospital [Heidelberg West]
 Mercy Hospital for Women
 Western Hospital [Footscray]
 Royal Children's Hospital [Parkville]
 Royal Women's Hospital [Parkville]
-The Royal Victorian Eye & Ear Hospital
 The Northern Hospital [Epping]
 Werribee Mercy Hospital
 Royal Melbourne Hospital [City Campus]
+Royal Melbourne Hospital [Royal Park Campus]
 Sunshine Hospital
 St Vincent's Hospital [Melbourne]
-Williamstown Hospital
 Peter MacCallum Cancer Centre
-Broadmeadows Health Service
-The Royal Dental Hospital of Melbourne
 Albury Wodonga Health [Albury Campus]
 Mater Adult Hospital
+Mater Children's Hospital
 Mater Mothers' Hospital
 The Prince Charles Hospital
+Royal Children's Hospital [Queensland]
 Princess Alexandra Hospital
 Ipswich Hospital
 Redcliffe Hospital
@@ -311,13 +247,11 @@ Laidley Hospital
 Maleny Hospital
 Nambour General Hospital
 Gold Coast University Hospital
-Biggenden Hospital
 Bundaberg Base Hospital
 Cherbourg Hospital
 Childers Hospital
 Eidsvold Hospital
 Gayndah Hospital
-Gin Gin Hospital
 Gympie Hospital
 Hervey Bay Hospital
 Kingaroy Hospital
@@ -325,14 +259,12 @@ Maryborough Hospital
 Monto Hospital
 Mundubbera Hospital
 Murgon Hospital
-Nanango Hospital
 Chinchilla Hospital
 Dalby Hospital
 Goondiwindi Hospital
 Inglewood Hospital
 Jandowae Hospital
 Miles Hospital
-Millmerran Hospital
 Oakey Hospital
 Stanthorpe Hospital
 Tara Hospital
@@ -340,40 +272,24 @@ Taroom Hospital
 Texas Hospital
 Toowoomba Hospital
 Warwick Hospital
-Augathella Hospital
-Charleville Hospital
-Cunnamulla Hospital
 Dirranbandi Hospital
-Injune Hospital
 Mitchell Hospital
-Mungindi Hospital
 Quilpie Hospital
 Roma Hospital
-St George Hospital Qld
-Surat Hospital
-Alpha Hospital
-Baralaba Hospital
 Biloela Hospital
 Blackwater Hospital
 Emerald Hospital
 Gladstone Hospital
 Mount Morgan Hospital
-Moura Hospital
 Rockhampton Hospital
-Springsure Hospital
 Theodore Hospital
 Capricorn Coast Hospital
-Woorabinda Hospital
 Barcaldine Hospital
 Blackall Hospital
-Longreach Hospital
 Winton Hospital
-Clermont Hospital
 Mackay Base Hospital
-Moranbah Hospital
 Proserpine Hospital
 Sarina Hospital
-Dysart Hospital
 Ayr Hospital
 Bowen Hospital
 Charters Towers Hospital
@@ -383,7 +299,6 @@ Joyce Palmer Health Service
 Townsville University Hospital
 Royal Brisbane & Women's Hospital
 Atherton Hospital
-Babinda Hospital
 Bamaga Hospital
 Cairns Hospital
 Cooktown Hospital
@@ -396,51 +311,31 @@ Weipa Hospital
 Cloncurry Hospital
 Hughenden Hospital
 Mount Isa Base Hospital
-Normanton Hospital
-Richmond Hospital
-Mornington Island Hospital
-Doomadgee Hospital
 The Queen Elizabeth Hospital
 Royal Adelaide Hospital
 Lyell McEwin Hospital
 Modbury Hospital
 Women's and Children's Hospital
-Wudinna Hospital
-Cleve District Hospital and Aged Care
-Cowell District Hospital and Aged Care
-Cummins and District Memorial Hospital
-Elliston Hospital
-Kimba District Hospital and Aged Care
 Ceduna District Health Service
 Port Lincoln Health Service
-Streaky Bay Hospital
 Tumby Bay Hospital and Health Services
 Gumeracha District Soldiers' Memorial Hospital
 Kangaroo Island Health Service
-Karoonda and District Soldiers' Memorial Hospital
-Lameroo District Health Service
 Mannum District Hospital
 Meningie and Districts Memorial Hospital and Health Services
 Mount Barker District Soldiers' Memorial Hospital
 Mount Pleasant District Hospital
 Murray Bridge Soldiers' Memorial Hospital
-Pinnaroo Soldiers' Memorial Hospital
 South Coast District Hospital
 Strathalbyn and District Health Service
 Booleroo Centre District Hospital and Health Services
 Crystal Brook and District Hospital
 Jamestown Hospital and Health Service
-Laura and District Hospital
-Orroroo and District Health Service
 Peterborough Soldiers' Memorial Hospital
-Port Broughton and District Hospital and Health Service
 Port Pirie Regional Health Service
-McLaren Vale & Districts War Memorial Hospital Inc
-Coober Pedy Hospital and Health Service
 Hawker Memorial Hospital
 Port Augusta Hospital and Regional Health Services
 Quorn Health Service
-Roxby Downs Health Service
 Whyalla Hospital and Health Services
 Barmera Health Service
 Riverland General Hospital
@@ -451,32 +346,31 @@ Bordertown Memorial Hospital
 Kingston Soldiers' Memorial Hospital
 Millicent and District Hospital and Health Service
 Mount Gambier and Districts Health Service
-Naracoorte Health Service
-Penola War Memorial Hospital
 Flinders Medical Centre
+Repatriation General Hospital
 Noarlunga Hospital
 Gawler Health Service
 Angaston District Hospital
 Balaklava Soldiers' Memorial District Hospital
-Burra Hospital
 Clare Hospital
 Kapunda Hospital
-Central Yorke Peninsula Hospital (Maitland)
 Riverton District Soldiers' Memorial Hospital
-Snowtown Hospital and Health Service
 Southern Yorke Peninsula Health Service (Yorketown)
 Tanunda War Memorial Hospital
 Northern Yorke Peninsula Health Service (Wallaroo)
+Princess Margaret Hospital for Children
 King Edward Memorial Hospital
 Sir Charles Gairdner Hospital
 Osborne Park Hospital
+Swan District Hospital
+Kalamunda Hospital
 Joondalup Health Campus (Public)
 Royal Perth Hospital Wellington Street Campus
 Fremantle Hospital and Health Service
+Kaleeya Hospital
 Armadale-Kelmscott Memorial Hospital
 Bentley Health Service
 Rockingham General Hospital
-Murray District Hospital
 Peel Health Campus
 Fitzroy Crossing Hospital
 Halls Creek Hospital
@@ -485,55 +379,31 @@ Derby Hospital
 Wyndham Hospital
 Kununurra Hospital
 Hedland Health Campus
-Onslow Hospital
-Roebourne Hospital
-Tom Price Hospital
-Newman Hospital
+Nickol Bay Hospital
 Carnarvon Hospital
 Exmouth Hospital
 Geraldton Hospital
 Meekatharra Hospital
-Morawa Health Service
-North Midlands Health Service
-Kalbarri Health Centre
+Northampton Kalbarri Health Service
 Lake Grace Hospital
 Merredin Hospital
 Narrogin Hospital
 Northam Hospital
-York Hospital
-Boddington Hospital
 Bruce Rock Memorial Hospital
-Corrigin Hospital
-Dalwallinu Hospital
-Kellerberrin Memorial Hospital
-Kununoppin Health Service
+Goomalling Hospital
 Moora Hospital
-Narembeen Memorial Hospital
-Southern Cross Hospital
-Wongan Hills Hospital
-Wyalkatchem-Koorda and Districts Hospital
-Quairading Hospital
 Esperance Hospital
 Kalgoorlie Health Campus
-Laverton Hospital
-Leonora Hospital
 Albany Hospital
 Denmark Hospital and Health Service
 Katanning Hospital
-Gnowangerup Hospital
 Plantagenet Hospital
-Ravensthorpe Health Centre
-Kojonup Hospital
-Augusta Hospital
 Bunbury Hospital
 Busselton Health Campus
 Collie Hospital
 Margaret River Hospital
-Donnybrook Hospital
 Harvey Hospital
-Nannup Hospital
 Pemberton Hospital
-Boyup Brook Soldiers Memorial Hospital
 Warren Hospital
 Bridgetown Hospital
 Royal Hobart Hospital
@@ -550,104 +420,3 @@ North Canberra Hospital (previously known as Calvary Public Hospital Bruce)
 Robina Hospital
 Queensland Children's Hospital
 Fiona Stanley Hospital
-St John of God Midland Public Hospital
-Byron Central Hospital
-Women's at Sandringham
-Sunshine Coast University Hospital
-Perth Children's Hospital
-Karratha Health Campus
-Northern Beaches Hospital
-Palmerston Regional Hospital
-University of Canberra Hospital
-Surgical Treatment and Rehabilitation Service
-St Vincent's On the Park
-Large hospitals
-Major hospitals
-Children's hospitals
-Small hospitals
-Medium hospitals
-Unpeered
-Albury Wodonga Health
-Alfred Health (Vic)
-Austin Health (Vic)
-Australian Capital Territory
-Bairnsdale Regional Health Service
-Ballarat Health Services
-Barwon Health
-Bass Coast Regional Health
-Bendigo Health Care Group
-Cairns and Hinterland
-Central Adelaide
-Central Australia (NT)
-Central Coast
-Central Gippsland Health Service
-Central Queensland
-Child Adolescent Health Service (WA)
-Children's Health Queensland
-Darling Downs
-East Metropolitan Health Service (WA)
-Eastern Health (Vic)
-Echuca Regional Health
-Far West
-Gold Coast
-Goulburn Valley Health
-Hunter New England
-Illawarra Shoalhaven
-Latrobe Regional Hospital
-Mackay
-Melbourne Health
-Mercy Public Hospital Inc. (Vic)
-Metro North (Qld)
-Metro South (Qld)
-Mid North Coast
-Mildura Base Hospital
-Monash Health
-Murrumbidgee
-Nepean Blue Mountains
-North Metropolitan Health Service (WA)
-North West (Qld)
-Northeast Health Wangaratta
-Northern Adelaide
-Northern Health (Vic)
-Northern NSW
-Northern Sydney
-Peninsula Health (Vic)
-Royal Children's Hospital (Melbourne)
-Royal Women's Hospital (Melbourne)
-South Eastern Sydney
-South Metropolitan Health Service (WA)
-South West Healthcare (Vic)
-South Western Sydney
-Southern Adelaide
-Southern NSW
-St Vincent's Health Network
-St Vincent's Hospital (Melbourne) Limited
-Sunshine Coast
-Swan Hill District Health
-Sydney
-Sydney Children's Hospitals Network
-Tasmanian Health Service
-Top End (NT)
-Townsville
-WA Country Health Service
-West Gippsland Healthcare Group
-West Moreton
-Western District Health Service (Vic)
-Western Health (Vic)
-Western NSW
-Western Sydney
-Wide Bay
-Wimmera Health Care Group
-Women's and Children's Health Network (SA)
-Castlemaine Health
-Colac Area Health
-East Grampians Health Service
-Peter MacCallum Cancer Institute (Vic)
-Portland District Health
-South West (Qld)
-Terang and Mortlake Health Service (Terang)
-Eyre and Far North
-Flinders and Upper North
-Riverland Mallee Coorong
-Limestone Coast
-Yorke and Northern
