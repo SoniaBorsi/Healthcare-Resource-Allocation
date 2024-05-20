@@ -24,9 +24,6 @@ def get_hospitals_series_id():
         return None
 
 hospitals_series_id = get_hospitals_series_id()
-if hospitals_series_id is not None:
-    print(hospitals_series_id)
-
 
 def download_datasets(num_datasets_to_download, dataset_ids = hospitals_series_id):
     base_url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
