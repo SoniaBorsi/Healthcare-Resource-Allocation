@@ -1,6 +1,7 @@
 import requests
-import dask.dataframe as dd
 import pandas as pd
+from io import StringIO
+import dask.dataframe as dd
 import tempfile
 
 # Define the URL and headers
@@ -24,17 +25,11 @@ if response.status_code == 200:
     # Read the CSV data into a Dask DataFrame
     ddf = dd.read_csv(temp_file_path)
 
-    # Extract the 'ReportingUnitName' column and compute the result
-    hospitals_series = ddf['ReportingUnitName'].compute()
+    # Print the result (or perform other operations)
+    print(ddf.head())
 
-    # Convert the series to a pandas DataFrame
-    hospitals_df = pd.DataFrame(hospitals_series, columns=['ReportingUnitName'])
-
-    # Optionally, save the DataFrame to a new CSV file
-    hospitals_df.to_csv('hospitals.csv', index=False)
-
-    # Print the first few rows of the hospitals DataFrame
-    print(hospitals_df.head())
+    # Optionally, save the result to a new CSV file
+    ddf.to_csv('9620.csv', single_file=True, index=False)
 else:
     # Print error details
     print("Error:", response.status_code)
