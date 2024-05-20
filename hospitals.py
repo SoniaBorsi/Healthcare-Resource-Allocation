@@ -1,6 +1,4 @@
 import requests
-import pandas as pd
-from io import StringIO
 import dask.dataframe as dd
 import tempfile
 
@@ -25,11 +23,17 @@ if response.status_code == 200:
     # Read the CSV data into a Dask DataFrame
     ddf = dd.read_csv(temp_file_path)
 
-    # Print the result (or perform other operations)
+    # Print the first few rows to ensure data is loaded correctly
     print(ddf.head())
 
+    # Extract the 'ReportingUnitName' column and compute the result
+    hospitals = ddf['ReportingUnitName'].compute()
+
+    # Print the extracted column values
+    print(hospitals)
+
     # Optionally, save the result to a new CSV file
-    ddf.to_csv('9620.csv', single_file=True, index=False)
+    ddf.to_csv('hospitals.csv', single_file=True, index=False)
 else:
     # Print error details
     print("Error:", response.status_code)
