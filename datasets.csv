@@ -1,4 +1,4 @@
-DataSetId,DataSetName,MeasureCode,MeasureName,ReportedMeasureCode,ReportedMeasureName,ReportingEndDate,ReportingStartDate
+﻿DataSetId,DataSetName,MeasureCode,MeasureName,ReportedMeasureCode,ReportedMeasureName,ReportingEndDate,ReportingStartDate
 1,CANCER 2011-12 - Median waiting time for surgery for malignant cancer,MYH0002,Median waiting time for surgery for malignant cancer,MYH-RM0001,Breast cancer,2012-06-30,2011-07-01
 2,CANCER 2011-12 - Median waiting time for surgery for malignant cancer,MYH0002,Median waiting time for surgery for malignant cancer,MYH-RM0002,Bowel cancer,2012-06-30,2011-07-01
 3,CANCER 2011-12 - Median waiting time for surgery for malignant cancer,MYH0002,Median waiting time for surgery for malignant cancer,MYH-RM0003,Lung cancer,2012-06-30,2011-07-01
