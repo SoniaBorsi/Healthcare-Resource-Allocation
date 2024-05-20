@@ -4,7 +4,7 @@ import pandas as pd
 import tempfile
 
 # Define the URL and headers
-url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/3550/data-items"
+url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/10352/data-items"
 headers = {
     'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
     'User-Agent': 'MyApp/1.0',
@@ -30,13 +30,12 @@ if response.status_code == 200:
     # Convert the series to a pandas DataFrame
     hospitals_df = pd.DataFrame(hospitals_series, columns=['ReportingUnitName'])
 
-    # Optionally, save the DataFrame to a new CSV file
-    hospitals_df.to_csv('hospitals.csv', index=False)
-
     # Print the first few rows of the hospitals DataFrame
-    print(hospitals_df.head())
+    print(hospitals_df)
+
 else:
     # Print error details
     print("Error:", response.status_code)
     print("Response Headers:", response.headers)
     print("Response Text:", response.text)
+
