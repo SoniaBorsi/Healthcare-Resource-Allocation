@@ -34,7 +34,6 @@ else:
     print("No datasets matched the filter criteria.")
 
 
-
 def download_datasets(num_datasets_to_download, dataset_id_name_dict):
     base_url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
     headers = {
@@ -65,7 +64,7 @@ def download_datasets(num_datasets_to_download, dataset_id_name_dict):
             print("Response Text:", response.text)
 
 if hospitals_series_id_name is not None:
-    download_datasets(1, hospitals_series_id_name)  # Adjust the number as needed
+    download_datasets(1, hospitals_series_id_name)  
 
 
 #OLD VERSION 
