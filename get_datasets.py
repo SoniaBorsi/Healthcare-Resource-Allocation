@@ -56,7 +56,6 @@ def download_datasets(num_datasets_to_download, dataset_ids):
 
             ddf.to_csv(f'{dataset_id}.csv', single_file=True, index=False)
         else:
-            # Print error details
             print(f"Error fetching dataset with ID {dataset_id}:")
             print("Status Code:", response.status_code)
             print("Response Headers:", response.headers)
