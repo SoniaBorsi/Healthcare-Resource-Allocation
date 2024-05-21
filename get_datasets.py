@@ -1,6 +1,8 @@
 import requests
 import dask.dataframe as dd
 import tempfile
+import psycopg2
+from psycopg2.extras import execute_values
 
 def get_hospitals_series_id():
     url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
@@ -27,14 +29,12 @@ def get_hospitals_series_id():
         print("Failed to fetch data. Status code:", response.status_code)
         return None
 
-
 hospitals_series_id_name = get_hospitals_series_id()
 if hospitals_series_id_name is not None:
     print("Filtered DataSet IDs and Names:")
     print(hospitals_series_id_name)
 else:
    print("No datasets matched the filter criteria.")
-
 
 def download_datasets(num_datasets_to_download, dataset_id_name):
     base_url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
@@ -59,14 +59,50 @@ def download_datasets(num_datasets_to_download, dataset_id_name):
             print(ddf.head())
             sanitized_name = "".join([c if c.isalnum() else "_" for c in dataset_name])  # Sanitize the dataset name
             ddf.to_csv(f'{sanitized_name}.csv', single_file=True, index=False)
+
+            # Insert data into PostgreSQL
+            insert_data_to_postgres(ddf, dataset_name)
         else:
             print(f"Error fetching dataset with ID {dataset_id}:")
             print("Status Code:", response.status_code)
             print("Response Headers:", response.headers)
             print("Response Text:", response.text)
 
+def insert_data_to_postgres(ddf, table_name):
+    try:
+        conn = psycopg2.connect(
+            dbname="hospitals_db",
+            user="sonia_borsi",
+            password="Jacky1101!",
+            host="localhost",
+            port="5432"
+        )
+        cur = conn.cursor()
+
+        # Create table if not exists
+        create_table_query = f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            {" TEXT, ".join(ddf.columns)} TEXT
+        );
+        """
+        cur.execute(create_table_query)
+
+        # Prepare data for insertion
+        insert_query = f"INSERT INTO {table_name} ({', '.join(ddf.columns)}) VALUES %s"
+        data_to_insert = [tuple(x) for x in ddf.values]
+
+        execute_values(cur, insert_query, data_to_insert)
+
+        conn.commit()
+        cur.close()
+        conn.close()
+        print(f"Data inserted successfully into table {table_name}")
+    except Exception as e:
+        print(f"Error inserting data into PostgreSQL: {e}")
+
 if hospitals_series_id_name is not None:
-    download_datasets(1, hospitals_series_id_name)  
+    download_datasets(1, hospitals_series_id_name)
+
 
 
 #OLD VERSION WITHOUT FILTERS IN THE GET SERIES ID FUNCTION 
