@@ -24,7 +24,7 @@ def get_unique_reported_measure_names():
 
 unique_reported_measure_names = get_unique_reported_measure_names()
 dataframe = pd.DataFrame(unique_reported_measure_names)
-dataf = dataframe.to_csv("all_reported_measures_names.csv", header=True)
+dataf = dataframe.to_csv("reported_measures_names.csv", header=True)
 print(dataf)
 
 
@@ -51,12 +51,9 @@ def get_unique_measure_names():
 
 unique_measure_names = get_unique_measure_names()
 dataframe = pd.DataFrame(unique_measure_names)
-dataf = dataframe.to_csv("all_measures_names.csv", header=True)
+dataf = dataframe.to_csv("measures_names.csv", header=True)
 print(dataf)
 
-import requests
-import dask.dataframe as dd
-import pandas as pd
 
 def get_unique_reported_measure_codes():
     url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
@@ -82,5 +79,5 @@ def get_unique_reported_measure_codes():
         print("Failed to fetch data. Status code:", response.status_code)
 
 unique_reported_measure_codes = get_unique_reported_measure_codes()
-unique_reported_measure_codes.to_csv("codes_measures_names.csv", header=True, index=False)
+unique_reported_measure_codes.to_csv("all.csv", header=True, index=False)
 print(unique_reported_measure_codes)
