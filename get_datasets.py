@@ -27,12 +27,18 @@ def get_hospitals_series_id():
         print("Failed to fetch data. Status code:", response.status_code)
         return None, None
 
+<<<<<<< HEAD
 def filter_dataset_ids(datasets):
     filtered_datasets = datasets[datasets['ReportedMeasureName'] == 'all patients']
     filtered_ids = filtered_datasets['DataSetId'].compute()
     return filtered_ids
 
 def download_datasets(num_datasets_to_download, dataset_ids):
+=======
+hospitals_series_id = get_hospitals_series_id()
+
+def download_datasets(num_datasets_to_download, dataset_ids = hospitals_series_id):
+>>>>>>> 3bf103e4d2c2f1ea494d1b18adf220f60572e81d
     base_url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
     headers = {
         'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
@@ -60,9 +66,14 @@ def download_datasets(num_datasets_to_download, dataset_ids):
 
 datasets, hospitals_series_id = get_hospitals_series_id()
 
+<<<<<<< HEAD
 if hospitals_series_id is not None:
     filtered_dataset_ids = filter_dataset_ids(datasets)
     num_datasets_to_download = 5
     download_datasets(num_datasets_to_download, filtered_dataset_ids)
 else:
     print("No dataset IDs to process.")
+=======
+num_datasets_to_download = 5
+download_datasets(num_datasets_to_download) 
+>>>>>>> 3bf103e4d2c2f1ea494d1b18adf220f60572e81d
