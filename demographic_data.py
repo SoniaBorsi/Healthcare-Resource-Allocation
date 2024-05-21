@@ -9,7 +9,6 @@ headers = {
     'accept' : 'text/csv'
 }
 
-# Make a GET request to the API with headers
 response = requests.get(base_url, headers=headers)
 
 print(response.text)
