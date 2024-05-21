@@ -18,7 +18,8 @@ def get_hospitals_series_id():
         datasets = dd.read_csv("datasets.csv")
         datasets['ReportedMeasureName'] = datasets['ReportedMeasureName'].str.strip()
         hospitals = datasets[(datasets['ReportedMeasureName'] == 'All patients') | 
-                             (datasets['ReportedMeasureName'] == 'Total')]
+                             (datasets['ReportedMeasureName'] == 'Total') |
+                             (datasets['ReportedMeasureName'] == 'All audited moments')]
         hospitals_data = hospitals[['DataSetId', 'DataSetName']].compute()
         hospitals_series_id_name = dict(zip(hospitals_data['DataSetId'], hospitals_data['DataSetName']))
         return hospitals_series_id_name
@@ -32,7 +33,7 @@ if hospitals_series_id_name is not None:
     print("Filtered DataSet IDs and Names:")
     print(hospitals_series_id_name)
 else:
-    print("No datasets matched the filter criteria.")
+   print("No datasets matched the filter criteria.")
 
 
 def download_datasets(num_datasets_to_download, dataset_id_name):
