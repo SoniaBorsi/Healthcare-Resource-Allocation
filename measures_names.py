@@ -26,11 +26,8 @@ def get_unique_reported_measure_names():
 
 unique_reported_measure_names = get_unique_reported_measure_names()
 
-if unique_reported_measure_names is not None:
-    df_unique_names = pd.DataFrame({'ReportedMeasureName': unique_reported_measure_names})
-    df_unique_names.to_csv('unique_reported_measure_names.csv', index=False)
+df_unique_names = pd.DataFrame({'ReportedMeasureName': unique_reported_measure_names})
+df_unique_names.to_csv('unique_reported_measure_names.csv', index=False)
+print("DataFrame with Unique Reported Measure Names:")
+print(df_unique_names)
 
-    print("DataFrame with Unique Reported Measure Names:")
-    print(df_unique_names)
-else:
-    print("Failed to fetch unique reported measure names.")
