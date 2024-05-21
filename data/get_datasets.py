@@ -17,9 +17,7 @@ def get_hospitals_series_id():
         with open('datasets.csv', 'w') as f:
             f.write(response.text)
         datasets = dd.read_csv("datasets.csv")
-        
-        hospitals = datasets[datasets['ReportedMeasureName'] == 'All patients']
-        hospitals_series_id = hospitals['DataSetId'].compute()
+        hospitals_series_id = datasets['DataSetId'].compute()
         return hospitals_series_id
     else:
         print("Failed to fetch data. Status code:", response.status_code)
