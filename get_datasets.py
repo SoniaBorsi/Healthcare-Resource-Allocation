@@ -1,11 +1,8 @@
 import requests
 import tempfile
 import dask.dataframe as dd
-
-import requests
-import pandas as pd
 from io import StringIO
-import dask.dataframe as dd
+
 
 def get_hospitals_series_id():
     url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
