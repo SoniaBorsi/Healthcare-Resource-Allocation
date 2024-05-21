@@ -4,6 +4,7 @@ import dask.dataframe as dd
 from io import StringIO
 
 
+
 def get_hospitals_series_id():
     url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
     headers = {
@@ -18,6 +19,7 @@ def get_hospitals_series_id():
             f.write(response.text)
         datasets = dd.read_csv("datasets.csv")
         
+        #hospitals = datasets[datasets['ReportedMeasureName'] == 'all patients']
         hospitals_series_id = datasets['DataSetId'].compute()
         return hospitals_series_id
     else:
@@ -29,11 +31,6 @@ hospitals_series_id = get_hospitals_series_id()
 if hospitals_series_id is not None:
     print(hospitals_series_id)
 
-
-# def filter_dataset_ids(datasets):
-#     filtered_datasets = datasets[datasets['ReportedMeasureName'] == 'all patients']
-#     filtered_ids = filtered_datasets['DataSetId'].compute()
-#     return filtered_ids
 
 
 def download_datasets(num_datasets_to_download, dataset_ids):
