@@ -17,13 +17,10 @@ def get_hospitals_series_id():
 
         datasets = dd.read_csv("datasets.csv")
         datasets['ReportedMeasureName'] = datasets['ReportedMeasureName'].str.strip()
-
         hospitals = datasets[(datasets['ReportedMeasureName'] == 'All patients') | 
                              (datasets['ReportedMeasureName'] == 'Total')]
-
         hospitals_data = hospitals[['DataSetId', 'DataSetName']].compute()
         hospitals_series_id_name = dict(zip(hospitals_data['DataSetId'], hospitals_data['DataSetName']))
-
         return hospitals_series_id_name
     else:
         print("Failed to fetch data. Status code:", response.status_code)
@@ -38,7 +35,7 @@ else:
     print("No datasets matched the filter criteria.")
 
 
-def download_datasets(num_datasets_to_download, dataset_id_name_dict):
+def download_datasets(num_datasets_to_download, dataset_id_name):
     base_url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
     headers = {
         'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
@@ -46,7 +43,7 @@ def download_datasets(num_datasets_to_download, dataset_id_name_dict):
         'accept': 'text/csv'
     }
 
-    for dataset_id, dataset_name in list(dataset_id_name_dict.items())[:num_datasets_to_download]:
+    for dataset_id, dataset_name in list(dataset_id_name.items())[:num_datasets_to_download]:
         url = f"{base_url}{dataset_id}/data-items"
         response = requests.get(url, headers=headers)
 
@@ -71,7 +68,7 @@ if hospitals_series_id_name is not None:
     download_datasets(1, hospitals_series_id_name)  
 
 
-#OLD VERSION 
+#OLD VERSION WITHOUT FILTERS IN THE GET SERIES ID FUNCTION 
     
 # def get_hospitals_series_id():
 #     url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
