@@ -17,7 +17,10 @@ def get_hospitals_series_id():
 
         datasets = dd.read_csv("datasets.csv")
         datasets['ReportedMeasureName'] = datasets['ReportedMeasureName'].str.strip()
-        hospitals = datasets[datasets['ReportedMeasureName'] == 'All patients']
+
+        hospitals = datasets[(datasets['ReportedMeasureName'] == 'All patients') | 
+                             (datasets['ReportedMeasureName'] == 'Total')]
+
         hospitals_data = hospitals[['DataSetId', 'DataSetName']].compute()
         hospitals_series_id_name = dict(zip(hospitals_data['DataSetId'], hospitals_data['DataSetName']))
 
@@ -25,6 +28,7 @@ def get_hospitals_series_id():
     else:
         print("Failed to fetch data. Status code:", response.status_code)
         return None
+
 
 hospitals_series_id_name = get_hospitals_series_id()
 if hospitals_series_id_name is not None:
