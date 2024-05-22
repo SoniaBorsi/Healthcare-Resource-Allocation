@@ -105,7 +105,7 @@ from pyspark.sql import SparkSession
 
 #with spark
 
-def get_hospitals_selected_id(ReportedMeasureCode, ReportedMeasureName, ReportingStartDate):
+def get_hospitals_selected_id( , ReportedMeasureName, ReportingStartDate):
     url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
     headers = {
         'Authorization': 'Bearer YOUR_ACCESS_TOKEN',  
@@ -138,6 +138,7 @@ def get_hospitals_selected_id(ReportedMeasureCode, ReportedMeasureName, Reportin
         print("Failed to fetch data. Status code:", response.status_code)
         return None
 
+#example
 hospitals_selected_id = get_hospitals_selected_id("MYH-RM0001", "Breast cancer", "2011-07-01")
 if hospitals_selected_id is not None:
     print(hospitals_selected_id)
