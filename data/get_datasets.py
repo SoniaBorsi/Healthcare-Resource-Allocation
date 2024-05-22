@@ -3,6 +3,7 @@ import requests
 import tempfile
 import pandas as pd
 import dask.dataframe as dd
+#from pyspark.sql import SparkSession
 
 def get_hospitals_series_id():
     url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
@@ -61,3 +62,4 @@ def download_datasets(num_datasets_to_download, dataset_ids):
 hospitals_series_id_name = get_hospitals_series_id()
 if hospitals_series_id_name is not None:
     download_datasets(1, hospitals_series_id_name)
+
