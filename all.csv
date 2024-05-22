@@ -1,0 +1,691 @@
+ReportedMeasureName,ReportedMeasureCode
+Breast cancer,MYH-RM0001
+Bowel cancer,MYH-RM0002
+Lung cancer,MYH-RM0003
+Breast cancer,MYH-RM0004
+Bowel cancer,MYH-RM0005
+Lung cancer,MYH-RM0006
+Breast cancer,MYH-RM0007
+Bowel cancer,MYH-RM0008
+Lung cancer,MYH-RM0009
+Breast cancer,MYH-RM0010
+Bowel cancer,MYH-RM0011
+Lung cancer,MYH-RM0012
+Resuscitation,MYH-RM0025
+Emergency,MYH-RM0026
+Urgent,MYH-RM0027
+Semi-Urgent,MYH-RM0028
+Non-Urgent,MYH-RM0029
+All patients,MYH-RM0023
+Resuscitation,MYH-RM0030
+Emergency,MYH-RM0031
+Urgent,MYH-RM0032
+Semi-Urgent,MYH-RM0033
+Non-Urgent,MYH-RM0034
+Resuscitation,MYH-RM0035
+Emergency,MYH-RM0036
+Urgent,MYH-RM0037
+Semi-Urgent,MYH-RM0038
+Non-Urgent,MYH-RM0039
+All patients,MYH-RM0015
+Resuscitation,MYH-RM0017
+Emergency,MYH-RM0018
+Urgent,MYH-RM0019
+Semi-Urgent,MYH-RM0020
+Non-Urgent,MYH-RM0021
+Subsequently admitted patients,MYH-RM0014
+Not subsequently admitted patients,MYH-RM0016
+Subsequently admitted patients,MYH-RM0013
+Subsequently admitted patients,MYH-RM0022
+Not subsequently admitted patients,MYH-RM0024
+Cardio-thoracic surgery,MYH-RM0050
+Cardio-thoracic surgery,MYH-RM0102
+"Ear, nose and throat surgery",MYH-RM0052
+"Ear, nose and throat surgery",MYH-RM0104
+General surgery,MYH-RM0059
+General surgery,MYH-RM0111
+Gynaecology,MYH-RM0063
+Gynaecology,MYH-RM0115
+Neurosurgery,MYH-RM0065
+Neurosurgery,MYH-RM0117
+Ophthalmology,MYH-RM0057
+Ophthalmology,MYH-RM0109
+Orthopaedic surgery,MYH-RM0066
+Orthopaedic surgery,MYH-RM0118
+Plastic surgery,MYH-RM0070
+Plastic surgery,MYH-RM0122
+Urology,MYH-RM0071
+Urology,MYH-RM0123
+Vascular surgery,MYH-RM0074
+Vascular surgery,MYH-RM0126
+Other surgery,MYH-RM0069
+Other surgery,MYH-RM0121
+Cataract extraction (with or without intra-ocular lens insertion),MYH-RM0058
+Cataract extraction (with or without intra-ocular lens insertion),MYH-RM0110
+Cholecystectomy (open/laparoscopic),MYH-RM0060
+Cholecystectomy (open/laparoscopic),MYH-RM0112
+Coronary artery bypass grafting,MYH-RM0051
+Coronary artery bypass grafting,MYH-RM0103
+Cystoscopy,MYH-RM0072
+Cystoscopy,MYH-RM0124
+Haemorrhoidectomy,MYH-RM0061
+Haemorrhoidectomy,MYH-RM0113
+Hysterectomy (abdominal/vaginal/laparoscopic),MYH-RM0064
+Hysterectomy (abdominal/vaginal/laparoscopic),MYH-RM0116
+Inguinal herniotomy/herniorrhaphy,MYH-RM0062
+Inguinal herniotomy/herniorrhaphy,MYH-RM0114
+Myringoplasty/tympanoplasty,MYH-RM0053
+Myringoplasty/tympanoplasty,MYH-RM0105
+Myringotomy,MYH-RM0054
+Myringotomy,MYH-RM0106
+Prostatectomy (transurethral or open),MYH-RM0073
+Prostatectomy (transurethral or open),MYH-RM0125
+Septoplasty,MYH-RM0055
+Septoplasty,MYH-RM0107
+Tonsillectomy (with or without adenoidectomy),MYH-RM0056
+Tonsillectomy (with or without adenoidectomy),MYH-RM0108
+Total hip replacement,MYH-RM0067
+Total hip replacement,MYH-RM0119
+Total knee replacement,MYH-RM0068
+Total knee replacement,MYH-RM0120
+Varicose veins treatment,MYH-RM0075
+Varicose veins treatment,MYH-RM0127
+Urgent elective surgery,MYH-RM0047
+Urgent elective surgery,MYH-RM0040
+Semi-urgent elective surgery,MYH-RM0048
+Semi-urgent elective surgery,MYH-RM0041
+Non-urgent elective surgery,MYH-RM0049
+Non-urgent elective surgery,MYH-RM0042
+Cardio-thoracic surgery,MYH-RM0076
+"Ear, nose and throat surgery",MYH-RM0078
+General surgery,MYH-RM0085
+Gynaecology,MYH-RM0089
+Neurosurgery,MYH-RM0091
+Ophthalmology,MYH-RM0083
+Orthopaedic surgery,MYH-RM0092
+Plastic surgery,MYH-RM0096
+Urology,MYH-RM0097
+Vascular surgery,MYH-RM0100
+Other surgery,MYH-RM0095
+Cataract extraction (with or without intra-ocular lens insertion),MYH-RM0084
+Cholecystectomy (open/laparoscopic),MYH-RM0086
+Coronary artery bypass grafting,MYH-RM0077
+Cystoscopy,MYH-RM0098
+Haemorrhoidectomy,MYH-RM0087
+Hysterectomy (abdominal/vaginal/laparoscopic),MYH-RM0090
+Inguinal herniotomy/herniorrhaphy,MYH-RM0088
+Myringoplasty/tympanoplasty,MYH-RM0079
+Myringotomy,MYH-RM0080
+Prostatectomy (transurethral or open),MYH-RM0099
+Septoplasty,MYH-RM0081
+Tonsillectomy (with or without adenoidectomy),MYH-RM0082
+Total hip replacement,MYH-RM0093
+Total knee replacement,MYH-RM0094
+Varicose veins treatment,MYH-RM0101
+Urgent elective surgery,MYH-RM0044
+Semi-urgent elective surgery,MYH-RM0045
+Non-urgent elective surgery,MYH-RM0046
+Appendix removal,MYH-RM0173
+Cellulitis,MYH-RM0128
+Chronic obstructive pulmonary disease (with complications),MYH-RM0129
+Chronic obstructive pulmonary disease (without complications),MYH-RM0130
+Gall bladder removal,MYH-RM0174
+Heart failure (with complications),MYH-RM0131
+Heart failure (without complications),MYH-RM0132
+Kidney and urinary tract infection (with complications),MYH-RM0133
+Kidney and urinary tract infection (without complications),MYH-RM0134
+Total hip replacement,MYH-RM0177
+Total knee replacement,MYH-RM0178
+Prostate removal,MYH-RM0179
+Caesarean delivery,MYH-RM0163
+Vaginal delivery,MYH-RM0164
+Reconstructive gynaecological surgery,MYH-RM0175
+Hysterectomy,MYH-RM0176
+Kidney and urinary tract infection (with complications),MYH-RM0154
+Kidney and urinary tract infection (with complications),MYH-RM0161
+Kidney and urinary tract infection (with complications),MYH-RM0147
+Kidney and urinary tract infection (with complications),MYH-RM0140
+Kidney and urinary tract infection (without complications),MYH-RM0155
+Kidney and urinary tract infection (without complications),MYH-RM0162
+Kidney and urinary tract infection (without complications),MYH-RM0148
+Kidney and urinary tract infection (without complications),MYH-RM0141
+Chronic obstructive pulmonary disease (with complications),MYH-RM0150
+Chronic obstructive pulmonary disease (with complications),MYH-RM0157
+Chronic obstructive pulmonary disease (with complications),MYH-RM0143
+Chronic obstructive pulmonary disease (with complications),MYH-RM0136
+Chronic obstructive pulmonary disease (without complications),MYH-RM0151
+Chronic obstructive pulmonary disease (without complications),MYH-RM0158
+Chronic obstructive pulmonary disease (without complications),MYH-RM0144
+Chronic obstructive pulmonary disease (without complications),MYH-RM0137
+Cellulitis,MYH-RM0149
+Cellulitis,MYH-RM0156
+Cellulitis,MYH-RM0142
+Cellulitis,MYH-RM0135
+Heart failure (with complications),MYH-RM0152
+Heart failure (with complications),MYH-RM0159
+Heart failure (with complications),MYH-RM0145
+Heart failure (with complications),MYH-RM0138
+Heart failure (without complications),MYH-RM0153
+Heart failure (without complications),MYH-RM0160
+Heart failure (without complications),MYH-RM0146
+Heart failure (without complications),MYH-RM0139
+Appendix removal,MYH-RM0194
+Appendix removal,MYH-RM0201
+Appendix removal,MYH-RM0187
+Appendix removal,MYH-RM0180
+Gall bladder removal,MYH-RM0195
+Gall bladder removal,MYH-RM0202
+Gall bladder removal,MYH-RM0188
+Gall bladder removal,MYH-RM0181
+Hysterectomy,MYH-RM0197
+Hysterectomy,MYH-RM0204
+Hysterectomy,MYH-RM0190
+Hysterectomy,MYH-RM0183
+Reconstructive gynaecological surgery,MYH-RM0196
+Reconstructive gynaecological surgery,MYH-RM0203
+Reconstructive gynaecological surgery,MYH-RM0189
+Reconstructive gynaecological surgery,MYH-RM0182
+Total hip replacement,MYH-RM0198
+Total hip replacement,MYH-RM0205
+Total hip replacement,MYH-RM0191
+Total hip replacement,MYH-RM0184
+Total knee replacement,MYH-RM0199
+Total knee replacement,MYH-RM0206
+Total knee replacement,MYH-RM0192
+Total knee replacement,MYH-RM0185
+Prostate removal,MYH-RM0200
+Prostate removal,MYH-RM0207
+Prostate removal,MYH-RM0193
+Prostate removal,MYH-RM0186
+Caesarean delivery,MYH-RM0169
+Caesarean delivery,MYH-RM0171
+Caesarean delivery,MYH-RM0167
+Caesarean delivery,MYH-RM0165
+Vaginal delivery,MYH-RM0170
+Vaginal delivery,MYH-RM0172
+Vaginal delivery,MYH-RM0168
+Vaginal delivery,MYH-RM0166
+All staphylococcus aureus,MYH-RM0210
+All staphylococcus aureus,MYH-RM0211
+All staphylococcus aureus,MYH-RM0212
+Medical (emergency),MYH-RM0213
+Medical (non-emergency),MYH-RM0214
+Childbirth,MYH-RM0215
+Mental health,MYH-RM0216
+Surgical (emergency),MYH-RM0217
+Surgical (non-emergency),MYH-RM0218
+Total,MYH-RM0219
+Resuscitation,MYH-RM0293
+Emergency,MYH-RM0294
+Urgent,MYH-RM0295
+Semi-Urgent,MYH-RM0296
+Non-Urgent,MYH-RM0297
+Subsequently admitted patients,MYH-RM0298
+Not subsequently admitted patients,MYH-RM0299
+All patients,MYH-RM0300
+Not subsequently admitted patients,MYH-RM0301
+All patients,MYH-RM0302
+Methicillin-sensitive staphylococcus aureus,MYH-RM0303
+Methicillin-sensitive staphylococcus aureus,MYH-RM0304
+Methicillin-resistant staphylococcus aureus,MYH-RM0305
+Methicillin-resistant staphylococcus aureus,MYH-RM0306
+Abdominal or thoracic aortic aneurysm - repair/replacement,MYH-RM0345
+Acromioplasty/arthroscopy shoulder/sub acromial decompression,MYH-RM0346
+Adenoidectomy,MYH-RM0347
+Amputation of limb,MYH-RM0348
+Anal fissure - repair of,MYH-RM0349
+Anterior cruciate ligament reconstruction,MYH-RM0350
+Arthrodesis,MYH-RM0351
+Arthroplasty - revision of,MYH-RM0352
+Arthroscopy,MYH-RM0353
+Axillary node dissection,MYH-RM0354
+Bartholin's abscess drainage,MYH-RM0355
+Bartholin's cyst - removal of,MYH-RM0356
+Bladder neck incision,MYH-RM0357
+Blepharoplasty,MYH-RM0358
+Branchial apparatus remnant - removal of,MYH-RM0359
+Breast lump - excision and/or biopsy,MYH-RM0360
+Breast prosthesis - removal of,MYH-RM0361
+Breast reconstruction,MYH-RM0362
+Breast reduction,MYH-RM0363
+Bunion (hallux valgus) - removal of,MYH-RM0364
+Carotid endarterectomy,MYH-RM0365
+Carpal tunnel release,MYH-RM0366
+Cerebral haematoma - evacuation of,MYH-RM0367
+Cervical discectomy and fusion,MYH-RM0368
+Chalazion - excision of,MYH-RM0369
+Chiari malformation decompression,MYH-RM0370
+Circumcision,MYH-RM0371
+Cleft lip and palate - repair of,MYH-RM0372
+Colectomy/anterior resection/large bowel resection,MYH-RM0373
+Common peroneal nerve release,MYH-RM0374
+Cone biopsy,MYH-RM0375
+Congenital cardiac defect/s - procedure for,MYH-RM0376
+Congenital pulmonary lesion - removal of,MYH-RM0377
+Corneal graft,MYH-RM0378
+Cranioplasty,MYH-RM0379
+Craniotomy,MYH-RM0380
+Curettage and evacuation of uterus,MYH-RM0381
+Cystectomy,MYH-RM0382
+Dacryocystorhinostomy,MYH-RM0383
+Dermoid cyst - removal of,MYH-RM0384
+Dialysis access surgery,MYH-RM0385
+Diathermy of wart/s,MYH-RM0386
+Discectomy,MYH-RM0387
+Dupytren's contracture release,MYH-RM0388
+Ectropion - correction of,MYH-RM0389
+Endometrial ablation,MYH-RM0390
+Epididymal cyst - removal of,MYH-RM0391
+Ethmoidectomy,MYH-RM0392
+Examination of eye under anaesthesia,MYH-RM0393
+Exostosis - excision of,MYH-RM0394
+Female sterilisation,MYH-RM0395
+Femoro-popliteal bypass graft,MYH-RM0396
+Fracture non-union - treatment of,MYH-RM0397
+Functional endoscopic sinus surgery,MYH-RM0398
+Fundoplication,MYH-RM0399
+Ganglion - excision of,MYH-RM0400
+Hammer/claw/mallet toe - correction of,MYH-RM0401
+Heart valve replacement,MYH-RM0402
+Herniorrhaphy,MYH-RM0403
+Hydrocele - repair of,MYH-RM0404
+Hypospadias - repair of,MYH-RM0405
+"Hysteroscopy, dilatation and curettage",MYH-RM0406
+Insertion of ventricular peritoneal shunt,MYH-RM0407
+Laminectomy,MYH-RM0408
+Laparoscopy,MYH-RM0409
+Large loop excision of the transformation zone cervix (LLETZ),MYH-RM0410
+Laryngectomy,MYH-RM0411
+Lingual or maxillary frenulum surgery,MYH-RM0412
+Lithotripsy,MYH-RM0413
+Lobectomy/wedge resection/pneumonectomy,MYH-RM0414
+Lymphangioma - surgery for,MYH-RM0415
+Mastectomy,MYH-RM0416
+Mastoidectomy,MYH-RM0417
+Meatoplasty,MYH-RM0418
+Meniscectomy,MYH-RM0419
+Microlaryngoscopy,MYH-RM0420
+Muscle biopsy/temporal artery biopsy,MYH-RM0421
+Muscle or tendon length - change of,MYH-RM0422
+Myomectomy,MYH-RM0423
+Nasal cautery,MYH-RM0424
+Nasal polypectomy,MYH-RM0425
+Nasendoscopy,MYH-RM0426
+Nephrectomy,MYH-RM0428
+Nerve decompression,MYH-RM0429
+Nerve decompression of spinal cord,MYH-RM0430
+Orchidectomy,MYH-RM0431
+Orchidopexy,MYH-RM0432
+Osteotomy,MYH-RM0433
+Parathyroidectomy,MYH-RM0434
+Parotidectomy/submandibular gland - excision of,MYH-RM0435
+Pectus surgery,MYH-RM0436
+Pedicle screw fusion,MYH-RM0437
+Pharyngoplasty,MYH-RM0438
+Pharynx - excision of,MYH-RM0439
+Pilonidal sinus surgery,MYH-RM0440
+Pleurodesis,MYH-RM0441
+Posterior fossa decompression,MYH-RM0442
+Probing of naso-lacrimal duct,MYH-RM0443
+Procedure for strabismus (squint repair),MYH-RM0444
+Prostate biopsy,MYH-RM0445
+Pterygium - excision of,MYH-RM0446
+Ptosis - repair of,MYH-RM0447
+Pyeloplasty/correction of ureteropelvic junction,MYH-RM0448
+Pyogenic granuloma - removal of,MYH-RM0449
+Radical neck dissection,MYH-RM0450
+Repair of obstructing hiatus hernia,MYH-RM0451
+Replacement of aortic aneurysm with bifurcation graft,MYH-RM0452
+Removal of intracranial lesion,MYH-RM0453
+Rhinoplasty,MYH-RM0454
+Rotator cuff - repair of,MYH-RM0455
+Salpingo-oophorectomy/oophorectomy/ovarian cystectomy,MYH-RM0456
+Scar revision,MYH-RM0457
+Shoulder joint replacement,MYH-RM0458
+Shoulder reconstruction,MYH-RM0459
+Skin lesion - excision of,MYH-RM0460
+Stapedectomy,MYH-RM0461
+Stone/s urinary tract - removal of,MYH-RM0462
+Stress incontinence surgery,MYH-RM0463
+Sub-mucosal resection,MYH-RM0464
+Tendon release,MYH-RM0465
+Tenotomy of hip,MYH-RM0466
+Thyroglossal remnant - removal of,MYH-RM0467
+Thyroidectomy/hemi-thyroidectomy,MYH-RM0468
+Toenail surgery,MYH-RM0469
+Trabeculectomy,MYH-RM0470
+Trigger finger/thumb release,MYH-RM0471
+Turbinectomy,MYH-RM0472
+Untethering of spinal cord,MYH-RM0473
+Ureteric - reimplantation,MYH-RM0474
+Ureteric stent - insertion of,MYH-RM0475
+Urethra - dilatation of,MYH-RM0476
+Vaginal repair - anterior/posterior,MYH-RM0477
+Vitrectomy (including buckling/cryotherapy),MYH-RM0478
+Paediatric surgery,MYH-RM0480
+Abdominal or thoracic aortic aneurysm - repair/replacement,MYH-RM0481
+Acromioplasty/arthroscopy shoulder/sub acromial decompression,MYH-RM0482
+Adenoidectomy,MYH-RM0483
+Amputation of limb,MYH-RM0484
+Anal fissure - repair of,MYH-RM0485
+Anterior cruciate ligament reconstruction,MYH-RM0486
+Arthrodesis,MYH-RM0487
+Arthroplasty - revision of,MYH-RM0488
+Arthroscopy,MYH-RM0489
+Axillary node dissection,MYH-RM0490
+Bartholin's abscess drainage,MYH-RM0491
+Bartholin's cyst - removal of,MYH-RM0492
+Bladder neck incision,MYH-RM0493
+Blepharoplasty,MYH-RM0494
+Branchial apparatus remnant - removal of,MYH-RM0495
+Breast lump - excision and/or biopsy,MYH-RM0496
+Breast prosthesis - removal of,MYH-RM0497
+Breast reconstruction,MYH-RM0498
+Breast reduction,MYH-RM0499
+Bunion (hallux valgus) - removal of,MYH-RM0500
+Carotid endarterectomy,MYH-RM0501
+Carpal tunnel release,MYH-RM0502
+Cerebral haematoma - evacuation of,MYH-RM0503
+Cervical discectomy and fusion,MYH-RM0504
+Chalazion - excision of,MYH-RM0505
+Chiari malformation decompression,MYH-RM0506
+Circumcision,MYH-RM0507
+Cleft lip and palate - repair of,MYH-RM0508
+Colectomy/anterior resection/large bowel resection,MYH-RM0509
+Common peroneal nerve release,MYH-RM0510
+Cone biopsy,MYH-RM0511
+Congenital cardiac defect/s - procedure for,MYH-RM0512
+Congenital pulmonary lesion - removal of,MYH-RM0513
+Corneal graft,MYH-RM0514
+Cranioplasty,MYH-RM0515
+Craniotomy,MYH-RM0516
+Curettage and evacuation of uterus,MYH-RM0517
+Cystectomy,MYH-RM0518
+Dacryocystorhinostomy,MYH-RM0519
+Dermoid cyst - removal of,MYH-RM0520
+Dialysis access surgery,MYH-RM0521
+Diathermy of wart/s,MYH-RM0522
+Discectomy,MYH-RM0523
+Dupytren's contracture release,MYH-RM0524
+Ectropion - correction of,MYH-RM0525
+Endometrial ablation,MYH-RM0526
+Epididymal cyst - removal of,MYH-RM0527
+Ethmoidectomy,MYH-RM0528
+Examination of eye under anaesthesia,MYH-RM0529
+Exostosis - excision of,MYH-RM0530
+Female sterilisation,MYH-RM0531
+Femoro-popliteal bypass graft,MYH-RM0532
+Fracture non-union - treatment of,MYH-RM0533
+Functional endoscopic sinus surgery,MYH-RM0534
+Fundoplication,MYH-RM0535
+Ganglion - excision of,MYH-RM0536
+Hammer/claw/mallet toe - correction of,MYH-RM0537
+Heart valve replacement,MYH-RM0538
+Herniorrhaphy,MYH-RM0539
+Hydrocele - repair of,MYH-RM0540
+Hypospadias - repair of,MYH-RM0541
+"Hysteroscopy, dilatation and curettage",MYH-RM0542
+Insertion of ventricular peritoneal shunt,MYH-RM0543
+Laminectomy,MYH-RM0544
+Laparoscopy,MYH-RM0545
+Large loop excision of the transformation zone cervix (LLETZ),MYH-RM0546
+Laryngectomy,MYH-RM0547
+Lingual or maxillary frenulum surgery,MYH-RM0548
+Lithotripsy,MYH-RM0549
+Lobectomy/wedge resection/pneumonectomy,MYH-RM0550
+Lymphangioma - surgery for,MYH-RM0551
+Mastectomy,MYH-RM0552
+Mastoidectomy,MYH-RM0553
+Meatoplasty,MYH-RM0554
+Meniscectomy,MYH-RM0555
+Microlaryngoscopy,MYH-RM0556
+Muscle biopsy/temporal artery biopsy,MYH-RM0557
+Muscle or tendon length - change of,MYH-RM0558
+Myomectomy,MYH-RM0559
+Nasal cautery,MYH-RM0560
+Nasal polypectomy,MYH-RM0561
+Nasendoscopy,MYH-RM0562
+Nephrectomy,MYH-RM0564
+Nerve decompression,MYH-RM0565
+Nerve decompression of spinal cord,MYH-RM0566
+Orchidectomy,MYH-RM0567
+Orchidopexy,MYH-RM0568
+Osteotomy,MYH-RM0569
+Parathyroidectomy,MYH-RM0570
+Parotidectomy/submandibular gland - excision of,MYH-RM0571
+Pectus surgery,MYH-RM0572
+Pedicle screw fusion,MYH-RM0573
+Pharyngoplasty,MYH-RM0574
+Pharynx - excision of,MYH-RM0575
+Pilonidal sinus surgery,MYH-RM0576
+Pleurodesis,MYH-RM0577
+Posterior fossa decompression,MYH-RM0578
+Probing of naso-lacrimal duct,MYH-RM0579
+Procedure for strabismus (squint repair),MYH-RM0580
+Prostate biopsy,MYH-RM0581
+Pterygium - excision of,MYH-RM0582
+Ptosis - repair of,MYH-RM0583
+Pyeloplasty/correction of ureteropelvic junction,MYH-RM0584
+Pyogenic granuloma - removal of,MYH-RM0585
+Radical neck dissection,MYH-RM0586
+Repair of obstructing hiatus hernia,MYH-RM0587
+Replacement of aortic aneurysm with bifurcation graft,MYH-RM0588
+Removal of intracranial lesion,MYH-RM0589
+Rhinoplasty,MYH-RM0590
+Rotator cuff - repair of,MYH-RM0591
+Salpingo-oophorectomy/oophorectomy/ovarian cystectomy,MYH-RM0592
+Scar revision,MYH-RM0593
+Shoulder joint replacement,MYH-RM0594
+Shoulder reconstruction,MYH-RM0595
+Skin lesion - excision of,MYH-RM0596
+Stapedectomy,MYH-RM0597
+Stone/s urinary tract - removal of,MYH-RM0598
+Stress incontinence surgery,MYH-RM0599
+Sub-mucosal resection,MYH-RM0600
+Tendon release,MYH-RM0601
+Tenotomy of hip,MYH-RM0602
+Thyroglossal remnant - removal of,MYH-RM0603
+Thyroidectomy/hemi-thyroidectomy,MYH-RM0604
+Toenail surgery,MYH-RM0605
+Trabeculectomy,MYH-RM0606
+Trigger finger/thumb release,MYH-RM0607
+Turbinectomy,MYH-RM0608
+Untethering of spinal cord,MYH-RM0609
+Ureteric - reimplantation,MYH-RM0610
+Ureteric stent - insertion of,MYH-RM0611
+Urethra - dilatation of,MYH-RM0612
+Vaginal repair - anterior/posterior,MYH-RM0613
+Vitrectomy (including buckling/cryotherapy),MYH-RM0614
+Paediatric surgery,MYH-RM0616
+Abdominal or thoracic aortic aneurysm - repair/replacement,MYH-RM0617
+Acromioplasty/arthroscopy shoulder/sub acromial decompression,MYH-RM0618
+Adenoidectomy,MYH-RM0619
+Amputation of limb,MYH-RM0620
+Anal fissure - repair of,MYH-RM0621
+Anterior cruciate ligament reconstruction,MYH-RM0622
+Arthrodesis,MYH-RM0623
+Arthroplasty - revision of,MYH-RM0624
+Arthroscopy,MYH-RM0625
+Axillary node dissection,MYH-RM0626
+Bartholin's abscess drainage,MYH-RM0627
+Bartholin's cyst - removal of,MYH-RM0628
+Bladder neck incision,MYH-RM0629
+Blepharoplasty,MYH-RM0630
+Branchial apparatus remnant - removal of,MYH-RM0631
+Breast lump - excision and/or biopsy,MYH-RM0632
+Breast prosthesis - removal of,MYH-RM0633
+Breast reconstruction,MYH-RM0634
+Breast reduction,MYH-RM0635
+Bunion (hallux valgus) - removal of,MYH-RM0636
+Carotid endarterectomy,MYH-RM0637
+Carpal tunnel release,MYH-RM0638
+Cerebral haematoma - evacuation of,MYH-RM0639
+Cervical discectomy and fusion,MYH-RM0640
+Chalazion - excision of,MYH-RM0641
+Chiari malformation decompression,MYH-RM0642
+Circumcision,MYH-RM0643
+Cleft lip and palate - repair of,MYH-RM0644
+Colectomy/anterior resection/large bowel resection,MYH-RM0645
+Common peroneal nerve release,MYH-RM0646
+Cone biopsy,MYH-RM0647
+Congenital cardiac defect/s - procedure for,MYH-RM0648
+Congenital pulmonary lesion - removal of,MYH-RM0649
+Corneal graft,MYH-RM0650
+Cranioplasty,MYH-RM0651
+Craniotomy,MYH-RM0652
+Curettage and evacuation of uterus,MYH-RM0653
+Cystectomy,MYH-RM0654
+Dacryocystorhinostomy,MYH-RM0655
+Dermoid cyst - removal of,MYH-RM0656
+Dialysis access surgery,MYH-RM0657
+Diathermy of wart/s,MYH-RM0658
+Discectomy,MYH-RM0659
+Dupytren's contracture release,MYH-RM0660
+Ectropion - correction of,MYH-RM0661
+Endometrial ablation,MYH-RM0662
+Epididymal cyst - removal of,MYH-RM0663
+Ethmoidectomy,MYH-RM0664
+Examination of eye under anaesthesia,MYH-RM0665
+Exostosis - excision of,MYH-RM0666
+Female sterilisation,MYH-RM0667
+Femoro-popliteal bypass graft,MYH-RM0668
+Fracture non-union - treatment of,MYH-RM0669
+Functional endoscopic sinus surgery,MYH-RM0670
+Fundoplication,MYH-RM0671
+Ganglion - excision of,MYH-RM0672
+Hammer/claw/mallet toe - correction of,MYH-RM0673
+Heart valve replacement,MYH-RM0674
+Herniorrhaphy,MYH-RM0675
+Hydrocele - repair of,MYH-RM0676
+Hypospadias - repair of,MYH-RM0677
+"Hysteroscopy, dilatation and curettage",MYH-RM0678
+Insertion of ventricular peritoneal shunt,MYH-RM0679
+Laminectomy,MYH-RM0680
+Laparoscopy,MYH-RM0681
+Large loop excision of the transformation zone cervix (LLETZ),MYH-RM0682
+Laryngectomy,MYH-RM0683
+Lingual or maxillary frenulum surgery,MYH-RM0684
+Lithotripsy,MYH-RM0685
+Lobectomy/wedge resection/pneumonectomy,MYH-RM0686
+Lymphangioma - surgery for,MYH-RM0687
+Mastectomy,MYH-RM0688
+Mastoidectomy,MYH-RM0689
+Meatoplasty,MYH-RM0690
+Meniscectomy,MYH-RM0691
+Microlaryngoscopy,MYH-RM0692
+Muscle biopsy/temporal artery biopsy,MYH-RM0693
+Muscle or tendon length - change of,MYH-RM0694
+Myomectomy,MYH-RM0695
+Nasal cautery,MYH-RM0696
+Nasal polypectomy,MYH-RM0697
+Nasendoscopy,MYH-RM0698
+Nephrectomy,MYH-RM0700
+Nerve decompression,MYH-RM0701
+Nerve decompression of spinal cord,MYH-RM0702
+Orchidectomy,MYH-RM0703
+Orchidopexy,MYH-RM0704
+Osteotomy,MYH-RM0705
+Parathyroidectomy,MYH-RM0706
+Parotidectomy/submandibular gland - excision of,MYH-RM0707
+Pectus surgery,MYH-RM0708
+Pedicle screw fusion,MYH-RM0709
+Pharyngoplasty,MYH-RM0710
+Pharynx - excision of,MYH-RM0711
+Pilonidal sinus surgery,MYH-RM0712
+Pleurodesis,MYH-RM0713
+Posterior fossa decompression,MYH-RM0714
+Probing of naso-lacrimal duct,MYH-RM0715
+Procedure for strabismus (squint repair),MYH-RM0716
+Prostate biopsy,MYH-RM0717
+Pterygium - excision of,MYH-RM0718
+Ptosis - repair of,MYH-RM0719
+Pyeloplasty/correction of ureteropelvic junction,MYH-RM0720
+Pyogenic granuloma - removal of,MYH-RM0721
+Radical neck dissection,MYH-RM0722
+Repair of obstructing hiatus hernia,MYH-RM0723
+Replacement of aortic aneurysm with bifurcation graft,MYH-RM0724
+Removal of intracranial lesion,MYH-RM0725
+Rhinoplasty,MYH-RM0726
+Rotator cuff - repair of,MYH-RM0727
+Salpingo-oophorectomy/oophorectomy/ovarian cystectomy,MYH-RM0728
+Scar revision,MYH-RM0729
+Shoulder joint replacement,MYH-RM0730
+Shoulder reconstruction,MYH-RM0731
+Skin lesion - excision of,MYH-RM0732
+Stapedectomy,MYH-RM0733
+Stone/s urinary tract - removal of,MYH-RM0734
+Stress incontinence surgery,MYH-RM0735
+Sub-mucosal resection,MYH-RM0736
+Tendon release,MYH-RM0737
+Tenotomy of hip,MYH-RM0738
+Thyroglossal remnant - removal of,MYH-RM0739
+Thyroidectomy/hemi-thyroidectomy,MYH-RM0740
+Toenail surgery,MYH-RM0741
+Trabeculectomy,MYH-RM0742
+Trigger finger/thumb release,MYH-RM0743
+Turbinectomy,MYH-RM0744
+Untethering of spinal cord,MYH-RM0745
+Ureteric - reimplantation,MYH-RM0746
+Ureteric stent - insertion of,MYH-RM0747
+Urethra - dilatation of,MYH-RM0748
+Vaginal repair - anterior/posterior,MYH-RM0749
+Vitrectomy (including buckling/cryotherapy),MYH-RM0750
+Paediatric surgery,MYH-RM0752
+Other acute (emergency),MYH-RM0753
+Other acute (non-emergency),MYH-RM0754
+Rehabilitation,MYH-RM0755
+Palliative,MYH-RM0756
+Other subacute and non-acute,MYH-RM0757
+Acute admitted patients,MYH-RM0273
+Acute admitted patients,MYH-RM0275
+Acute admitted patients,MYH-RM0284
+Cost per NWAU Comparison to Peer Average,MYH-RM0285
+Obstetric services,MYH-RM0760
+Paediatric service,MYH-RM0761
+Psychiatric unit,MYH-RM0762
+Intensive care unit,MYH-RM0763
+Hospice care unit,MYH-RM0764
+Nursing home care unit,MYH-RM0765
+Geriatric assessment unit,MYH-RM0766
+Domiciliary care service,MYH-RM0767
+Alcohol and drug unit,MYH-RM0768
+Acute spinal cord injury unit,MYH-RM0769
+Coronary care unit,MYH-RM0770
+Cardiac surgery unit,MYH-RM0771
+Acute renal dialysis unit,MYH-RM0772
+Maintenance renal dialysis unit,MYH-RM0773
+Burns unit,MYH-RM0774
+Major plastic or reconstructive surgery unit,MYH-RM0775
+Oncology unit,MYH-RM0776
+Neonatal intensive care unit,MYH-RM0777
+In-vitro fertilisation unit,MYH-RM0778
+Epilepsy centre,MYH-RM0779
+Bone marrow transplantation unit,MYH-RM0780
+Renal transplantation unit,MYH-RM0781
+Heart transplantation unit,MYH-RM0782
+Liver transplantation unit,MYH-RM0783
+Pancreas transplantation unit,MYH-RM0784
+Clinical genetics unit,MYH-RM0785
+Sleep centre,MYH-RM0786
+Neurosurgical unit,MYH-RM0787
+Infectious diseases unit,MYH-RM0788
+AIDS unit,MYH-RM0789
+Diabetes unit,MYH-RM0790
+Rehabilitation unit,MYH-RM0791
+Myringotomy (without insertion of grommets),MYH-RM0792
+Pressure equalising tubes (grommets) - insertion of,MYH-RM0793
+Myringotomy (without insertion of grommets),MYH-RM0794
+Pressure equalising tubes (grommets) - insertion of,MYH-RM0795
+Myringotomy (without insertion of grommets),MYH-RM0796
+Pressure equalising tubes (grommets) - insertion of,MYH-RM0797
+Neonatal surgery,MYH-RM0427
+Neonatal surgery,MYH-RM0563
+Neonatal surgery,MYH-RM0699
+Methicillin-resistant staphylococcus aureus,MYH-RM0799
+Methicillin-sensitive staphylococcus aureus,MYH-RM0798
+All audited moments,MYH-RM0208
+All audited moments,MYH-RM0209
+Other procedure,MYH-RM0479
+Other procedure,MYH-RM0615
+Other procedure,MYH-RM0751
+Clinical pharmacology and/or toxicology service,MYH-RM0800
