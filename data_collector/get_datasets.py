@@ -66,12 +66,13 @@ def get_hospitals_selected_id(ReportedMeasureCode, ReportedMeasureName, Reportin
         print("Failed to fetch data. Status code:", response.status_code)
         return None
 
-hospitals_selected_id = get_hospitals_selected_id("MYH-RM0001", "Breast cancer", "2011-07-01")
+hospitals_selected_id = get_hospitals_selected_id("MYH-RM0012", "Lung cancer", "2011-07-01")
+#hospitals_selected_id = get_hospitals_selected_id("MYH-RM0021", "Non-Urgent", "2012-07-01")
 if hospitals_selected_id is not None:
     print(hospitals_selected_id)
 
 
-def download_datasets(num_datasets_to_download, dataset_ids):
+def download_datasets(dataset_ids):
     base_url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
     headers = {
         'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
@@ -79,7 +80,7 @@ def download_datasets(num_datasets_to_download, dataset_ids):
         'accept': 'text/csv'
     }
     
-    for dataset_id in dataset_ids[:num_datasets_to_download]:
+    for dataset_id in dataset_ids:
         url = f"{base_url}{dataset_id}/data-items"
         response = requests.get(url, headers=headers)
 
@@ -93,6 +94,8 @@ def download_datasets(num_datasets_to_download, dataset_ids):
             conn_string = 'postgresql://myuser:mypassword@localhost:5432/mydatabase'
             engine = create_engine(conn_string)
 
+            table_name = f"dataset_{dataset_id}"  # Using dataset ID as table name
+
             with psycopg2.connect(
                 database="mydatabase", 
                 user='myuser', 
@@ -102,18 +105,18 @@ def download_datasets(num_datasets_to_download, dataset_ids):
             ) as conn1:
                 conn1.autocommit = True
                 with conn1.cursor() as cursor:
-                    cursor.execute('DROP TABLE IF EXISTS prova')
+                    cursor.execute(f'DROP TABLE IF EXISTS {table_name}')
 
-                ddf.to_sql('prova3', conn_string, if_exists='replace', index=False)
+                ddf.to_sql(table_name, conn_string, if_exists='replace', index=False)
         
         else:
             print(f"Error fetching dataset with ID {dataset_id}:")
             print("Status Code:", response.status_code)
             print("Response Headers:", response.headers)
             print("Response Text:", response.text)
+            
 
-dataset_ids = ["2", "3", "8"]
-download_datasets(3, "50")
+download_datasets(hospitals_selected_id)
 
 
 
