@@ -43,7 +43,7 @@ conn1.autocommit = True
 cursor = conn1.cursor() 
 
 cursor.execute('drop table if exists prova') 
-data.to_sql('prova', engine, if_exists='replace', index=False)
+data.to_sql('mapper', engine, if_exists='replace', index=False)
 
 conn1.commit() 
 conn1.close() 
