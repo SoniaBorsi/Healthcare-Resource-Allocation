@@ -73,14 +73,15 @@ if hospitals_selected_id is not None:
     print(hospitals_selected_id)
 
 
-def download_datasets(num_datasets_to_download, dataset_id):
+def download_datasets(num_datasets_to_download, dataset_ids):
     base_url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
     headers = {
-    'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
-    'User-Agent': 'MyApp/1.0',
-    'accept': 'text/csv'
+        'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
+        'User-Agent': 'MyApp/1.0',
+        'accept': 'text/csv'
     }
-    for dataset_id in dataset_id[:num_datasets_to_download]:
+    
+    for dataset_id in dataset_ids[:num_datasets_to_download]:
         url = f"{base_url}{dataset_id}/data-items"
         response = requests.get(url, headers=headers)
 
@@ -94,27 +95,27 @@ def download_datasets(num_datasets_to_download, dataset_id):
             conn_string = 'postgresql://myuser:mypassword@localhost:5432/mydatabase'
             engine = create_engine(conn_string)
 
-            conn1 = psycopg2.connect( 
-	            database="mydatabase", 
+            with psycopg2.connect(
+                database="mydatabase", 
                 user='myuser', 
                 password='mypassword', 
                 host='localhost', 
-                port= '5432'
-                )
-            conn1.autocommit = True
-            cursor = conn1.cursor() 
-            cursor.execute('drop table if exists prova') 
-            ddf.to_sql('prova', engine, if_exists='replace', index=False)
-            conn1.commit() 
-            conn1.close() 
-            
+                port='5432'
+            ) as conn1:
+                conn1.autocommit = True
+                with conn1.cursor() as cursor:
+                    cursor.execute('DROP TABLE IF EXISTS prova')
+
+                # Pass the connection string directly to the to_sql method
+                ddf.to_sql('prova3', conn_string, if_exists='replace', index=False)
+        
         else:
             print(f"Error fetching dataset with ID {dataset_id}:")
             print("Status Code:", response.status_code)
             print("Response Headers:", response.headers)
             print("Response Text:", response.text)
 
-download_datasets(1, hospitals_selected_id)
+download_datasets(3, "8")
 
 
 
