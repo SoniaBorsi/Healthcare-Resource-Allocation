@@ -50,10 +50,8 @@ def get_hospitals_selected_id(ReportedMeasureCode, ReportedMeasureName, Reportin
         with open('selected_datasets.csv', 'w') as f:
             f.write(response.text)
         
-        # Load the CSV file using Dask
         datasets = dd.read_csv("selected_datasets.csv")
         
-        # Apply filters
         filtered_datasets = datasets[
             (datasets['ReportedMeasureCode'] == ReportedMeasureCode) &
             (datasets['ReportedMeasureName'] == ReportedMeasureName) &
@@ -106,7 +104,6 @@ def download_datasets(num_datasets_to_download, dataset_ids):
                 with conn1.cursor() as cursor:
                     cursor.execute('DROP TABLE IF EXISTS prova')
 
-                # Pass the connection string directly to the to_sql method
                 ddf.to_sql('prova3', conn_string, if_exists='replace', index=False)
         
         else:
@@ -115,7 +112,8 @@ def download_datasets(num_datasets_to_download, dataset_ids):
             print("Response Headers:", response.headers)
             print("Response Text:", response.text)
 
-download_datasets(3, "8")
+dataset_ids = ["2", "3", "8"]
+download_datasets(3, "50")
 
 
 
