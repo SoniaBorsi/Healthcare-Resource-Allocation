@@ -1,8 +1,10 @@
 import requests
-import dask.dataframe as dd
 import pandas as pd
+import psycopg2
 
-def map_hospitals():
+def map_hospitals(engine):
+
+    print('Fetching Hospitals data...')
 
     url = "https://myhospitalsapi.aihw.gov.au/api/v1/reporting-units-downloads/mappings"
     headers = {
@@ -20,31 +22,15 @@ def map_hospitals():
 
     df = pd.read_excel(filename,engine='openpyxl', skiprows=3)
 
-    return df
+    print('Fetching successful, writing to db')
 
-data = map_hospitals()
+    # Write DataFrame to PostgreSQL
 
-import psycopg2 
-import pandas as pd 
-from sqlalchemy import create_engine 
+    table_name = 'hospital_map'
+    df.to_sql(table_name, engine, if_exists='replace', index=False)
 
-conn_string = 'postgresql://myuser:mypassword@localhost:5432/mydatabase'
-engine = create_engine(conn_string)
+    print(f"Hospital mapping successfully written to table '{table_name}' in the database.")
 
-conn1 = psycopg2.connect( 
-	database="mydatabase", 
-    user='myuser', 
-    password='mypassword', 
-    host='localhost', 
-    port= '5432'
-    ) 
 
-conn1.autocommit = True
-cursor = conn1.cursor() 
 
-cursor.execute('drop table if exists prova') 
-data.to_sql('mapper', engine, if_exists='replace', index=False)
-
-conn1.commit() 
-conn1.close() 
 

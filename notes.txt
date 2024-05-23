@@ -1,0 +1,4 @@
+Task:
+Mapper to sql table
+Translate functions to spark
+Create cluster
