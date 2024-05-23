@@ -66,8 +66,7 @@ def get_hospitals_selected_id(ReportedMeasureCode, ReportedMeasureName, Reportin
         print("Failed to fetch data. Status code:", response.status_code)
         return None
 
-hospitals_selected_id = get_hospitals_selected_id("MYH-RM0012", "Lung cancer", "2011-07-01")
-#hospitals_selected_id = get_hospitals_selected_id("MYH-RM0021", "Non-Urgent", "2012-07-01")
+hospitals_selected_id = get_hospitals_selected_id("MYH-RM0021", "Non-Urgent", "2012-07-01")
 if hospitals_selected_id is not None:
     print(hospitals_selected_id)
 
@@ -117,8 +116,6 @@ def download_datasets(dataset_ids):
             
 
 download_datasets(hospitals_selected_id)
-
-
 
 
 #with spark

@@ -12,3 +12,5 @@ headers = {
 response = requests.get(base_url, headers=headers)
 
 print(response.text)
+
+
