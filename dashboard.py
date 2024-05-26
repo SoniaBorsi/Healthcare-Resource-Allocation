@@ -9,8 +9,8 @@ def create_dashboard():
     def connect_to_db():
         conn = psycopg2.connect(
             dbname="hospitals",
-            user="newuser",
-            password="newPassword",
+            user="myuser",
+            password="mypassword",
             host="localhost",
             port="5432"
         )
