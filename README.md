@@ -1,2 +1,2 @@
 # Healthcare Resource Allocation
-Big Data Technolgies project (2023/2024)
+Big Data Technologies project (2023/2024)
