@@ -1,3 +1,4 @@
+import os
 import requests
 import pandas as pd
 import tempfile
@@ -39,7 +40,7 @@ def get_datasets(dataset_ids):
 
 def send_to_rabbitmq(dataset):
     try:
-        connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(os.getenv('RABBITMQ_HOST', 'localhost')))
         channel = connection.channel()
         channel.queue_declare(queue='selected_dataset_queue')
         json_data = dataset.to_json(orient='records')
@@ -51,15 +52,15 @@ def send_to_rabbitmq(dataset):
 
 def insert_into_postgresql(data_frame):
     conn_params = {
-        'dbname': 'mydatabase',
-        'user': 'myuser',
-        'password': 'myassword',
-        'host': 'localhost',
+        'dbname': os.getenv('POSTGRES_DB', 'mydatabase'),
+        'user': os.getenv('POSTGRES_USER', 'myuser'),
+        'password': os.getenv('POSTGRES_PASSWORD', 'mypassword'),
+        'host': os.getenv('POSTGRES_HOST', 'localhost'),
         'port': 5432
     }
     
     create_table_sql = """
-    CREATE TABLE IF NOT EXISTS values (
+    CREATE TABLE IF NOT EXISTS prova (
         "DataSetId" TEXT,
         "ReportingUnitCode" TEXT,
         "Value" TEXT,
@@ -106,7 +107,7 @@ def callback(ch, method, properties, body):
 
 def consume_from_rabbitmq():
     try:
-        connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(os.getenv('RABBITMQ_HOST', 'localhost')))
         channel = connection.channel()
         channel.queue_declare(queue='selected_dataset_queue')
         channel.basic_consume(queue='selected_dataset_queue', on_message_callback=callback)

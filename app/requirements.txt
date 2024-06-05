@@ -1,0 +1,4 @@
+requests
+pandas
+pika
+psycopg2-binary
