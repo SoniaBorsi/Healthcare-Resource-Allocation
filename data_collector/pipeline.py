@@ -103,7 +103,7 @@ def insert_into_postgresql(data_frame):
     }
 
     create_table_sql = """
-    CREATE TABLE IF NOT EXISTS prova (
+    CREATE TABLE IF NOT EXISTS values (
         "DataSetId" TEXT,
         "ReportingUnitCode" TEXT,
         "Value" TEXT,
@@ -122,7 +122,7 @@ def insert_into_postgresql(data_frame):
         for row in data_frame.collect():
             cursor.execute(
                 """
-                INSERT INTO prova ("DataSetId", "ReportingUnitCode", "Value", "Caveats", "Suppressions")
+                INSERT INTO values ("DataSetId", "ReportingUnitCode", "Value", "Caveats", "Suppressions")
                 VALUES (%s, %s, %s, %s, %s)
                 """, 
                 (row['DataSetId'], row['ReportingUnitCode'], row['Value'], row['Caveats'], row['Suppressions'])
@@ -174,7 +174,7 @@ def consume_from_rabbitmq():
 
 if __name__ == "__main__":
     try:
-        dataset_ids = list(range(1, 101))  # Dataset IDs from 1 to 100
+        dataset_ids = [1,2,3]#list(range(1, 101))  
         csv_files = get_datasets(dataset_ids)
         if csv_files:
             send_to_rabbitmq(csv_files)
