@@ -80,7 +80,7 @@ def insert_into_postgresql(data_frame):
         for index, row in data_frame.iterrows():
             cursor.execute(
                 """
-                INSERT INTO prova ( "DatasetId", "ReportingUnitCode", "Value",
+                INSERT INTO prova ( "DataSetId", "ReportingUnitCode", "Value",
                                        "Caveats", "Suppressions")
                 VALUES (%s, %s, %s, %s, %s)
                 """, 
