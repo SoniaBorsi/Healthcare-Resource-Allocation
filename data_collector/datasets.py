@@ -4,7 +4,7 @@ import tempfile
 import pika
 import psycopg2
 from pyspark.sql import SparkSession
-from pipeline import consume_from_rabbitmq, send_to_rabbitmq, callback
+from data_collector.values import consume_from_rabbitmq, send_to_rabbitmq, callback
 
 def download_datasets_csv():
     url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
