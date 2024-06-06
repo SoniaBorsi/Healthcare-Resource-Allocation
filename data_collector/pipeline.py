@@ -12,44 +12,44 @@ spark = SparkSession.builder \
 
 logging.basicConfig(level=logging.INFO)
 
-def get_datasets(dataset_ids):
-    base_url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
-    headers = {
-        'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
-        'User-Agent': 'MyApp/1.0',
-        'accept': 'text/csv'
-    }
+# def get_datasets(dataset_ids):
+#     base_url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
+#     headers = {
+#         'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
+#         'User-Agent': 'MyApp/1.0',
+#         'accept': 'text/csv'
+#     }
 
-    csv_files = []
-    for dataset_id in dataset_ids:
-        url = f"{base_url}{dataset_id}/data-items"
-        response = requests.get(url, headers=headers)
+#     csv_files = []
+#     for dataset_id in dataset_ids:
+#         url = f"{base_url}{dataset_id}/data-items"
+#         response = requests.get(url, headers=headers)
 
-        if response.status_code == 200:
-            with tempfile.NamedTemporaryFile(mode='w+', delete=False) as temp_file:
-                temp_file.write(response.text)
-                temp_file_path = temp_file.name
-                csv_files.append(temp_file_path)
-        else:
-            logging.error(f"Failed to fetch dataset {dataset_id}. Status code: {response.status_code}")
+#         if response.status_code == 200:
+#             with tempfile.NamedTemporaryFile(mode='w+', delete=False) as temp_file:
+#                 temp_file.write(response.text)
+#                 temp_file_path = temp_file.name
+#                 csv_files.append(temp_file_path)
+#         else:
+#             logging.error(f"Failed to fetch dataset {dataset_id}. Status code: {response.status_code}")
     
-    return csv_files
+#     return csv_files
 
-def send_to_rabbitmq(csv_files):
-    try:
-        connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
-        channel = connection.channel()
-        channel.queue_declare(queue='selected_dataset_queue')
+# def send_to_rabbitmq(csv_files):
+#     try:
+#         connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+#         channel = connection.channel()
+#         channel.queue_declare(queue='selected_dataset_queue')
 
-        for csv_file in csv_files:
-            with open(csv_file, 'r') as file:
-                csv_data = file.read()
-                channel.basic_publish(exchange='', routing_key='selected_dataset_queue', body=csv_data)
+#         for csv_file in csv_files:
+#             with open(csv_file, 'r') as file:
+#                 csv_data = file.read()
+#                 channel.basic_publish(exchange='', routing_key='selected_dataset_queue', body=csv_data)
 
-        connection.close()
-        logging.info("CSV files sent to RabbitMQ.")
-    except Exception as e:
-        logging.error(f"Failed to send CSV files to RabbitMQ: {e}")
+#         connection.close()
+#         logging.info("CSV files sent to RabbitMQ.")
+#     except Exception as e:
+#         logging.error(f"Failed to send CSV files to RabbitMQ: {e}")
 
 
 def get_datasets(dataset_ids):
