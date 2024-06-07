@@ -3,11 +3,12 @@ import tempfile
 from pyspark.sql import SparkSession
 import requests
 import pika
+import time
 
 def create_spark_session():
     spark = SparkSession.builder \
         .appName("Healthcare-Resource-Allocation") \
-        .config("spark.driver.extraClassPath", "postgresql-42.7.3.jar") \
+        .config("spark.driver.extraClassPath", "/opt/bitnami/spark/jars/postgresql-42.7.3.jar") \
         .getOrCreate()
     return spark
 
@@ -35,27 +36,34 @@ def download_datasets_csv():
         return None
 
 def send_to_rabbitmq(csv_files):
-    try:
-        connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
-        channel = connection.channel()
-        channel.queue_declare(queue='selected_dataset_queue')
+    connection_attempts = 0
+    max_attempts = 5
+    while connection_attempts < max_attempts:
+        try:
+            connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
+            channel = connection.channel()
+            channel.queue_declare(queue='selected_dataset_queue')
 
-        for csv_file in csv_files:
-            with open(csv_file, 'r') as file:
-                csv_data = file.read()
-                channel.basic_publish(exchange='', routing_key='selected_dataset_queue', body=csv_data)
+            for csv_file in csv_files:
+                with open(csv_file, 'r') as file:
+                    csv_data = file.read()
+                    channel.basic_publish(exchange='', routing_key='selected_dataset_queue', body=csv_data)
 
-        connection.close()
-        logging.info("CSV files sent to RabbitMQ.")
-    except Exception as e:
-        logging.error(f"Failed to send CSV files to RabbitMQ: {e}")
+            connection.close()
+            logging.info("CSV files sent to RabbitMQ.")
+            return
+        except Exception as e:
+            logging.error(f"Failed to send CSV files to RabbitMQ: {e}")
+            connection_attempts += 1
+            time.sleep(5)
+    logging.error("Exceeded maximum attempts to connect to RabbitMQ.")
 
 def insert_into_postgresql(df, table_name):
     # Database connection parameters
-    url = "jdbc:postgresql://localhost:5432/mydatabase"
+    url = "jdbc:postgresql://postgres:5432/mydatabase"
     properties = {
-        "user": "myuser",
-        "password": "mypassword",
+        "user": "user",
+        "password": "password",
         "driver": "org.postgresql.Driver"
     }
 
@@ -89,7 +97,7 @@ def callback(ch, method, properties, body):
 
 def consume_from_rabbitmq():
     try:
-        connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+        connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
         channel = connection.channel()
         channel.queue_declare(queue='selected_dataset_queue')
         channel.basic_consume(queue='selected_dataset_queue', on_message_callback=callback)
