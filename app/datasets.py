@@ -5,6 +5,7 @@ import requests
 import pika
 import time
 
+
 def create_spark_session():
     spark = SparkSession.builder \
         .appName("Healthcare-Resource-Allocation") \
