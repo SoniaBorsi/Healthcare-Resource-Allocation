@@ -1,75 +1,87 @@
-import psycopg2
 import requests
-import tempfile
 import pandas as pd
-import dask.dataframe as dd
-from pyspark.sql import SparkSession
-from sqlalchemy import create_engine
-import pika
-import csv 
-import json
+import tempfile
 
-
-#with dask 
-
-#FUCTION TO EXTRACT ALL THE IDS
-import requests
-import dask.dataframe as dd
-
-# Function to get hospital series IDs
-def get_hospitals_series_id():
+def get_ids():
     url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
     headers = {
-        'Authorization': 'Bearer YOUR_ACCESS_TOKEN',  
+        'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
         'User-Agent': 'MyApp/1.0',
         'accept': 'text/csv'
     }
-    
+
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
-        with open('datasets.csv', 'w') as f:
-            f.write(response.text)
-        datasets = dd.read_csv("datasets.csv")
-        hospitals_series_id = datasets['DataSetId'].compute()
+        with tempfile.NamedTemporaryFile(mode='w+', delete=False, suffix='.csv') as temp_file:
+            temp_file.write(response.text)
+            temp_file_path = temp_file.name
+    
+        datasets = pd.read_csv(temp_file_path)
+        hospitals_series_id = datasets['DataSetId'].tolist()
         return hospitals_series_id
     else:
         print("Failed to fetch data. Status code:", response.status_code)
         return None
 
-# Function to get specific hospital dataset IDs
-def get_hospitals_selected_id(ReportedMeasureCode, ReportedMeasureName, ReportingStartDate=None):
-    url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
-    headers = {
-        'Authorization': 'Bearer YOUR_ACCESS_TOKEN',  
-        'User-Agent': 'MyApp/1.0',
-        'accept': 'text/csv'
-    }
+
+dataset_ids = get_ids()
+
+
+
+# Function to get hospital series IDs
+# def get_hospitals_series_id():
+#     url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
+#     headers = {
+#         'Authorization': 'Bearer YOUR_ACCESS_TOKEN',  
+#         'User-Agent': 'MyApp/1.0',
+#         'accept': 'text/csv'
+#     }
     
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        with open('selected_datasets.csv', 'w') as f:
-            f.write(response.text)
+#     response = requests.get(url, headers=headers)
+#     if response.status_code == 200:
+#         with open('datasets.csv', 'w') as f:
+#             f.write(response.text)
+#         datasets = dd.read_csv("datasets.csv")
+#         hospitals_series_id = datasets['DataSetId'].compute()
+#         return hospitals_series_id
+#     else:
+#         print("Failed to fetch data. Status code:", response.status_code)
+#         return None
+
+# Function to get specific hospital dataset IDs
+# def get_hospitals_selected_id(ReportedMeasureCode, ReportedMeasureName, ReportingStartDate=None):
+#     url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
+#     headers = {
+#         'Authorization': 'Bearer YOUR_ACCESS_TOKEN',  
+#         'User-Agent': 'MyApp/1.0',
+#         'accept': 'text/csv'
+#     }
+    
+#     response = requests.get(url, headers=headers)
+#     if response.status_code == 200:
+#         with open('selected_datasets.csv', 'w') as f:
+#             f.write(response.text)
         
-        datasets = dd.read_csv("selected_datasets.csv")
-        if ReportingStartDate is not None:
-            filtered_datasets = datasets[
-                (datasets['ReportedMeasureCode'] == ReportedMeasureCode) &
-                (datasets['ReportedMeasureName'] == ReportedMeasureName) &
-                (datasets['ReportingStartDate'] == ReportingStartDate)
-            ]
-        else:
-            filtered_datasets = datasets[
-                (datasets['ReportedMeasureCode'] == ReportedMeasureCode) &
-                (datasets['ReportedMeasureName'] == ReportedMeasureName)
-            ]
+#         datasets = dd.read_csv("selected_datasets.csv")
+#         if ReportingStartDate is not None:
+#             filtered_datasets = datasets[
+#                 (datasets['ReportedMeasureCode'] == ReportedMeasureCode) &
+#                 (datasets['ReportedMeasureName'] == ReportedMeasureName) &
+#                 (datasets['ReportingStartDate'] == ReportingStartDate)
+#             ]
+#         else:
+#             filtered_datasets = datasets[
+#                 (datasets['ReportedMeasureCode'] == ReportedMeasureCode) &
+#                 (datasets['ReportedMeasureName'] == ReportedMeasureName)
+#             ]
         
-        result = filtered_datasets.compute()
-        dataset_ids = result['DataSetId']
+#         result = filtered_datasets.compute()
+#         dataset_ids = result['DataSetId']
         
-        return dataset_ids
-    else:
-        print("Failed to fetch data. Status code:", response.status_code)
-        return None
+#         return dataset_ids
+#     else:
+#         print("Failed to fetch data. Status code:", response.status_code)
+#         return None
 
 # # Function to download dataset by ID
 # def download_dataset_by_id(dataset_id):

@@ -1,56 +1,41 @@
-import requests
-import tempfile
 import logging
-import pika
-import psycopg2
-from io import StringIO
+import tempfile
 from pyspark.sql import SparkSession
-
-spark = SparkSession.builder \
-    .appName("HealthcareDataProcessing") \
-    .getOrCreate()
+import requests
+import pika
+import pandas as pd
+import time
+from math import ceil
 
 logging.basicConfig(level=logging.INFO)
 
-# def get_datasets(dataset_ids):
-#     base_url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
-#     headers = {
-#         'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
-#         'User-Agent': 'MyApp/1.0',
-#         'accept': 'text/csv'
-#     }
+def create_spark_session():
+    spark = SparkSession.builder \
+        .appName("Healthcare-Resource-Allocation") \
+        .config("spark.driver.extraClassPath", "/Users/soniaborsi/Desktop/postgresql-42.7.3.jar") \
+        .getOrCreate()
+    return spark
 
-#     csv_files = []
-#     for dataset_id in dataset_ids:
-#         url = f"{base_url}{dataset_id}/data-items"
-#         response = requests.get(url, headers=headers)
+def get_ids():
+    url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
+    headers = {
+        'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
+        'User-Agent': 'MyApp/1.0',
+        'accept': 'text/csv'
+    }
 
-#         if response.status_code == 200:
-#             with tempfile.NamedTemporaryFile(mode='w+', delete=False) as temp_file:
-#                 temp_file.write(response.text)
-#                 temp_file_path = temp_file.name
-#                 csv_files.append(temp_file_path)
-#         else:
-#             logging.error(f"Failed to fetch dataset {dataset_id}. Status code: {response.status_code}")
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        with tempfile.NamedTemporaryFile(mode='w+', delete=False, suffix='.csv') as temp_file:
+            temp_file.write(response.text)
+            temp_file_path = temp_file.name
     
-#     return csv_files
-
-# def send_to_rabbitmq(csv_files):
-#     try:
-#         connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
-#         channel = connection.channel()
-#         channel.queue_declare(queue='selected_dataset_queue')
-
-#         for csv_file in csv_files:
-#             with open(csv_file, 'r') as file:
-#                 csv_data = file.read()
-#                 channel.basic_publish(exchange='', routing_key='selected_dataset_queue', body=csv_data)
-
-#         connection.close()
-#         logging.info("CSV files sent to RabbitMQ.")
-#     except Exception as e:
-#         logging.error(f"Failed to send CSV files to RabbitMQ: {e}")
-
+        datasets = pd.read_csv(temp_file_path)
+        hospitals_series_id = datasets['DataSetId'].tolist()
+        return hospitals_series_id
+    else:
+        print("Failed to fetch data. Status code:", response.status_code)
+        return None
 
 def get_datasets(dataset_ids):
     base_url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
@@ -81,12 +66,12 @@ def send_to_rabbitmq(csv_files):
     try:
         connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
         channel = connection.channel()
-        channel.queue_declare(queue='selected_dataset_queue')
+        channel.queue_declare(queue='values_queue')
 
         for csv_file in csv_files:
             with open(csv_file, 'r') as file:
                 csv_data = file.read()
-                channel.basic_publish(exchange='', routing_key='selected_dataset_queue', body=csv_data)
+                channel.basic_publish(exchange='', routing_key='values_queue', body=csv_data)
 
         connection.close()
         logging.info("CSV files sent to RabbitMQ.")
@@ -94,77 +79,45 @@ def send_to_rabbitmq(csv_files):
         logging.error(f"Failed to send CSV files to RabbitMQ: {e}")
 
 def insert_into_postgresql(data_frame):
-    conn_params = {
-        'dbname': 'mydatabase',
-        'user': 'myuser',
-        'password': 'mypassword',
-        'host': 'localhost',
-        'port': 5432
+    url = "jdbc:postgresql://localhost:5432/mydatabase"
+    properties = {
+        "user": "myuser",
+        "password": "mypassword",
+        "driver": "org.postgresql.Driver"
     }
 
-    create_table_sql = """
-    CREATE TABLE IF NOT EXISTS values (
-        "DataSetId" TEXT,
-        "ReportingUnitCode" TEXT,
-        "Value" TEXT,
-        "Caveats" TEXT,
-        "Suppressions" TEXT
-    )
-    """
-    
     try:
-        conn = psycopg2.connect(**conn_params)
-        cursor = conn.cursor()
-        
-        # Create table if it doesn't exist
-        cursor.execute(create_table_sql)
-
-        for row in data_frame.collect():
-            cursor.execute(
-                """
-                INSERT INTO values ("DataSetId", "ReportingUnitCode", "Value", "Caveats", "Suppressions")
-                VALUES (%s, %s, %s, %s, %s)
-                """, 
-                (row['DataSetId'], row['ReportingUnitCode'], row['Value'], row['Caveats'], row['Suppressions'])
-            )
-        
-        conn.commit()
+        data_frame.write.jdbc(url=url, table="values", mode="append", properties=properties)
         logging.info("Data inserted into PostgreSQL.")
     except Exception as e:
         logging.error(f"Failed to insert data into PostgreSQL: {e}")
-    finally:
-        cursor.close()
-        conn.close()
 
-def callback(ch, method, properties, body):
+
+def callback(ch, method, properties, body, spark):
     try:
         csv_data = body.decode('utf-8')
-
-        # Write CSV data to a temporary file
         with tempfile.NamedTemporaryFile(mode='w+', delete=False, suffix='.csv') as temp_file:
             temp_file.write(csv_data)
             temp_file_path = temp_file.name
         
-        # Create a Spark DataFrame from the temporary CSV file
+        spark = create_spark_session()
         sdf = spark.read.csv(temp_file_path, header=True, inferSchema=True)
+        values = sdf.select('DataSetId', 'ReportingUnitCode', 'Value', 'Caveats')
 
-        # Perform Spark transformations (example: filtering, aggregation, etc.)
-        # Example: sdf = sdf.filter(sdf['Value'] > 100)
-
-        # Insert processed data into PostgreSQL
-        insert_into_postgresql(sdf)
+        insert_into_postgresql(values)
 
         ch.basic_ack(delivery_tag=method.delivery_tag)
         logging.info("Message processed and acknowledged.")
     except Exception as e:
         logging.error(f"Failed to process message: {e}")
 
-def consume_from_rabbitmq():
+def consume_from_rabbitmq(spark):
     try:
         connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
         channel = connection.channel()
-        channel.queue_declare(queue='selected_dataset_queue')
-        channel.basic_consume(queue='selected_dataset_queue', on_message_callback=callback)
+        channel.queue_declare(queue='values_queue')
+        on_message_callback = lambda ch, method, properties, body: callback(ch, method, properties, body, spark)
+        channel.basic_consume(queue='values_queue', on_message_callback=on_message_callback)
         logging.info(' [*] Waiting for messages. To exit press CTRL+C')
         channel.start_consuming()
     except KeyboardInterrupt:
@@ -172,14 +125,23 @@ def consume_from_rabbitmq():
     except Exception as e:
         logging.error(f"Failed to consume messages from RabbitMQ: {e}")
 
+        
 if __name__ == "__main__":
+    spark = create_spark_session()
     try:
-        dataset_ids = [1,2,3]#list(range(1, 101))  
-        csv_files = get_datasets(dataset_ids)
-        if csv_files:
-            send_to_rabbitmq(csv_files)
-            consume_from_rabbitmq()
+        all_dataset_ids = get_ids()  
+        if all_dataset_ids:
+            batch_size = 100
+            num_batches = ceil(len(all_dataset_ids) / batch_size)
+            for i in range(num_batches):
+                batch_ids = all_dataset_ids[i * batch_size:(i + 1) * batch_size]
+                csv_files = get_datasets(batch_ids)
+                if csv_files:
+                    send_to_rabbitmq(csv_files)
+                    consume_from_rabbitmq(spark)
+                else:
+                    logging.info(f"No datasets found in batch {i + 1}.")
         else:
-            logging.info("No datasets found.")
+            logging.info("Failed to fetch dataset IDs.")
     except KeyboardInterrupt:
         logging.info('Interrupted by user, shutting down...')

@@ -42,12 +42,12 @@ def send_to_rabbitmq(csv_files):
         try:
             connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
             channel = connection.channel()
-            channel.queue_declare(queue='selected_dataset_queue')
+            channel.queue_declare(queue='datasets_measurements_reportedmeasurements_queue')
 
             for csv_file in csv_files:
                 with open(csv_file, 'r') as file:
                     csv_data = file.read()
-                    channel.basic_publish(exchange='', routing_key='selected_dataset_queue', body=csv_data)
+                    channel.basic_publish(exchange='', routing_key='datasets_measurements_reportedmeasurements_queue', body=csv_data)
 
             connection.close()
             logging.info("CSV files sent to RabbitMQ.")
@@ -67,7 +67,6 @@ def insert_into_postgresql(df, table_name):
         "driver": "org.postgresql.Driver"
     }
 
-    # Write the DataFrame to PostgreSQL
     df.write.jdbc(url=url, table=table_name, mode='append', properties=properties)
     logging.info(f"Data inserted into {table_name} successfully.")
 
@@ -99,8 +98,8 @@ def consume_from_rabbitmq():
     try:
         connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
         channel = connection.channel()
-        channel.queue_declare(queue='selected_dataset_queue')
-        channel.basic_consume(queue='selected_dataset_queue', on_message_callback=callback)
+        channel.queue_declare(queue='datasets_measurements_reportedmeasurements_queue')
+        channel.basic_consume(queue='datasets_measurements_reportedmeasurements_queue', on_message_callback=callback)
         logging.info(' [*] Waiting for messages. To exit press CTRL+C')
         channel.start_consuming()
     except KeyboardInterrupt:
@@ -109,10 +108,9 @@ def consume_from_rabbitmq():
         logging.error(f"Failed to consume messages from RabbitMQ: {e}")
 
 def main():
-    # Configure logging
+
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-    # Download datasets and send to RabbitMQ
     csv_files = download_datasets_csv()
     if csv_files:
         logging.info("Successfully downloaded CSV files.")
@@ -120,8 +118,7 @@ def main():
     else:
         logging.error("No CSV files downloaded, skipping sending to RabbitMQ.")
         return
-
-    # Consume from RabbitMQ and process
+    
     consume_from_rabbitmq()
 
 if __name__ == "__main__":
