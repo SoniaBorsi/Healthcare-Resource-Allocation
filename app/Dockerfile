@@ -1,17 +1,9 @@
-FROM python:3.9-slim
+FROM bitnami/spark:latest
 
-WORKDIR /app
+COPY  datasets.py /opt/bitnamy/spark/datasets.py
 
-# Copy the requirements.txt before other files to leverage Docker cache
-COPY . /app
+COPY postgresql-42.7.3.jar /opt/bitnamy/spark/jars/postgresql-42.7.3.jar
 
-RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+RUN pip install pika py4j requests
 
-COPY . .
-
-EXPOSE 80
-
-ENV NAME World
-
-CMD ["python", "datasets.py"]
-
+CMD ["python", "/opt/bitnamy/spark/datasets.py"]
