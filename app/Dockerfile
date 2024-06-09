@@ -1,9 +1,11 @@
 FROM bitnami/spark:latest
 
-COPY datasets.py /opt/bitnami/spark/datasets.py
+COPY main.py /opt/bitnami/spark/main.py
 
 COPY postgresql-42.7.3.jar /opt/bitnami/spark/jars/postgresql-42.7.3.jar
 
-RUN pip install pika py4j requests
+RUN mkdir  /opt/bitnami/spark/utils 
 
-CMD ["python", "/opt/bitnami/spark/datasets.py"]
+COPY utils /opt/bitnami/spark/utils/
+
+RUN pip install pika py4j requests pandas sqlalchemy psycopg2-binary openpyxl

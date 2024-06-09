@@ -1,5 +1,0 @@
-FROM bitnami/spark:latest
-
-COPY postgresql-42.7.3.jar /opt/bitnami/spark/jars/postgresql-42.7.3.jar
-
-RUN pip install pika py4j requests

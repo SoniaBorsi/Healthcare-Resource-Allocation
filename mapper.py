@@ -19,12 +19,9 @@ def map_hospitals():
         file.write(response.content)
 
     df = pd.read_excel(filename, engine='openpyxl', skiprows=3)
-    engine = create_engine('postgresql+psycopg2://myuser:mypassword@localhost/mydatabase')
-    df.to_sql('mapper', engine, if_exists='replace', index=False)
-    print("Data inserted successfully into the PostgreSQL database")
-
-map_hospitals()
-
-
+    
+    engine = create_engine('postgresql+psycopg2://user:password@postgres:5432/mydatabase')
+    df.to_sql('hospitals', engine, if_exists='replace', index=False)
+    print("Hospital mapping inserted successfully into the PostgreSQL database")
 
 
