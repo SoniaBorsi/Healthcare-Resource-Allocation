@@ -28,6 +28,11 @@ def map_hospitals():
     print("Hospital mapping inserted successfully into the PostgreSQL database")
 
 
+def get_ids(file_path):
+    datasets = pd.read_csv(file_path)
+    hospitals_series_id = datasets['DataSetId'].tolist()
+    return hospitals_series_id
+
 def insert_into_postgresql(data_frame, table_name):
     url = "jdbc:postgresql://postgres:5432/mydatabase"
     properties = {
@@ -38,14 +43,8 @@ def insert_into_postgresql(data_frame, table_name):
 
     try:
         data_frame.write.jdbc(url=url, table=table_name, mode="append", properties=properties)
-        logging.info("Data inserted into PostgreSQL.")
     except Exception as e:
         logging.error(f"Failed to insert data into PostgreSQL: {e}")
-
-def get_ids(file_path):
-    datasets = pd.read_csv(file_path)
-    hospitals_series_id = datasets['DataSetId'].tolist()
-    return hospitals_series_id
 
 def send_to_rabbitmq(csv_files):
     connection_attempts = 0
@@ -60,7 +59,7 @@ def send_to_rabbitmq(csv_files):
                     with open(csv_file, 'r') as file:
                         csv_data = file.read()
                         channel.basic_publish(exchange='', routing_key='values_queue', body=csv_data)
-                logging.info('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+        
             else:
                 channel.queue_declare(queue='datasets_measurements_reportedmeasurements_queue')
                 for csv_file in csv_files:
@@ -76,3 +75,16 @@ def send_to_rabbitmq(csv_files):
             connection_attempts += 1
             time.sleep(5)
     logging.error("Exceeded maximum attempts to connect to RabbitMQ.")
+
+def consume_from_rabbitmq(spark_session, queue_name, callback_function):
+    try:
+        connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
+        channel = connection.channel()
+        channel.queue_declare(queue=queue_name)
+        channel.basic_consume(queue=queue_name, on_message_callback=lambda ch, method, properties, body: callback_function(spark_session, ch, method, properties, body))
+        logging.info(f' [*] Waiting for messages on queue "{queue_name}". To exit press CTRL+C')
+        channel.start_consuming()
+    except KeyboardInterrupt:
+        logging.info('Interrupted by user, shutting down...')
+    except Exception as e:
+        logging.error(f"Failed to consume messages from RabbitMQ: {e}")

@@ -31,6 +31,7 @@ def get_values(dataset_ids):
     return csv_files
 
 
+
 def callback_values(spark_session, ch, method, properties, body):
     try:
         csv_data = body.decode('utf-8')
@@ -45,22 +46,7 @@ def callback_values(spark_session, ch, method, properties, body):
 
         ch.basic_ack(delivery_tag=method.delivery_tag)
         logging.info("Message processed and acknowledged.")
-        logging.info("Values inserted in DB")
     except Exception as e:
         logging.error(f"Failed to process message: {e}")
-
-def consume_from_rabbitmq_values(spark_session):
-    try:
-        connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
-        channel = connection.channel()
-        channel.queue_declare(queue='values_queue')
-        channel.basic_consume(queue='values_queue', on_message_callback= lambda ch, method, properties, body: callback_values(spark_session, ch, method, properties, body))
-        logging.info(' [*] Waiting for messages. To exit press CTRL+C')
-        channel.start_consuming()
-        return
-    except KeyboardInterrupt:
-        logging.info('Interrupted by user, shutting down...')
-    except Exception as e:
-        logging.error(f"Failed to consume messages from RabbitMQ: {e}")
 
         

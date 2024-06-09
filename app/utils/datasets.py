@@ -50,16 +50,3 @@ def callback_datasets(spark_session, ch, method, properties, body):
         logging.info("Message processed and acknowledged.")
     except Exception as e:
         logging.error(f"Failed to process message: {e}")
-
-def consume_from_rabbitmq_datasets(spark_session):
-    try:
-        connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
-        channel = connection.channel()
-        channel.queue_declare(queue='datasets_measurements_reportedmeasurements_queue')
-        channel.basic_consume(queue='datasets_measurements_reportedmeasurements_queue', on_message_callback=lambda ch, method, properties, body: callback_datasets(spark_session, ch, method, properties, body))
-        logging.info(' [*] Waiting for messages. To exit press CTRL+C')
-        channel.start_consuming()
-    except KeyboardInterrupt:
-        logging.info('Interrupted by user, shutting down...')
-    except Exception as e:
-        logging.error(f"Failed to consume messages from RabbitMQ: {e}")
