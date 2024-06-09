@@ -60,6 +60,7 @@ def send_to_rabbitmq(csv_files):
                     with open(csv_file, 'r') as file:
                         csv_data = file.read()
                         channel.basic_publish(exchange='', routing_key='values_queue', body=csv_data)
+                logging.info('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
             else:
                 channel.queue_declare(queue='datasets_measurements_reportedmeasurements_queue')
                 for csv_file in csv_files:
@@ -67,8 +68,8 @@ def send_to_rabbitmq(csv_files):
                         csv_data = file.read()
                         channel.basic_publish(exchange='', routing_key='datasets_measurements_reportedmeasurements_queue', body=csv_data)
 
+                logging.info("CSV files sent to RabbitMQ.")
             connection.close()
-            logging.info("CSV files sent to RabbitMQ.")
             return
         except Exception as e:
             logging.error(f"Failed to send CSV files to RabbitMQ: {e}")

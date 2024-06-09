@@ -24,9 +24,10 @@ if datasets_csv:
 else:
     logging.error("No CSV files downloaded, skipping sending to RabbitMQ.")
 
+datasets.consume_from_rabbitmq_datasets(spark)
+
 if values_csv:
     logging.info("Successfully retrieved values, sending to RabbitMQ")
     tools.send_to_rabbitmq(values_csv)
-
-datasets.consume_from_rabbitmq_datasets(spark)
+print(len(values_csv))
 values.consume_from_rabbitmq_values(spark)
