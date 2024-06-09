@@ -29,10 +29,10 @@ def map_hospitals():
 
 
 def insert_into_postgresql(data_frame, table_name):
-    url = "jdbc:postgresql://localhost:5432/mydatabase"
+    url = "jdbc:postgresql://postgres:5432/mydatabase"
     properties = {
-        "user": "myuser",
-        "password": "mypassword",
+        "user": "user",
+        "password": "password",
         "driver": "org.postgresql.Driver"
     }
 
@@ -42,8 +42,8 @@ def insert_into_postgresql(data_frame, table_name):
     except Exception as e:
         logging.error(f"Failed to insert data into PostgreSQL: {e}")
 
-def get_ids():
-    datasets = pd.read_csv('datasets.csv')
+def get_ids(file_path):
+    datasets = pd.read_csv(file_path)
     hospitals_series_id = datasets['DataSetId'].tolist()
     return hospitals_series_id
 
@@ -52,7 +52,7 @@ def send_to_rabbitmq(csv_files):
     max_attempts = 5
     while connection_attempts < max_attempts:
         try:
-            connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+            connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
             channel = connection.channel()
             if len(csv_files) > 1:
                 channel.queue_declare(queue='values_queue')

@@ -15,7 +15,7 @@ tools.map_hospitals()
 
 datasets_csv = datasets.download_datasets_csv()
 
-datasets_ids = tools.get_ids()
+datasets_ids = tools.get_ids(datasets_csv[0])
 values_csv = values.get_values(datasets_ids)
 
 if datasets_csv:
