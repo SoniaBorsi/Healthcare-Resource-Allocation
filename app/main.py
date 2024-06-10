@@ -30,3 +30,5 @@ if values_csv:
 
 tools.consume_from_rabbitmq(spark, "datasets_measurements_reportedmeasurements_queue", datasets.callback_datasets)
 tools.consume_from_rabbitmq(spark, "values_queue", values.callback_values)
+
+tools.plot_points()

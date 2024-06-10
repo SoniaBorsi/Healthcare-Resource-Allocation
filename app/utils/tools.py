@@ -4,7 +4,8 @@ import pika
 import time
 from tqdm import tqdm
 import requests
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
+
 
 def map_hospitals():
     print('Fetching Hospitals data...')
@@ -18,15 +19,33 @@ def map_hospitals():
 
     response = requests.get(url, headers=headers)
     filename = 'hospital_mapping.xlsx'
-
     with open(filename, 'wb') as file:
         file.write(response.content)
-
     df = pd.read_excel(filename, engine='openpyxl', skiprows=3)
-    
     engine = create_engine('postgresql+psycopg2://user:password@postgres:5432/mydatabase')
-    df.to_sql('hospitals', engine, if_exists='replace', index=False)
-    print("Hospital mapping inserted successfully into the PostgreSQL database")
+    with engine.connect() as conn:
+        try:
+            trans = conn.begin()
+
+            df.to_sql('hospitals', engine, if_exists='replace', index=False)
+            print("Hospital mapping inserted successfully into the PostgreSQL database")
+            print("Enabling PostGIS extension...")
+            conn.execute(text("CREATE EXTENSION IF NOT EXISTS postgis;"))
+            conn.execute(text("ALTER TABLE hospitals ADD COLUMN IF NOT EXISTS GeomPoint geometry(Point, 4326);"))
+            conn.execute(text("""
+                UPDATE hospitals
+                SET GeomPoint = ST_SetSRID(ST_MakePoint("Longitude", "Latitude"), 4326);
+            """))
+            trans.commit()
+            result = conn.execute(text("""
+                SELECT column_name
+                FROM information_schema.columns
+                WHERE table_name = 'hospitals';
+            """))
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            trans.rollback()
+
 
 
 def get_ids(file_path):
