@@ -2,6 +2,7 @@ import logging
 import pandas as pd
 import pika
 import time
+from tqdm import tqdm
 import requests
 from sqlalchemy import create_engine
 
@@ -75,15 +76,24 @@ def send_to_rabbitmq(csv_files):
             connection_attempts += 1
             time.sleep(5)
     logging.error("Exceeded maximum attempts to connect to RabbitMQ.")
-
+    
 def consume_from_rabbitmq(spark_session, queue_name, callback_function):
     try:
         connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
         channel = connection.channel()
-        channel.queue_declare(queue=queue_name)
-        channel.basic_consume(queue=queue_name, on_message_callback=lambda ch, method, properties, body: callback_function(spark_session, ch, method, properties, body))
-        logging.info(f' [*] Waiting for messages on queue "{queue_name}". To exit press CTRL+C')
-        channel.start_consuming()
+        queue_declare_result = channel.queue_declare(queue=queue_name, passive=True)
+        total_messages = queue_declare_result.method.message_count
+
+        with tqdm(total=total_messages, desc=f'Consuming from queue "{queue_name}"') as pbar:
+
+            def on_message_callback(ch, method, properties, body):
+                callback_function(spark_session, ch, method, properties, body)
+                pbar.update(1)
+
+            channel.basic_consume(queue=queue_name, on_message_callback=on_message_callback)
+            logging.info(f'[*] Waiting for messages on queue "{queue_name}". To exit press CTRL+C')
+            channel.start_consuming()
+
     except KeyboardInterrupt:
         logging.info('Interrupted by user, shutting down...')
     except Exception as e:

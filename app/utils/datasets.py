@@ -46,6 +46,5 @@ def callback_datasets(spark_session, ch, method, properties, body):
         insert_into_postgresql(values, "datasets")
         
         ch.basic_ack(delivery_tag=method.delivery_tag)
-        logging.info("Message processed and acknowledged.")
     except Exception as e:
         logging.error(f"Failed to process message: {e}")

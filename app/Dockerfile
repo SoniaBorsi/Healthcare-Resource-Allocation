@@ -8,4 +8,4 @@ RUN mkdir  /opt/bitnami/spark/utils
 
 COPY utils /opt/bitnami/spark/utils/
 
-RUN pip install pika py4j requests pandas sqlalchemy psycopg2-binary openpyxl
+RUN pip install pika py4j requests pandas sqlalchemy psycopg2-binary openpyxl tqdm
