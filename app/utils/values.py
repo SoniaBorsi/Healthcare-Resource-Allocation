@@ -1,7 +1,6 @@
 import logging
 import tempfile
 import requests
-import pika
 from utils.tools import insert_into_postgresql
 
 
