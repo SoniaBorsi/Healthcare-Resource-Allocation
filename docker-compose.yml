@@ -35,7 +35,9 @@ services:
       SPARK_MASTER_URL: spark://spark-master:7077
 
   rabbitmq:
-    image: rabbitmq:latest
+    build:
+      context: app
+      dockerfile: Dockerfile2
     container_name: rabbitmq
     ports:
       - "5673:5672"

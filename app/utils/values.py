@@ -14,8 +14,9 @@ def get_values(dataset_ids):
     }
 
     csv_files = []
-    with tqdm(total=len(dataset_ids), desc='Fetching datasets') as pbar:
-        for dataset_id in dataset_ids:
+    id_to_retrieve = dataset_ids[:20]
+    with tqdm(total=len(id_to_retrieve), desc='Fetching datasets') as pbar:
+        for dataset_id in id_to_retrieve:
             url = f"{base_url}{dataset_id}/data-items"
             try:
                 response = requests.get(url, headers=headers)
