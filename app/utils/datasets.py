@@ -1,7 +1,8 @@
 import logging
-import tempfile
+import io
 import requests
 from utils.tools import insert_into_postgresql
+from pyspark.sql.functions import broadcast
 
 def download_datasets_csv():
     url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
@@ -28,14 +29,17 @@ def download_datasets_csv():
 
 
 def callback_datasets(spark_session, ch, method, properties, body):
+
     try:
         csv_data = body.decode('utf-8')
-
-        with tempfile.NamedTemporaryFile(mode='w+', delete=False, suffix='.csv') as temp_file:
-            temp_file.write(csv_data)
-            temp_file_path = temp_file.name
         
-        sdf = spark_session.read.csv(temp_file_path, header=True, inferSchema=True)
+        # Create a file-like object from the CSV string
+        csv_stream = io.StringIO(csv_data)
+        
+        csv_lines = csv_stream.getvalue().split("\n")
+        csv_rdd = spark_session.sparkContext.parallelize(csv_lines)
+        
+        sdf = spark_session.read.csv(csv_rdd, header=True, inferSchema=True)
         
         reportedmeasurements = sdf.select('ReportedMeasureCode', 'ReportedMeasureName')
         measurements = sdf.select('MeasureCode', 'MeasureName')

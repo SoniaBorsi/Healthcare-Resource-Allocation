@@ -11,7 +11,9 @@ services:
       - "7077:7077"
 
   spark-worker-1:
-    image: bitnami/spark:latest
+    build:
+      context: app
+      dockerfile: Dockerfile2
     container_name: spark-worker-1
     command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
     depends_on:
@@ -23,7 +25,9 @@ services:
       SPARK_MASTER_URL: spark://spark-master:7077
 
   spark-worker-2:
-    image: bitnami/spark:latest
+    build:
+      context: app
+      dockerfile: Dockerfile3
     container_name: spark-worker-2
     command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
     depends_on:

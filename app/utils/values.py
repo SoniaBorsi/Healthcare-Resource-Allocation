@@ -3,7 +3,7 @@ import tempfile
 import requests
 from tqdm import tqdm
 from utils.tools import insert_into_postgresql
-
+import io
 
 def get_values(dataset_ids):
     base_url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
@@ -39,17 +39,20 @@ def get_values(dataset_ids):
 def callback_values(spark_session, ch, method, properties, body):
     try:
         csv_data = body.decode('utf-8')
-        with tempfile.NamedTemporaryFile(mode='w+', delete=False, suffix='.csv') as temp_file:
-            temp_file.write(csv_data)
-            temp_file_path = temp_file.name
         
-        sdf = spark_session.read.csv(temp_file_path, header=True, inferSchema=True)
+        csv_stream = io.StringIO(csv_data)
+        csv_lines = csv_stream.getvalue().split("\n")
+        
+        csv_rdd = spark_session.sparkContext.parallelize(csv_lines)
+
+        # Read RDD into Spark DataFrame
+        sdf = spark_session.read.csv(csv_rdd, header=True, inferSchema = True)
         values = sdf.select('DataSetId', 'ReportingUnitCode', 'Value', 'Caveats')
+        print(values)
 
         insert_into_postgresql(values, 'values')
 
         ch.basic_ack(delivery_tag=method.delivery_tag)
+
     except Exception as e:
         logging.error(f"Failed to process message: {e}")
-
-        

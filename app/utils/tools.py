@@ -89,12 +89,18 @@ def consume_from_rabbitmq(spark_session, queue_name, callback_function):
             def on_message_callback(ch, method, properties, body):
                 callback_function(spark_session, ch, method, properties, body)
                 pbar.update(1)
+                if pbar.n >= pbar.total:  
+                    logging.info("Progress bar is full. Stopping consumption.")
+                    channel.stop_consuming()
 
             channel.basic_consume(queue=queue_name, on_message_callback=on_message_callback)
             logging.info(f'[*] Waiting for messages on queue "{queue_name}". To exit press CTRL+C')
             channel.start_consuming()
 
     except KeyboardInterrupt:
-        logging.info('Interrupted by user, shutting down...')
+        logging.info("KeyboardInterrupt detected. Stopping consumption.")
+        channel.stop_consuming()
     except Exception as e:
         logging.error(f"Failed to consume messages from RabbitMQ: {e}")
+    finally:
+        connection.close()
