@@ -4,7 +4,8 @@ import pika
 import time
 from tqdm import tqdm
 import requests
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
+
 
 def map_hospitals():
     print('Fetching Hospitals data...')

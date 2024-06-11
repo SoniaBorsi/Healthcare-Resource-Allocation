@@ -6,13 +6,13 @@ from pyspark.ml.evaluation import BinaryClassificationEvaluator
 import logging
 
 
-def create_spark_session():
-    spark = SparkSession.builder \
-        .appName("Healthcare-Resource-Allocation") \
-        .config("spark.driver.extraClassPath", "/Users/soniaborsi/Desktop/postgresql-42.7.3.jar") \
-        .getOrCreate()
-    logging.info("Spark session created successfully.")
-    return spark
+# def create_spark_session():
+#     spark = SparkSession.builder \
+#         .appName("Healthcare-Resource-Allocation") \
+#         .config("spark.driver.extraClassPath", "/Users/soniaborsi/Desktop/postgresql-42.7.3.jar") \
+#         .getOrCreate()
+#     logging.info("Spark session created successfully.")
+#     return spark
 
 def read_from_postgresql(spark, table_name):
     url = "jdbc:postgresql://localhost:5432/mydatabase"
