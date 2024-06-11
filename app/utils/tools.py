@@ -4,10 +4,9 @@ import pika
 import time
 from tqdm import tqdm
 import requests
-from sqlalchemy import create_engine
 
 
-def map_hospitals():
+def map_hospitals(spark_session):
     print('Fetching Hospitals data...')
     
     url = "https://myhospitalsapi.aihw.gov.au/api/v1/reporting-units-downloads/mappings"
@@ -24,9 +23,10 @@ def map_hospitals():
         file.write(response.content)
 
     df = pd.read_excel(filename, engine='openpyxl', skiprows=3)
-    
-    engine = create_engine('postgresql+psycopg2://user:password@postgres:5432/mydatabase')
-    df.to_sql('hospitals', engine, if_exists='replace', index=False)
+
+    sdf = spark_session.createDataFrame(df)   
+
+    insert_into_postgresql(sdf, "hospitals")
     print("Hospital mapping inserted successfully into the PostgreSQL database")
 
 

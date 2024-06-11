@@ -11,7 +11,7 @@ spark = SparkSession.builder \
     .config("spark.driver.extraClassPath", "/opt/bitnami/spark/jars/postgresql-42.7.3.jar") \
     .getOrCreate()
 
-tools.map_hospitals()
+tools.map_hospitals(spark)
 
 datasets_csv = datasets.download_datasets_csv()
 
