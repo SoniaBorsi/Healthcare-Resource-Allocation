@@ -2,7 +2,7 @@ import logging
 import io
 import requests
 from utils.tools import insert_into_postgresql
-from pyspark.sql.functions import broadcast
+
 
 def download_datasets_csv():
     url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
