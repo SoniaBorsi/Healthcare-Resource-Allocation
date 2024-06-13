@@ -1,5 +1,4 @@
 import logging
-import tempfile
 import requests
 from tqdm import tqdm
 from utils.tools import insert_into_postgresql
@@ -13,18 +12,14 @@ def get_values(dataset_ids):
         'accept': 'text/csv'
     }
 
-    csv_files = []
-    id_to_retrieve = dataset_ids[:20]
-    with tqdm(total=len(id_to_retrieve), desc='Fetching datasets') as pbar:
-        for dataset_id in id_to_retrieve:
+    concatenated_csv = ""
+    with tqdm(total=len(dataset_ids), desc='Fetching datasets') as pbar:
+        for dataset_id in dataset_ids:
             url = f"{base_url}{dataset_id}/data-items"
             try:
                 response = requests.get(url, headers=headers)
                 if response.status_code == 200:
-                    with tempfile.NamedTemporaryFile(mode='w+', delete=False) as temp_file:
-                        temp_file.write(response.text)
-                        temp_file_path = temp_file.name
-                        csv_files.append(temp_file_path)
+                    concatenated_csv += response.text
                 else:
                     logging.error(f"Failed to fetch dataset {dataset_id}. Status code: {response.status_code}")
             except Exception as e:
@@ -32,7 +27,7 @@ def get_values(dataset_ids):
             finally:
                 pbar.update(1)
     
-    return csv_files
+    return concatenated_csv
 
 
 

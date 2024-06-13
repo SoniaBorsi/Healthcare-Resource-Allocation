@@ -48,28 +48,17 @@ def insert_into_postgresql(data_frame, table_name):
     except Exception as e:
         logging.error(f"Failed to insert data into PostgreSQL: {e}")
 
-def send_to_rabbitmq(csv_files):
+def send_to_rabbitmq(concatenated_csv):
     connection_attempts = 0
     max_attempts = 5
     while connection_attempts < max_attempts:
         try:
             connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
             channel = connection.channel()
-            if len(csv_files) > 1:
-                channel.queue_declare(queue='values_queue')
-                for csv_file in csv_files:
-                    with open(csv_file, 'r') as file:
-                        csv_data = file.read()
-                        channel.basic_publish(exchange='', routing_key='values_queue', body=csv_data)
+            channel.queue_declare(queue='values_queue')
+            channel.basic_publish(exchange='', routing_key='values_queue', body=concatenated_csv)
         
-            else:
-                channel.queue_declare(queue='datasets_measurements_reportedmeasurements_queue')
-                for csv_file in csv_files:
-                    with open(csv_file, 'r') as file:
-                        csv_data = file.read()
-                        channel.basic_publish(exchange='', routing_key='datasets_measurements_reportedmeasurements_queue', body=csv_data)
-
-                logging.info("CSV files sent to RabbitMQ.")
+            logging.info("Data sent to RabbitMQ.")
             connection.close()
             return
         except Exception as e:
@@ -105,3 +94,41 @@ def consume_from_rabbitmq(spark_session, queue_name, callback_function):
         logging.error(f"Failed to consume messages from RabbitMQ: {e}")
     finally:
         connection.close()
+
+def download_datasetlist_csv(spark_session):
+    url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
+    headers = {
+        'Authorization': 'Bearer YOUR_ACCESS_TOKEN',  
+        'User-Agent': 'MyApp/1.0',
+        'accept': 'text/csv'
+    }
+    
+    try:
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            file_path = 'datasets.csv'
+            with open(file_path, 'wb') as f:
+                f.write(response.content)
+            logging.info("List of available data retrieved")
+
+            df = pd.read_csv(file_path)
+            
+            sdf = spark_session.createDataFrame(df)
+        
+            reportedmeasurements = sdf.select('ReportedMeasureCode', 'ReportedMeasureName')
+            measurements = sdf.select('MeasureCode', 'MeasureName')
+            values = sdf.select('ReportingStartDate', 'ReportedMeasureCode', 'DataSetId', 'MeasureCode', 'DatasetName')
+        
+            insert_into_postgresql(reportedmeasurements, "reported_measurements")
+            insert_into_postgresql(measurements, "measurements")
+            insert_into_postgresql(values, "datasets")
+
+            logging.info("Tables datasets, measurements and reported_measurements inserted in the db")
+
+            return file_path
+        else:
+            logging.error(f"Failed to fetch data. Status code: {response.status_code}")
+            return None
+    except Exception as e:
+        logging.error(f"Exception occurred while fetching datasets list: {e}")
+        return None
