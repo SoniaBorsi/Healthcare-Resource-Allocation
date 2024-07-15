@@ -1,5 +1,13 @@
 FROM bitnami/spark:3.5
 
+USER root
+
+RUN mkdir -p /.cache && chmod -R 777 /.cache
+
+COPY requirements.txt opt/bitnami/spark/requirements.txt
+
+RUN pip install -r opt/bitnami/spark/requirements.txt
+
 COPY main.py /opt/bitnami/spark/main.py
 
 COPY postgresql-42.7.3.jar /opt/bitnami/spark/jars/postgresql-42.7.3.jar
@@ -7,7 +15,5 @@ COPY postgresql-42.7.3.jar /opt/bitnami/spark/jars/postgresql-42.7.3.jar
 RUN mkdir  /opt/bitnami/spark/utils 
 
 COPY utils /opt/bitnami/spark/utils/
-
-RUN pip install pika py4j requests pandas plotly streamlit_folium streamlit_chat psycopg2-binary openpyxl tqdm streamlit
 
 CMD ["bin/spark-class", "org.apache.spark.deploy.master.Master"]

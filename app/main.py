@@ -14,7 +14,7 @@ tools.map_hospitals(spark)
 datasets_csv = tools.download_datasetlist_csv(spark)
 
 datasets_ids = tools.get_ids(datasets_csv)
-batches = [datasets_ids[i:i+10] for i in range(0, len(datasets_ids), 10)]
+batches = [datasets_ids[i:i+20] for i in range(0, len(datasets_ids), 20)]
 
 for batch in batches[:1]:
     values_csv = values.get_values(batch)
