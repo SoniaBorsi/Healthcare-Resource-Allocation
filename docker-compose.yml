@@ -4,9 +4,13 @@ services:
       context: app
       dockerfile: Dockerfile
     container_name: spark-master
+    depends_on:
+      - postgres
     ports:
       - "9090:8080"
       - "7077:7077"
+    networks:
+      - app-network
 
   spark-worker-1:
     build:
@@ -21,6 +25,8 @@ services:
       SPARK_WORKER_CORES: 2
       SPARK_WORKER_MEMORY: 2g
       SPARK_MASTER_URL: spark://spark-master:7077
+    networks:
+      - app-network
 
   spark-worker-2:
     build:
@@ -35,6 +41,8 @@ services:
       SPARK_WORKER_CORES: 2
       SPARK_WORKER_MEMORY: 2g
       SPARK_MASTER_URL: spark://spark-master:7077
+    networks:
+      - app-network
 
   rabbitmq:
     image: rabbitmq:3.13.4-management-alpine
@@ -42,9 +50,11 @@ services:
     ports:
       - "5673:5672"
       - "15673:15672"
+    networks:
+      - app-network
 
   postgres:
-    image: postgres:16.3-alpine3.20
+    image: postgres:15.7-alpine3.20
     container_name: postgres
     environment:
       POSTGRES_USER: user
@@ -52,4 +62,9 @@ services:
       POSTGRES_DB: mydatabase
     ports:
       - "5433:5432"
+    networks:
+      - app-network
 
+networks:
+  app-network:
+    driver: bridge

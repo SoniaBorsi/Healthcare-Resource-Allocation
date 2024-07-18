@@ -4,7 +4,8 @@ import pika
 import time
 from tqdm import tqdm
 import requests
-
+from pyspark.sql import DataFrame
+from pyspark.sql.functions import col, to_date
 
 def map_hospitals(spark_session):
     print('Fetching Hospitals data...')
@@ -25,7 +26,10 @@ def map_hospitals(spark_session):
     df = pd.read_excel(filename, engine='openpyxl', skiprows=3)
 
     sdf = spark_session.createDataFrame(df)   
-
+    sdf = sdf.withColumnRenamed("Open/Closed", "Open_Closed") \
+               .withColumnRenamed("Local Hospital Network (LHN)", "LHN") \
+               .withColumnRenamed("Primary Health Network area (PHN)", "PHN")
+    
     insert_into_postgresql(sdf, "hospitals")
     print("Hospital mapping inserted successfully into the PostgreSQL database")
 
@@ -35,7 +39,7 @@ def get_ids(file_path):
     hospitals_series_id = datasets['DataSetId'].tolist()
     return hospitals_series_id
 
-def insert_into_postgresql(data_frame, table_name):
+def insert_into_postgresql(data_frame: DataFrame, table_name: str):
     url = "jdbc:postgresql://postgres:5432/mydatabase"
     properties = {
         "user": "user",
@@ -44,9 +48,15 @@ def insert_into_postgresql(data_frame, table_name):
     }
 
     try:
-        data_frame.write.jdbc(url=url, table=table_name, mode="append", properties=properties)
+        data_frame.write.format("jdbc").option("url", url).option("dbtable", table_name) \
+                        .option("user", properties["user"]).option("password", properties["password"]) \
+                        .option("driver", properties["driver"]).mode("append").save()
+        logging.info(f"Data successfully inserted into {table_name}.")
     except Exception as e:
         logging.error(f"Failed to insert data into PostgreSQL: {e}")
+        # Optionally, re-throw or handle the exception based on application needs
+        raise
+
 
 def send_to_rabbitmq(concatenated_csv):
     connection_attempts = 0
@@ -115,15 +125,14 @@ def download_datasetlist_csv(spark_session):
             
             sdf = spark_session.createDataFrame(df)
         
-            reportedmeasurements = sdf.select('ReportedMeasureCode', 'ReportedMeasureName')
-            measurements = sdf.select('MeasureCode', 'MeasureName')
+            reportedmeasurements = sdf.select('ReportedMeasureCode', 'ReportedMeasureName').dropDuplicates()
+            measurements = sdf.select('MeasureCode', 'MeasureName').dropDuplicates()
             values = sdf.select('ReportingStartDate', 'ReportedMeasureCode', 'DataSetId', 'MeasureCode', 'DatasetName')
+            values = values.withColumn("ReportingStartDate", to_date(col("ReportingStartDate"), "yyyy-MM-dd"))
         
             insert_into_postgresql(reportedmeasurements, "reported_measurements")
             insert_into_postgresql(measurements, "measurements")
             insert_into_postgresql(values, "datasets")
-
-            logging.info("Tables datasets, measurements and reported_measurements inserted in the db")
 
             return file_path
         else:

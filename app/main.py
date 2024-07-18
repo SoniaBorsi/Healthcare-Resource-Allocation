@@ -2,6 +2,9 @@ from pyspark.sql import SparkSession
 import utils.values as values
 import logging
 import utils.tools as tools
+import utils.tables 
+
+utils.tables.schema()
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 

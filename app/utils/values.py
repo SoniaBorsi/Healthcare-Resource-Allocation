@@ -40,10 +40,8 @@ def callback_values(spark_session, ch, method, properties, body):
         
         csv_rdd = spark_session.sparkContext.parallelize(csv_lines)
 
-        # Read RDD into Spark DataFrame
         sdf = spark_session.read.csv(csv_rdd, header=True, inferSchema = True)
         values = sdf.select('DataSetId', 'ReportingUnitCode', 'Value', 'Caveats')
-        print(values)
 
         insert_into_postgresql(values, 'values')
 
