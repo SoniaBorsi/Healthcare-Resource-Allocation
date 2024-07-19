@@ -90,8 +90,8 @@ def display_hospitals():
     
     # Fetch hospital data from the database
     df = fetch_data('SELECT Latitude, Longitude, Name, Type, Sector, Open_Closed, State FROM hospitals')
-    df['latitude'] = pd.to_numeric(df['latitude'], errors='coerce')
-    df['longitude'] = pd.to_numeric(df['longitude'], errors='coerce')
+    df['latitude'] = pd.to_numeric(df['latitude'])
+    df['longitude'] = pd.to_numeric(df['longitude'])
     df.dropna(subset=['latitude', 'longitude'], inplace=True)
 
     hospital_map = folium.Map(location=[-25, 135], zoom_start=5)
