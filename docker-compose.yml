@@ -57,8 +57,8 @@ services:
     image: postgres:15.7-alpine3.20
     container_name: postgres
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
       POSTGRES_DB: mydatabase
     ports:
       - "5433:5432"
@@ -71,7 +71,7 @@ services:
       dockerfile: Dockerfile2
     container_name: dashboard
     ports:
-      - "8080:8501"  # Map port 8501 inside the container to port 8080 on the host
+      - "8080:8501" 
     networks:
       - app-network
     depends_on:

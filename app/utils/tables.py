@@ -3,7 +3,7 @@ from contextlib import contextmanager
 import sqlalchemy.exc
 
 # Global engine configuration
-engine = create_engine('postgresql+psycopg2://user:password@postgres:5432/mydatabase', pool_size=10, max_overflow=20)
+engine = create_engine('postgresql+psycopg2://myuser:mypassword@postgres:5432/mydatabase', pool_size=10, max_overflow=20)
 
 @contextmanager
 def get_connection():

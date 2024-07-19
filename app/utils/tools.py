@@ -42,8 +42,8 @@ def get_ids(file_path):
 def insert_into_postgresql(data_frame: DataFrame, table_name: str):
     url = "jdbc:postgresql://postgres:5432/mydatabase"
     properties = {
-        "user": "user",
-        "password": "password",
+        "user": "myuser",
+        "password": "mypassword",
         "driver": "org.postgresql.Driver"
     }
 

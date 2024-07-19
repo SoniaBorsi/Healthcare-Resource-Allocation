@@ -1,42 +1,29 @@
 import streamlit as st
-import pandas as pd
 import plotly.express as px
-import psycopg2
 from streamlit_folium import folium_static
 import folium
+import pandas as pd
 
 # Database Connection Details
-POSTGRES_ADDRESS = 'postgres'
-POSTGRES_PORT = '5432'
-POSTGRES_USERNAME = 'user'
-POSTGRES_PASSWORD = 'password'
-POSTGRES_DBNAME = 'mydatabase'
+POSTGRES_CONNECTION = {
+    "dialect": "postgresql",
+    "host": "postgres",
+    "port": "5432",
+    "username": "myuser",
+    "password": "mypassword",
+    "database": "mydatabase"
+}
 
-def create_connection():
-    """Establish a connection to the database."""
-    try:
-        return psycopg2.connect(
-            user=POSTGRES_USERNAME,
-            password=POSTGRES_PASSWORD,
-            host=POSTGRES_ADDRESS,
-            port=POSTGRES_PORT,
-            database=POSTGRES_DBNAME
-        )
-    except psycopg2.Error as e:
-        st.error(f"Database connection failed: {e}")
-        return None
-
+# Fetch data function
 def fetch_data(sql):
-    """Fetch data from the database based on SQL query."""
-    conn = create_connection()
-    if conn is not None:
-        try:
-            df = pd.read_sql(sql, conn)
-            conn.close()
-            return df
-        except psycopg2.Error as e:
-            st.error(f"Failed to fetch data: {e}")
-    return pd.DataFrame()
+    conn = st.connection("postgres", type="sql", **POSTGRES_CONNECTION)
+    try:
+        data = conn.query(sql)
+        return pd.DataFrame(data)
+    except Exception as e:
+        st.error(f"Failed to fetch data: {e}")
+        return pd.DataFrame()
+
 
 # Home Page
 def display_home_page():
