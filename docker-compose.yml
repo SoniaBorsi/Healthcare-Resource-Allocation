@@ -64,6 +64,18 @@ services:
       - "5433:5432"
     networks:
       - app-network
+  
+  dashboard:
+    build: 
+      context: app
+      dockerfile: Dockerfile2
+    container_name: dashboard
+    ports:
+      - "8080:8501"  # Map port 8501 inside the container to port 8080 on the host
+    networks:
+      - app-network
+    depends_on:
+      - postgres
 
 networks:
   app-network:

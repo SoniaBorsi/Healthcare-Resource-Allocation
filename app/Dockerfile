@@ -8,7 +8,7 @@ COPY requirements.txt opt/bitnami/spark/requirements.txt
 
 RUN pip install -r opt/bitnami/spark/requirements.txt
 
-COPY main.py /opt/bitnami/spark/main.py
+COPY ETL.py /opt/bitnami/spark/ETL.py
 
 COPY postgresql-42.7.3.jar /opt/bitnami/spark/jars/postgresql-42.7.3.jar
 
