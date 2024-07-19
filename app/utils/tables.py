@@ -59,7 +59,7 @@ def schema():
             ReportedMeasureName TEXT
         );""",
         """CREATE TABLE values (
-            DatasetId VARCHAR,
+            DatasetId INT,
             ReportingUnitCode VARCHAR,
             Value FLOAT,
             Caveats TEXT

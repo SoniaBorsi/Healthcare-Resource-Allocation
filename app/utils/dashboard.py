@@ -58,24 +58,24 @@ def display_measures():
     if st.button("Return to Home"):
         st.session_state['page'] = 'home'
     
-    sql_query = '''
-        SELECT 
-            ds."DataSetId", 
-            ds."DatasetName", 
-            COUNT(v."Value") AS "Occurrences" 
-        FROM 
-            "values" v 
-        JOIN 
-            "datasets" ds ON v."DatasetId" = ds."DataSetId" 
-        GROUP BY 
-            ds."DataSetId", 
-            ds."DatasetName"
-    '''
+    sql_query = '''   SELECT 
+                            ds.datasetid, 
+                            ds.datasetname, 
+                            COUNT(v.value) AS occurrences
+                        FROM 
+                            values v 
+                        JOIN 
+                            datasets ds ON v.datasetid = ds.datasetid 
+                        GROUP BY 
+                            ds.datasetid, 
+                            ds.datasetname;
+                    '''
+                        
     df = fetch_data(sql_query)
     
     if not df.empty:
-        fig = px.bar(df, x='Occurrences', y='DatasetName', orientation='h',
-                     title='Occurrences by Dataset Name', labels={'DatasetName': 'Dataset Name'})
+        fig = px.bar(df, x='occurrences', y='datasetname', orientation='h',
+                     title='Occurrences by Dataset Name', labels={'datasetname': 'Dataset Name'})
         st.plotly_chart(fig)
     else:
         st.write("No measures found.")
