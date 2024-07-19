@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip
 
-RUN pip install streamlit streamlit_folium plotly pandas folium sqlalchemy psycopg2-binary
+RUN pip install streamlit streamlit_folium plotly pandas folium sqlalchemy psycopg2-binary numpy
 
 COPY utils/dashboard.py /app/dashboard.py
 

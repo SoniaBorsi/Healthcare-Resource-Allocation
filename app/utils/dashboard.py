@@ -3,7 +3,7 @@ import plotly.express as px
 from streamlit_folium import folium_static
 import folium
 import pandas as pd
-
+import numpy as np
 # Database Connection Details
 POSTGRES_CONNECTION = {
     "dialect": "postgresql",
@@ -25,30 +25,23 @@ def fetch_data(sql):
         return pd.DataFrame()
 
 
+# Sidebar for navigation
+def setup_sidebar():
+    st.sidebar.title("Navigation")
+    return st.sidebar.radio("Choose a section", ('Home', 'Measures', 'Hospitals'))
+
+# Display functions for different sections
+
 # Home Page
 def display_home_page():
     st.title("Welcome to Healthcare Resource Allocation")
     st.write("""
         This application is designed to facilitate healthcare resource allocation through data visualization and chatbot interface.
-        
-        Use the buttons below to navigate to different sections:
+        Use the sidebar to navigate to different sections:
     """)
-    
-    if st.button('Measures'):
-        st.session_state['page'] = 'measures'
-    if st.button('Hospitals'):
-        st.session_state['page'] = 'hospitals'
-    if st.button('Chat'):
-        st.session_state['page'] = 'chat'
-    if st.button('Predictions'):
-        st.session_state['page'] = 'predictions'
-    
+
     st.markdown("### General Plots")
-    # Example plot
-    df = pd.DataFrame({
-        'x': [1, 2, 3, 4, 5],
-        'y': [10, 20, 30, 40, 50]
-    })
+    df = pd.DataFrame({'x': [1, 2, 3, 4, 5], 'y': [10, 20, 30, 40, 50]})
     fig = px.line(df, x='x', y='y', title='Example Plot')
     st.plotly_chart(fig)
 
@@ -58,27 +51,29 @@ def display_measures():
     if st.button("Return to Home"):
         st.session_state['page'] = 'home'
     
-    sql_query = '''   SELECT 
-                            ds.datasetid, 
-                            ds.datasetname, 
-                            COUNT(v.value) AS occurrences
-                        FROM 
-                            values v 
-                        JOIN 
-                            datasets ds ON v.datasetid = ds.datasetid 
-                        GROUP BY 
-                            ds.datasetid, 
-                            ds.datasetname;
-                    '''
+    sql_query_codes = '''   SELECT 
+                                ds.*, 
+                                m.measurename,
+                                rm.reportedmeasurename
+                            FROM 
+                                datasets ds
+                            LEFT JOIN 
+                                measurements m ON ds.measurecode = m.measurecode
+                            LEFT JOIN 
+                                reported_measurements rm ON ds.reportedmeasurecode = rm.reportedmeasurecode;
+
+                        '''
                         
-    df = fetch_data(sql_query)
+    df_measures = fetch_data(sql_query_codes)
+    selected_measure = st.selectbox("Select Measure", np.sort(df_measures['measurename'].unique()))
+    df_reported_measures = df_measures[df_measures['measurename'] == selected_measure]
+    selected_reported_measure = st.selectbox("Select Reported Measure", np.sort(df_reported_measures['reportedmeasurename'].unique()))
     
-    if not df.empty:
-        fig = px.bar(df, x='occurrences', y='datasetname', orientation='h',
-                     title='Occurrences by Dataset Name', labels={'datasetname': 'Dataset Name'})
-        st.plotly_chart(fig)
-    else:
-        st.write("No measures found.")
+    
+    df_dates = df_reported_measures[df_reported_measures['reportedmeasurename'] == selected_reported_measure]
+    selected_date = st.selectbox("Select Time Period", np.sort(df_dates["reportingstartdate"].unique()))
+    
+
 # hospitals 
         
 def display_hospitals():
@@ -140,17 +135,14 @@ def display_hospitals():
 def main():
     if 'page' not in st.session_state:
         st.session_state['page'] = 'home'
-        
-    if st.session_state['page'] == 'home':
-        display_home_page()
-    elif st.session_state['page'] == 'measures':
-        display_measures()
-    elif st.session_state['page'] == 'hospitals':
-        display_hospitals()
-    elif st.session_state['page'] == 'predictions':
-        display_predictions()
-    elif st.session_state['page'] == 'chat':
-        display_chatbot()
 
+    page = setup_sidebar()  # Setup sidebar and store the selected page
+
+    if page == 'Home':
+        display_home_page()
+    elif page == 'Measures':
+        display_measures()
+    elif page == 'Hospitals':
+        display_hospitals()
 if __name__ == '__main__':
     main()
