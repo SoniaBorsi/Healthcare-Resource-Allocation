@@ -3,6 +3,7 @@ import requests
 from tqdm import tqdm
 from utils.tools import insert_into_postgresql
 import io
+from pyspark.sql.functions import concat, col
 
 def get_values(dataset_ids):
     base_url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
@@ -38,9 +39,14 @@ def callback_values(spark_session, ch, method, properties, body):
         csv_rdd = spark_session.sparkContext.parallelize(csv_lines)
 
         sdf = spark_session.read.csv(csv_rdd, header=True, inferSchema = True)
-        values = sdf.select('DataSetId', 'ReportingUnitCode', 'Value', 'Caveats')
 
-        insert_into_postgresql(spark_session, values, 'values')
+        for column in sdf.columns:
+            sdf = sdf.withColumnRenamed(column, column.lower())
+
+        values = sdf.select('datasetid', 'reportingunitcode', 'value', 'caveats')
+
+        values = values.withColumn('id', concat(col('datasetid'), col('reportingunitcode')))
+        insert_into_postgresql(spark_session, values, 'info')
 
         ch.basic_ack(delivery_tag=method.delivery_tag)
 

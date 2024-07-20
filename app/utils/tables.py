@@ -32,38 +32,39 @@ def schema():
     """Create the schema for the database by initializing required tables."""
     tables_sql = [
         """CREATE TABLE IF NOT EXISTS datasets (
-            ReportingStartDate DATE,
-            ReportedMeasureCode VARCHAR,
-            DataSetId INT PRIMARY KEY,
-            MeasureCode VARCHAR,
-            DatasetName TEXT,
+            reportingstartdate DATE,
+            reportedmeasurecode VARCHAR,
+            datasetid INT PRIMARY KEY,
+            measurecode VARCHAR,
+            datasetname TEXT,
             stored BOOLEAN DEFAULT FALSE
         );""",
         """CREATE TABLE IF NOT EXISTS hospitals (
-            Code VARCHAR(255) PRIMARY KEY,
-            Name TEXT,
-            Type TEXT,
-            Latitude FLOAT,
-            Longitude FLOAT,
-            Sector TEXT,
-            Open_Closed TEXT,
-            State TEXT,
-            LHN TEXT,
-            PHN TEXT
+            code VARCHAR(255) PRIMARY KEY,
+            name TEXT,
+            type TEXT,
+            latitude FLOAT,
+            longitude FLOAT,
+            sector TEXT,
+            open_closed TEXT,
+            state TEXT,
+            lhn TEXT,
+            phn TEXT
         );""",
         """CREATE TABLE IF NOT EXISTS measurements (
-            MeasureCode VARCHAR PRIMARY KEY,
-            MeasureName TEXT
+            measurecode VARCHAR PRIMARY KEY,
+            measurename TEXT
         );""",
         """CREATE TABLE IF NOT EXISTS reported_measurements (
-            ReportedMeasureCode VARCHAR PRIMARY KEY,
-            ReportedMeasureName TEXT
+            reportedmeasurecode VARCHAR PRIMARY KEY,
+            reportedmeasurename TEXT
         );""",
-        """CREATE TABLE IF NOT EXISTS values (
-            DatasetId INT,
-            ReportingUnitCode VARCHAR,
-            Value FLOAT,
-            Caveats TEXT
+        """CREATE TABLE IF NOT EXISTS info (
+            datasetid INT,
+            reportingunitcode VARCHAR,
+            value FLOAT,
+            caveats TEXT,
+            id VARCHAR PRIMARY KEY
         );"""
     ]
 

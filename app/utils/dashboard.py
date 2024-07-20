@@ -57,10 +57,14 @@ def display_measures():
                                 rm.reportedmeasurename
                             FROM 
                                 datasets ds
+                           
                             LEFT JOIN 
                                 measurements m ON ds.measurecode = m.measurecode
                             LEFT JOIN 
-                                reported_measurements rm ON ds.reportedmeasurecode = rm.reportedmeasurecode;
+                                reported_measurements rm ON ds.reportedmeasurecode = rm.reportedmeasurecode
+                            
+                             WHERE 
+                                ds.stored = TRUE;
 
                         '''
                         

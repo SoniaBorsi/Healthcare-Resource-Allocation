@@ -60,6 +60,8 @@ def map_hospitals(spark_session):
     sdf = sdf.withColumnRenamed("Open/Closed", "Open_Closed") \
                .withColumnRenamed("Local Hospital Network (LHN)", "LHN") \
                .withColumnRenamed("Primary Health Network area (PHN)", "PHN")
+    for column in sdf.columns:
+        sdf = sdf.withColumnRenamed(column, column.lower())
     
     insert_into_postgresql(spark_session, sdf, "hospitals")
     print("Hospital mapping inserted successfully into the PostgreSQL database")
@@ -108,10 +110,11 @@ def insert_into_postgresql(spark,data_frame, table_name):
         "driver": "org.postgresql.Driver"
     }
 
-    ids ={"hospitals" : "code",
-          "measurements" : "measuerecode",
-          "reportedmeasurements" : "reportedmeasurecode",
-          "datasets" : "datasetid"}
+    ids ={"hospitals" : 'code',
+          "measurements" : 'measurecode',
+          "reported_measurements" : 'reportedmeasurecode',
+          "datasets" : 'datasetid',
+          "info" : "id" }
 
     # Read existing data from the table
     try:
@@ -143,6 +146,7 @@ def insert_into_postgresql(spark,data_frame, table_name):
                 logging.info("No new unique records to insert.")
         else:
             logging.error("Primary key not in DataFrame columns.")
+            logging.error(table_name)
 
     except Exception as e:
         logging.error(f"Failed to interact with PostgreSQL: {e}")
@@ -218,11 +222,15 @@ def download_datasetlist(spark_session):
             df = pd.read_csv(file_path)
             
             sdf = spark_session.createDataFrame(df)
+
+            for column in sdf.columns:
+
+                sdf = sdf.withColumnRenamed(column, column.lower())
         
-            reportedmeasurements = sdf.select('ReportedMeasureCode', 'ReportedMeasureName').dropDuplicates()
-            measurements = sdf.select('MeasureCode', 'MeasureName').dropDuplicates()
-            values = sdf.select('ReportingStartDate', 'ReportedMeasureCode', 'DataSetId', 'MeasureCode', 'DatasetName')
-            values = values.withColumn("ReportingStartDate", to_date(col("ReportingStartDate"), "yyyy-MM-dd"))
+            reportedmeasurements = sdf.select('reportedmeasurecode', 'reportedmeasurename').dropDuplicates()
+            measurements = sdf.select('measurecode', 'measurename').dropDuplicates()
+            values = sdf.select('reportingstartdate', 'reportedmeasurecode', 'datasetid', 'measurecode', 'datasetname')
+            values = values.withColumn("reportingstartdate", to_date(col("reportingstartdate"), "yyyy-MM-dd"))
         
             insert_into_postgresql(spark_session, reportedmeasurements, "reported_measurements")
             insert_into_postgresql(spark_session, measurements, "measurements")

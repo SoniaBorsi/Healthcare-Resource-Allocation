@@ -18,7 +18,7 @@ tools.map_hospitals(spark)
 datasets_csv = tools.download_datasetlist(spark)
 
 datasets_ids = tools.get_ids()
-batches = [datasets_ids[i:i+20] for i in range(0, len(datasets_ids), 20)][:5]
+batches = [datasets_ids[i:i+20] for i in range(0, len(datasets_ids), 20)]
 
 for batch in tqdm(batches, desc='Fetching data ...'):
     values_csv = values.get_values(batch)
