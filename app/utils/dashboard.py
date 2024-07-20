@@ -15,10 +15,13 @@ POSTGRES_CONNECTION = {
 }
 
 # Fetch data function
-def fetch_data(sql):
+def fetch_data(sql, params=None):
     conn = st.connection("postgres", type="sql", **POSTGRES_CONNECTION)
     try:
-        data = conn.query(sql)
+        if params:
+            data = conn.query(sql, params)
+        else:
+            data = conn.query(sql)
         return pd.DataFrame(data)
     except Exception as e:
         st.error(f"Failed to fetch data: {e}")
@@ -73,9 +76,46 @@ def display_measures():
     df_reported_measures = df_measures[df_measures['measurename'] == selected_measure]
     selected_reported_measure = st.selectbox("Select Reported Measure", np.sort(df_reported_measures['reportedmeasurename'].unique()))
     
-    
-    df_dates = df_reported_measures[df_reported_measures['reportedmeasurename'] == selected_reported_measure]
-    selected_date = st.selectbox("Select Time Period", np.sort(df_dates["reportingstartdate"].unique()))
+    # Use f-string to include variables directly in the query string
+    # Be very careful with direct inclusion to avoid SQL injection.
+    # The replace() method here is a minimal guard, but not foolproof for all cases.
+    safe_measure = selected_measure.replace("'", "''")  # rudimentary SQL injection protection
+    safe_reported_measure = selected_reported_measure.replace("'", "''")  # rudimentary SQL injection protection
+
+   # Assuming safe_measure and safe_reported_measure have been defined and sanitized as shown previously
+    sql_query = f'''
+                SELECT 
+                    info.value,
+                    ds.reportingstartdate
+                FROM 
+                    datasets ds
+                JOIN 
+                    measurements m ON ds.measurecode = m.measurecode
+                JOIN 
+                    reported_measurements rm ON ds.reportedmeasurecode = rm.reportedmeasurecode
+                JOIN 
+                    info ON ds.datasetid = info.datasetid
+                WHERE 
+                    m.measurename = '{safe_measure}' AND 
+                    rm.reportedmeasurename = '{safe_reported_measure}' AND
+                    ds.stored = TRUE AND 
+                    info.reportingunitcode = 'NAT'
+                ORDER BY 
+                    ds.reportingstartdate ASC; 
+
+
+                '''
+
+
+    df_value = fetch_data(sql_query)
+
+    if not df_value.empty:
+        st.write(df_value)
+    else:
+        st.write("No data found.")
+
+    # df_dates = df_reported_measures[df_reported_measures['reportedmeasurename'] == selected_reported_measure]
+    # selected_date = st.selectbox("Select Time Period", np.sort(df_dates["reportingstartdate"].unique()))
     
 
 # hospitals 
