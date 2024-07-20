@@ -36,9 +36,10 @@ def schema():
             ReportedMeasureCode VARCHAR,
             DataSetId INT PRIMARY KEY,
             MeasureCode VARCHAR,
-            DatasetName TEXT
+            DatasetName TEXT,
+            stored BOOLEAN DEFAULT FALSE
         );""",
-        """CREATE TABLE hospitals (
+        """CREATE TABLE IF NOT EXISTS hospitals (
             Code VARCHAR(255) PRIMARY KEY,
             Name TEXT,
             Type TEXT,
@@ -50,15 +51,15 @@ def schema():
             LHN TEXT,
             PHN TEXT
         );""",
-        """CREATE TABLE measurements (
+        """CREATE TABLE IF NOT EXISTS measurements (
             MeasureCode VARCHAR PRIMARY KEY,
             MeasureName TEXT
         );""",
-        """CREATE TABLE reported_measurements (
+        """CREATE TABLE IF NOT EXISTS reported_measurements (
             ReportedMeasureCode VARCHAR PRIMARY KEY,
             ReportedMeasureName TEXT
         );""",
-        """CREATE TABLE values (
+        """CREATE TABLE IF NOT EXISTS values (
             DatasetId INT,
             ReportingUnitCode VARCHAR,
             Value FLOAT,
