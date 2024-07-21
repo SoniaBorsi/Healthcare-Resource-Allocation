@@ -4,7 +4,7 @@ USER root
 
 RUN mkdir -p /.cache && chmod -R 777 /.cache
 
-COPY requirements.txt opt/bitnami/spark/requirements.txtì
+COPY requirements.txt opt/bitnami/spark/requirements.txt
 
 RUN pip install -r opt/bitnami/spark/requirements.txt
 

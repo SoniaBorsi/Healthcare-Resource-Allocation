@@ -11,7 +11,7 @@ from streamlit_option_menu import option_menu
 # Database Connection Details
 POSTGRES_CONNECTION = {
     "dialect": "postgresql",
-    "host": "postgresql", 
+    "host": "postgres", 
     "port": "5432",
     "username": "myuser",
     "password": "mypassword",
@@ -86,7 +86,7 @@ def display_home_page():
     with col1:
         st.write("")
     with col2:
-        st.image("/Users/soniaborsi/Desktop/Healthcare-Resource-Allocation/app/dashboard/symbol.png", width=50, use_column_width=True)  # Replace with the path to your image file
+        st.image("/app/images/symbol.png", width=50, use_column_width=True)  # Replace with the path to your image file
     with col3:
         st.write("")
     st.write("""
