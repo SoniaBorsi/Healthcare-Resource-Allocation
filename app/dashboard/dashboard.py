@@ -4,10 +4,14 @@ from streamlit_folium import folium_static
 import folium
 import pandas as pd
 import numpy as np
+import random
+import streamlit_option_menu
+from streamlit_option_menu import option_menu
+
 # Database Connection Details
 POSTGRES_CONNECTION = {
     "dialect": "postgresql",
-    "host": "postgres",
+    "host": "postgresql", 
     "port": "5432",
     "username": "myuser",
     "password": "mypassword",
@@ -28,25 +32,94 @@ def fetch_data(sql, params=None):
         return pd.DataFrame()
 
 
-# Sidebar for navigation
+# # Sidebar for navigation
 def setup_sidebar():
-    st.sidebar.title("Navigation")
-    return st.sidebar.radio("Choose a section", ('Home', 'Measures', 'Hospitals'))
+    with st.sidebar:
+        selected = option_menu(
+            menu_title="MENU",
+            options=["Home", "Measures", "Hospitals"],
+            icons=["house", "bar-chart", "hospital"],
+            menu_icon="cast",
+            default_index=0,
+        )
 
+    return selected
+
+    
 # Display functions for different sections
 
 # Home Page
+# def display_home_page():
+#     st.title("Welcome to Healthcare Resource Allocation")
+#     st.write("""
+#         This application is designed to facilitate healthcare resource allocation through data visualization and chatbot interface.
+#         Use the sidebar to navigate to different sections:
+#     """)
+
+#     st.markdown("### General Plots")
+#     df = pd.DataFrame({'x': [1, 2, 3, 4, 5], 'y': [10, 20, 30, 40, 50]})
+#     fig = px.line(df, x='x', y='y', title='Example Plot')
+#     st.plotly_chart(fig)
+
+def generate_fake_data():
+    data = {
+        "Total Hospitals": {
+            "current": random.randint(100, 150),
+            "previous": random.randint(-5, 5)
+        },
+        "Total Surgeries": {
+            "current": random.randint(5000, 7000),
+            "previous": random.randint(-500, 500)
+        },
+        "Total Emergencies": {
+            "current": random.randint(8000, 12000),
+            "previous": random.randint(-1000, 1000)
+        }
+    }
+    return data
+
 def display_home_page():
     st.title("Welcome to Healthcare Resource Allocation")
+
+    # Display a healthcare-related image
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col1:
+        st.write("")
+    with col2:
+        st.image("/Users/soniaborsi/Desktop/Healthcare-Resource-Allocation/app/dashboard/symbol.png", width=50, use_column_width=True)  # Replace with the path to your image file
+    with col3:
+        st.write("")
     st.write("""
         This application is designed to facilitate healthcare resource allocation through data visualization and chatbot interface.
         Use the sidebar to navigate to different sections:
     """)
 
+    st.markdown("### Key Metrics")
+
+    # Generate fake data for metrics
+    metrics_data = generate_fake_data()
+
+    m1, m2, m3, m4, m5 = st.columns((1, 1, 1, 1, 1))
+    
+    m1.write('')
+    m2.metric(label='Total Hospitals in Australia',
+              value=metrics_data["Total Hospitals"]["current"],
+              delta=f"{metrics_data['Total Hospitals']['previous']} Compared to last month",
+              delta_color='inverse')
+    m3.metric(label='Total Surgeries',
+              value=metrics_data['Total Surgeries']['current'],
+              delta=f"{metrics_data['Total Surgeries']['previous']} Compared to last month",
+              delta_color='inverse')
+    m4.metric(label='Total Emergencies',
+              value=metrics_data['Total Emergencies']['current'],
+              delta=f"{metrics_data['Total Emergencies']['previous']} Compared to last month")
+    m1.write('')
+
     st.markdown("### General Plots")
     df = pd.DataFrame({'x': [1, 2, 3, 4, 5], 'y': [10, 20, 30, 40, 50]})
     fig = px.line(df, x='x', y='y', title='Example Plot')
     st.plotly_chart(fig)
+
 
 # Display Measures
 def display_measures():
