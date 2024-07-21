@@ -66,6 +66,7 @@ def map_hospitals(spark_session):
     insert_into_postgresql(spark_session, sdf, "hospitals")
     print("Hospital mapping inserted successfully into the PostgreSQL database")
 
+
 def get_ids():
     """Fetches all DataSetIds from the datasets table where stored is False."""
     
