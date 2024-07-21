@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/soniaborsi/Desktop/Healthcare-Resource-Allocation/mlruns/0/f01eadad24b24167b5cce4cb0a7d46a7/artifacts
+end_time: 1721570629331
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: f01eadad24b24167b5cce4cb0a7d46a7
+run_name: resilient-jay-536
+run_uuid: f01eadad24b24167b5cce4cb0a7d46a7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1721570563393
+status: 3
+tags: []
+user_id: soniaborsi

@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/soniaborsi/Desktop/Healthcare-Resource-Allocation/mlruns/0/f6af18fdfe7c403b8dac8a347961f81d/artifacts
+end_time: 1721570971441
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: f6af18fdfe7c403b8dac8a347961f81d
+run_name: fearless-bug-551
+run_uuid: f6af18fdfe7c403b8dac8a347961f81d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1721570893051
+status: 3
+tags: []
+user_id: soniaborsi

@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/soniaborsi/Desktop/Healthcare-Resource-Allocation/mlruns/0/6b5381411b214a0f9d6f660d13037a2f/artifacts
+end_time: 1721571182652
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 6b5381411b214a0f9d6f660d13037a2f
+run_name: aged-bird-989
+run_uuid: 6b5381411b214a0f9d6f660d13037a2f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1721571115898
+status: 3
+tags: []
+user_id: soniaborsi
