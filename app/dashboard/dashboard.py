@@ -90,7 +90,7 @@ def display_home_page():
     with col3:
         st.write("")
     st.write("""
-        This application is designed to facilitate healthcare resource allocation through data visualization and chatbot interface.
+        This application is designed to facilitate healthcare resource allocation through data.
         Use the sidebar to navigate to different sections:
     """)
 
@@ -115,6 +115,11 @@ def display_home_page():
               delta=f"{metrics_data['Total Emergencies']['previous']} Compared to last month")
     m1.write('')
 
+    with st.expander('About', expanded=True):
+        st.write('''
+            - Data: [Australian Institute of Health and Welfare](https://www.aihw.gov.au), [Australian Bureau of Statistics](https://www.abs.gov.au/statistics/people/population)
+            ''')    
+
     st.markdown("### General Plots")
     df = pd.DataFrame({'x': [1, 2, 3, 4, 5], 'y': [10, 20, 30, 40, 50]})
     fig = px.line(df, x='x', y='y', title='Example Plot')
@@ -122,74 +127,143 @@ def display_home_page():
 
 
 # Display Measures
+
 def display_measures():
     st.title("Measures")
-    if st.button("Return to Home"):
-        st.session_state['page'] = 'home'
-    
-    sql_query_codes = '''   SELECT 
-                                ds.*, 
-                                m.measurename,
-                                rm.reportedmeasurename
-                            FROM 
-                                datasets ds
-                           
-                            LEFT JOIN 
-                                measurements m ON ds.measurecode = m.measurecode
-                            LEFT JOIN 
-                                reported_measurements rm ON ds.reportedmeasurecode = rm.reportedmeasurecode
-                            
-                             WHERE 
-                                ds.stored = TRUE;
-
-                        '''
+    st.markdown("### Explore Healthcare Metrics by State and Hospital")
+    st.markdown("""
+    This section of the dashboard allows you to explore detailed metrics for various healthcare measures across different states in Australia.""")
+    sql_query_codes = '''   
+    SELECT 
+        ds.*, 
+        m.measurename,
+        rm.reportedmeasurename
+    FROM 
+        datasets ds
+    LEFT JOIN 
+        measurements m ON ds.measurecode = m.measurecode
+    LEFT JOIN 
+        reported_measurements rm ON ds.reportedmeasurecode = rm.reportedmeasurecode
+    WHERE 
+        ds.stored = TRUE;
+    '''
                         
     df_measures = fetch_data(sql_query_codes)
     selected_measure = st.selectbox("Select Measure", np.sort(df_measures['measurename'].unique()))
     df_reported_measures = df_measures[df_measures['measurename'] == selected_measure]
     selected_reported_measure = st.selectbox("Select Reported Measure", np.sort(df_reported_measures['reportedmeasurename'].unique()))
     
-    # Use f-string to include variables directly in the query string
-    # Be very careful with direct inclusion to avoid SQL injection.
-    # The replace() method here is a minimal guard, but not foolproof for all cases.
+    # Fetch the list of states
+    sql_query_states = '''
+    SELECT DISTINCT 
+        state 
+    FROM 
+        hospitals 
+    WHERE 
+        open_closed = 'Open';
+    '''
+    df_states = fetch_data(sql_query_states)
+    state_list = df_states['state'].unique()
+    
+    selected_state = st.selectbox("Select State", np.sort(state_list))
+    
     safe_measure = selected_measure.replace("'", "''")  # rudimentary SQL injection protection
     safe_reported_measure = selected_reported_measure.replace("'", "''")  # rudimentary SQL injection protection
+    safe_state = selected_state.replace("'", "''")  # rudimentary SQL injection protection
 
-   # Assuming safe_measure and safe_reported_measure have been defined and sanitized as shown previously
-    sql_query = f'''
-                SELECT 
-                    info.value,
-                    ds.reportingstartdate
-                FROM 
-                    datasets ds
-                JOIN 
-                    measurements m ON ds.measurecode = m.measurecode
-                JOIN 
-                    reported_measurements rm ON ds.reportedmeasurecode = rm.reportedmeasurecode
-                JOIN 
-                    info ON ds.datasetid = info.datasetid
-                WHERE 
-                    m.measurename = '{safe_measure}' AND 
-                    rm.reportedmeasurename = '{safe_reported_measure}' AND
-                    ds.stored = TRUE AND 
-                    info.reportingunitcode = 'NAT'
-                ORDER BY 
-                    ds.reportingstartdate ASC; 
+    sql_query_state = f'''
+    SELECT 
+        info.value,
+        ds.reportingstartdate,
+        info.reportingunitcode,
+        h.name as hospital_name,
+        h.latitude,
+        h.longitude
+    FROM 
+        datasets ds
+    JOIN 
+        measurements m ON ds.measurecode = m.measurecode
+    JOIN 
+        reported_measurements rm ON ds.reportedmeasurecode = rm.reportedmeasurecode
+    JOIN 
+        info ON ds.datasetid = info.datasetid
+    JOIN 
+        hospitals h ON info.reportingunitcode = h.code
+    WHERE 
+        m.measurename = '{safe_measure}' AND 
+        rm.reportedmeasurename = '{safe_reported_measure}' AND
+        ds.stored = TRUE AND 
+        h.state = '{safe_state}'
+    ORDER BY 
+        ds.reportingstartdate ASC;
+    '''
+    
+    df_value = fetch_data(sql_query_state)
 
+    if df_value.empty:
+        st.write("No data found for the selected state. Displaying national data.")
+        
+        sql_query_national = f'''
+        SELECT 
+            info.value,
+            ds.reportingstartdate,
+            info.reportingunitcode,
+            h.name as hospital_name,
+            h.latitude,
+            h.longitude
+        FROM 
+            datasets ds
+        JOIN 
+            measurements m ON ds.measurecode = m.measurecode
+        JOIN 
+            reported_measurements rm ON ds.reportedmeasurecode = rm.reportedmeasurecode
+        JOIN 
+            info ON ds.datasetid = info.datasetid
+        JOIN 
+            hospitals h ON info.reportingunitcode = h.code
+        WHERE 
+            m.measurename = '{safe_measure}' AND 
+            rm.reportedmeasurename = '{safe_reported_measure}' AND
+            ds.stored = TRUE AND 
+            info.reportingunitcode = 'NAT'
+        ORDER BY 
+            ds.reportingstartdate ASC;
+        '''
 
-                '''
+        df_value = fetch_data(sql_query_national)
 
-
-    df_value = fetch_data(sql_query)
+    # Filter out NaN values
+    df_value = df_value.dropna()
 
     if not df_value.empty:
-        st.write(df_value)
-    else:
-        st.write("No data found.")
+        # Aggregate data by reporting date
+        df_value_aggregated = df_value.groupby('reportingstartdate').agg({'value': 'mean'}).reset_index()
 
-    # df_dates = df_reported_measures[df_reported_measures['reportedmeasurename'] == selected_reported_measure]
-    # selected_date = st.selectbox("Select Time Period", np.sort(df_dates["reportingstartdate"].unique()))
+        # Plotting using Plotly Express
+        fig = px.line(df_value_aggregated, x='reportingstartdate', y='value', title=f'{selected_measure} - {selected_reported_measure} Over Time (Averaged)')
+        st.plotly_chart(fig)
+        
+        # Plotting the map of hospitals
+        fig_map = px.scatter_mapbox(
+            df_value, lat='latitude', lon='longitude', hover_name='hospital_name',
+            hover_data={'latitude': False, 'longitude': False, 'value': True},
+            title=f'Hospitals in {selected_state} Reporting {selected_measure}',
+            mapbox_style="open-street-map", zoom=5,
+            color_discrete_sequence=["darkblue"]
+        )
+        st.plotly_chart(fig_map)
+
+        # Center the data table and include hospital names
+        st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
+        st.dataframe(df_value[['reportingstartdate', 'value', 'hospital_name']])
+        st.markdown("</div>", unsafe_allow_html=True)
+    else:
+        st.write("No data found for the selected measure and reported measure.")
     
+    if st.button("Return to Home"):
+        st.session_state['page'] = 'home'
+    
+
 
 # hospitals 
         
@@ -261,5 +335,7 @@ def main():
         display_measures()
     elif page == 'Hospitals':
         display_hospitals()
+
+
 if __name__ == '__main__':
     main()
