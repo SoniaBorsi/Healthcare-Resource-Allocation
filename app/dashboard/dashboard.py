@@ -11,7 +11,7 @@ from streamlit_option_menu import option_menu
 # Database Connection Details
 POSTGRES_CONNECTION = {
     "dialect": "postgresql",
-    "host": "postgres", 
+    "host": "postgres",
     "port": "5432",
     "username": "myuser",
     "password": "mypassword",
@@ -37,15 +37,15 @@ def setup_sidebar():
     with st.sidebar:
         selected = option_menu(
             menu_title="MENU",
-            options=["Home", "Measures", "Hospitals"],
-            icons=["house", "bar-chart", "hospital"],
+            options=["Home", "Measures", "Hospitals", "Budget", "Contact us"],
+            icons=["house", "bar-chart", "hospital", "activity", "envelope"],
             menu_icon="cast",
             default_index=0,
         )
 
     return selected
 
-    
+
 # Display functions for different sections
 
 # Home Page
@@ -61,22 +61,6 @@ def setup_sidebar():
 #     fig = px.line(df, x='x', y='y', title='Example Plot')
 #     st.plotly_chart(fig)
 
-def generate_fake_data():
-    data = {
-        "Total Hospitals": {
-            "current": random.randint(100, 150),
-            "previous": random.randint(-5, 5)
-        },
-        "Total Surgeries": {
-            "current": random.randint(5000, 7000),
-            "previous": random.randint(-500, 500)
-        },
-        "Total Emergencies": {
-            "current": random.randint(8000, 12000),
-            "previous": random.randint(-1000, 1000)
-        }
-    }
-    return data
 
 def display_home_page():
     st.title("Welcome to Healthcare Resource Allocation")
@@ -86,7 +70,7 @@ def display_home_page():
     with col1:
         st.write("")
     with col2:
-        st.image("/app/images/symbol.png", width=50, use_column_width=True)  # Replace with the path to your image file
+        st.image("app/dashboard/logo.png", width=50, use_column_width=True)  
     with col3:
         st.write("")
     st.write("""
@@ -97,34 +81,28 @@ def display_home_page():
     st.markdown("### Key Metrics")
 
     # Generate fake data for metrics
-    metrics_data = generate_fake_data()
+    # metrics_data = generate_fake_data()
 
-    m1, m2, m3, m4, m5 = st.columns((1, 1, 1, 1, 1))
-    
-    m1.write('')
-    m2.metric(label='Total Hospitals in Australia',
-              value=metrics_data["Total Hospitals"]["current"],
-              delta=f"{metrics_data['Total Hospitals']['previous']} Compared to last month",
-              delta_color='inverse')
-    m3.metric(label='Total Surgeries',
-              value=metrics_data['Total Surgeries']['current'],
-              delta=f"{metrics_data['Total Surgeries']['previous']} Compared to last month",
-              delta_color='inverse')
-    m4.metric(label='Total Emergencies',
-              value=metrics_data['Total Emergencies']['current'],
-              delta=f"{metrics_data['Total Emergencies']['previous']} Compared to last month")
-    m1.write('')
+    # m1, m2, m3, m4, m5 = st.columns((1, 1, 1, 1, 1))
+
+    # m1.write('')
+    # m2.metric(label='Total Hospitals in Australia',
+    #           value=metrics_data["Total Hospitals"]["current"],
+    #           delta=f"{metrics_data['Total Hospitals']['previous']} Compared to last month",
+    #           delta_color='inverse')
+    # m3.metric(label='Total Surgeries',
+    #           value=metrics_data['Total Surgeries']['current'],
+    #           delta=f"{metrics_data['Total Surgeries']['previous']} Compared to last month",
+    #           delta_color='inverse')
+    # m4.metric(label='Total Emergencies',
+    #           value=metrics_data['Total Emergencies']['current'],
+    #           delta=f"{metrics_data['Total Emergencies']['previous']} Compared to last month")
+    # m1.write('')
 
     with st.expander('About', expanded=True):
         st.write('''
             - Data: [Australian Institute of Health and Welfare](https://www.aihw.gov.au), [Australian Bureau of Statistics](https://www.abs.gov.au/statistics/people/population)
-            ''')    
-
-    st.markdown("### General Plots")
-    df = pd.DataFrame({'x': [1, 2, 3, 4, 5], 'y': [10, 20, 30, 40, 50]})
-    fig = px.line(df, x='x', y='y', title='Example Plot')
-    st.plotly_chart(fig)
-
+            ''')
 
 # Display Measures
 
@@ -133,100 +111,100 @@ def display_measures():
     st.markdown("### Explore Healthcare Metrics by State and Hospital")
     st.markdown("""
     This section of the dashboard allows you to explore detailed metrics for various healthcare measures across different states in Australia.""")
-    sql_query_codes = '''   
-    SELECT 
-        ds.*, 
+    sql_query_codes = '''
+    SELECT
+        ds.*,
         m.measurename,
         rm.reportedmeasurename
-    FROM 
+    FROM
         datasets ds
-    LEFT JOIN 
+    LEFT JOIN
         measurements m ON ds.measurecode = m.measurecode
-    LEFT JOIN 
+    LEFT JOIN
         reported_measurements rm ON ds.reportedmeasurecode = rm.reportedmeasurecode
-    WHERE 
+    WHERE
         ds.stored = TRUE;
     '''
-                        
+
     df_measures = fetch_data(sql_query_codes)
     selected_measure = st.selectbox("Select Measure", np.sort(df_measures['measurename'].unique()))
     df_reported_measures = df_measures[df_measures['measurename'] == selected_measure]
     selected_reported_measure = st.selectbox("Select Reported Measure", np.sort(df_reported_measures['reportedmeasurename'].unique()))
-    
+
     # Fetch the list of states
     sql_query_states = '''
-    SELECT DISTINCT 
-        state 
-    FROM 
-        hospitals 
-    WHERE 
+    SELECT DISTINCT
+        state
+    FROM
+        hospitals
+    WHERE
         open_closed = 'Open';
     '''
     df_states = fetch_data(sql_query_states)
     state_list = df_states['state'].unique()
-    
+
     selected_state = st.selectbox("Select State", np.sort(state_list))
-    
+
     safe_measure = selected_measure.replace("'", "''")  # rudimentary SQL injection protection
     safe_reported_measure = selected_reported_measure.replace("'", "''")  # rudimentary SQL injection protection
     safe_state = selected_state.replace("'", "''")  # rudimentary SQL injection protection
 
     sql_query_state = f'''
-    SELECT 
+    SELECT
         info.value,
         ds.reportingstartdate,
         info.reportingunitcode,
         h.name as hospital_name,
         h.latitude,
         h.longitude
-    FROM 
+    FROM
         datasets ds
-    JOIN 
+    JOIN
         measurements m ON ds.measurecode = m.measurecode
-    JOIN 
+    JOIN
         reported_measurements rm ON ds.reportedmeasurecode = rm.reportedmeasurecode
-    JOIN 
+    JOIN
         info ON ds.datasetid = info.datasetid
-    JOIN 
+    JOIN
         hospitals h ON info.reportingunitcode = h.code
-    WHERE 
-        m.measurename = '{safe_measure}' AND 
+    WHERE
+        m.measurename = '{safe_measure}' AND
         rm.reportedmeasurename = '{safe_reported_measure}' AND
-        ds.stored = TRUE AND 
+        ds.stored = TRUE AND
         h.state = '{safe_state}'
-    ORDER BY 
+    ORDER BY
         ds.reportingstartdate ASC;
     '''
-    
+
     df_value = fetch_data(sql_query_state)
 
     if df_value.empty:
         st.write("No data found for the selected state. Displaying national data.")
-        
+
         sql_query_national = f'''
-        SELECT 
+        SELECT
             info.value,
             ds.reportingstartdate,
             info.reportingunitcode,
             h.name as hospital_name,
             h.latitude,
             h.longitude
-        FROM 
+        FROM
             datasets ds
-        JOIN 
+        JOIN
             measurements m ON ds.measurecode = m.measurecode
-        JOIN 
+        JOIN
             reported_measurements rm ON ds.reportedmeasurecode = rm.reportedmeasurecode
-        JOIN 
+        JOIN
             info ON ds.datasetid = info.datasetid
-        JOIN 
+        JOIN
             hospitals h ON info.reportingunitcode = h.code
-        WHERE 
-            m.measurename = '{safe_measure}' AND 
+        WHERE
+            m.measurename = '{safe_measure}' AND
             rm.reportedmeasurename = '{safe_reported_measure}' AND
-            ds.stored = TRUE AND 
+            ds.stored = TRUE AND
             info.reportingunitcode = 'NAT'
-        ORDER BY 
+        ORDER BY
             ds.reportingstartdate ASC;
         '''
 
@@ -242,7 +220,7 @@ def display_measures():
         # Plotting using Plotly Express
         fig = px.line(df_value_aggregated, x='reportingstartdate', y='value', title=f'{selected_measure} - {selected_reported_measure} Over Time (Averaged)')
         st.plotly_chart(fig)
-        
+
         # Plotting the map of hospitals
         fig_map = px.scatter_mapbox(
             df_value, lat='latitude', lon='longitude', hover_name='hospital_name',
@@ -259,21 +237,21 @@ def display_measures():
         st.markdown("</div>", unsafe_allow_html=True)
     else:
         st.write("No data found for the selected measure and reported measure.")
-    
+
     if st.button("Return to Home"):
         st.session_state['page'] = 'home'
-    
 
 
-# hospitals 
-        
+
+# hospitals
+
 def display_hospitals():
     """Display hospitals on a map, as a pie chart, and in a table."""
     st.title("Hospitals")
 
     if st.button("Return to Home"):
         st.session_state['page'] = 'home'
-    
+
     # Fetch hospital data from the database
     df = fetch_data('SELECT Latitude, Longitude, Name, Type, Sector, Open_Closed, State FROM hospitals')
     df['latitude'] = pd.to_numeric(df['latitude'])
@@ -299,12 +277,12 @@ def display_hospitals():
     total_private_hospitals = private_hospitals['Number of Hospitals'].sum() if not private_hospitals.empty else 0
     total_public_hospitals = public_hospitals['Number of Hospitals'].sum() if not public_hospitals.empty else 0
 
-    fig_pie = px.pie(names=['Private', 'Public'], values=[total_private_hospitals, total_public_hospitals], 
+    fig_pie = px.pie(names=['Private', 'Public'], values=[total_private_hospitals, total_public_hospitals],
                  title="Total Private and Public Hospitals in Australia")
     st.plotly_chart(fig_pie)
 
     #histogram for the number of private and public hospitals per state
-    fig_hist = px.bar(state_counts, x='state', y=['Number of Hospitals_private', 'Number of Hospitals_public'], barmode='group', 
+    fig_hist = px.bar(state_counts, x='state', y=['Number of Hospitals_private', 'Number of Hospitals_public'], barmode='group',
                  title="Number of Private and Public Hospitals per State", labels={'value': 'Number of Hospitals', 'variable': 'Hospital Type'})
     fig_hist.update_layout(xaxis_title="State", yaxis_title="Count")
     st.plotly_chart(fig_hist)
@@ -313,15 +291,34 @@ def display_hospitals():
     selected_state = st.selectbox("Select State", df['state'].unique())
     selected_status = st.selectbox("Select Open/Closed", df['open_closed'].unique())
     selected_sector = st.selectbox("Select Sector", df['sector'].unique())
-    
+
     st.markdown(f"### Hospitals in {selected_state} - {selected_status} - {selected_sector}")
-    
+
     filtered_df = df[(df['state'] == selected_state) & (df['open_closed'] == selected_status) & (df['sector'] == selected_sector)]
-    
+
     if not filtered_df.empty:
         st.table(filtered_df)
     else:
         st.write("No hospitals found with the selected criteria.")
+
+def display_contactus():
+    st.title("Contact Us")
+
+    st.write("""
+    We are here to assist you with any questions, concerns, or feedback you may have. Please feel free to reach out to us via email.
+    """)
+
+    # Display contact information
+    st.write("**Sonia Borsi**")
+    st.write("[Sonia.borsi@studenti.unitn.it](mailto:sonia.borsi@studenti.unitn.it) | [Linkedin](https://www.linkedin.com/in/sonia-borsi-824998260/)")
+    st.write("**Filippo Costamagna**")
+    st.write("[Filippo.costamagna](mailto:filippo.costamagna@studenti.unitn.it) | [Linkedin](https://www.linkedin.com/in/filippo-costamagna-a439b3303/)")
+
+    st.write("""
+    We look forward to hearing from you and will respond as soon as possible.
+    """)
+
+
 # Main Function
 def main():
     if 'page' not in st.session_state:
@@ -335,6 +332,8 @@ def main():
         display_measures()
     elif page == 'Hospitals':
         display_hospitals()
+    elif page == 'Contact us':
+        display_contactus()
 
 
 if __name__ == '__main__':
