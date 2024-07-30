@@ -12,6 +12,6 @@ RUN pip install streamlit streamlit_folium plotly pandas folium sqlalchemy psyco
 
 COPY dashboard/dashboard.py /app/dashboard.py
 
-COPY dashboard/symbol.png /app/images/symbol.png
+COPY dashboard/logo.png /app/images/logo.png
 
 CMD [ "streamlit", "run", "dashboard.py" ]

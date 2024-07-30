@@ -42,6 +42,14 @@ def setup_sidebar():
             menu_icon="cast",
             default_index=0,
         )
+        # st.markdown(
+        #     """
+        #     <div style="display: flex; justify-content: center; align-items: center;">
+        #         <img src="/app/images/logo.png" width="150">
+        #     </div>
+        #     """,
+        #     unsafe_allow_html=True
+        # )
 
     return selected
 
@@ -70,7 +78,7 @@ def display_home_page():
     with col1:
         st.write("")
     with col2:
-        st.image("app/dashboard/logo.png", width=50, use_column_width=True)  
+        st.image("/app/images/logo.png", width=50, use_column_width=True)  
     with col3:
         st.write("")
     st.write("""
