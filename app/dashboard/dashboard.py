@@ -250,8 +250,107 @@ def display_measures():
         st.session_state['page'] = 'home'
 
 
+# def display_hospitals():
+#     """Display hospitals on a map, as a pie chart, and in a table."""
+#     st.title("Hospitals")
 
-# hospitals
+#     if st.button("Return to Home"):
+#         st.session_state['page'] = 'home'
+
+#     # Fetch hospital data from the database
+#     hospital_df = fetch_data('SELECT Latitude, Longitude, Name, Type, Sector, Open_Closed, State FROM hospitals')
+#     hospital_df['latitude'] = pd.to_numeric(hospital_df['latitude'])
+#     hospital_df['longitude'] = pd.to_numeric(hospital_df['longitude'])
+#     hospital_df.dropna(subset=['latitude', 'longitude'], inplace=True)
+
+#     hospital_map = folium.Map(location=[-25, 135], zoom_start=5)
+#     for _, row in hospital_df.iterrows():
+#         folium.Marker(
+#             [row['latitude'], row['longitude']],
+#             popup=row['name']
+#         ).add_to(hospital_map)
+#     folium_static(hospital_map)
+
+#     state_sector_counts = hospital_df.groupby(['state', 'sector']).size().reset_index(name='Number of Hospitals')
+
+#     private_hospitals = state_sector_counts[state_sector_counts['sector'] == 'Private']
+#     public_hospitals = state_sector_counts[state_sector_counts['sector'] == 'Public']
+
+#     state_counts = pd.merge(private_hospitals, public_hospitals, on='state', suffixes=('_private', '_public'), how='outer').fillna(0)
+
+#     # Histogram for the number of private and public hospitals per state
+#     fig_hist = px.bar(state_counts, x='state', y=['Number of Hospitals_private', 'Number of Hospitals_public'], barmode='group',
+#                       title="Number of Private and Public Hospitals per State", labels={'value': 'Number of Hospitals', 'variable': 'Hospital Type'})
+#     fig_hist.update_layout(xaxis_title="State", yaxis_title="Count")
+#     st.plotly_chart(fig_hist)
+
+
+#     # Load the Excel file
+#     excel_file = '/app/Additional_data/AdmittedPatients.xlsx'
+
+#     # Load Table 2.1
+#     df_2_1 = pd.read_excel(excel_file, sheet_name='Table 2.1', skiprows=2)
+#     df_2_1 = df_2_1.rename(columns={
+#         'Unnamed: 0': 'Hospital Type',
+#         '2018–19': '2018-19',
+#         '2019–20': '2019-20',
+#         '2020–21': '2020-21',
+#         '2021–22(a)': '2021-22',
+#         '2022–23': '2022-23'
+#     }).drop(columns=['Average since 2018–19', 'Since 2021–22'])
+#     df_2_1['Hospital Type'] = df_2_1['Hospital Type'].ffill()
+#     df_2_1 = df_2_1[df_2_1['Hospital Type'].isin(['Total public hospitals', 'Total private hospitals'])]
+#     df_melted_2_1 = df_2_1.melt(id_vars='Hospital Type', var_name='Year', value_name='Separations')
+#     df_melted_2_1 = df_melted_2_1[~df_melted_2_1['Year'].str.contains('Unnamed')]
+#     df_melted_2_1['Year'] = pd.to_datetime(df_melted_2_1['Year'].apply(lambda x: x.split('-')[0]), format='%Y')
+#     df_melted_2_1['Separations'] = pd.to_numeric(df_melted_2_1['Separations'])
+
+#     # Plot the separations over time for private and public hospitals
+#     fig_line = px.line(df_melted_2_1, x='Year', y='Separations', color='Hospital Type',
+#                        title="Separations Over Time for Private and Public Hospitals",
+#                        labels={'Year': 'Year', 'Separations': 'Number of Separations', 'Hospital Type': 'Hospital Type'})
+#     st.plotly_chart(fig_line)
+
+#     # Hospitals based on selected state and open/closed status
+#     selected_state_hospital = st.selectbox("Select State", hospital_df['state'].unique())
+#     selected_status = st.selectbox("Select Open/Closed", hospital_df['open_closed'].unique())
+
+#     st.markdown(f"### Hospitals in {selected_state_hospital}")
+
+#     filtered_df = hospital_df[(hospital_df['state'] == selected_state_hospital) & (hospital_df['open_closed'] == selected_status)]
+
+#     col1, col2 = st.columns(2)
+
+#     with col1:
+#         if not filtered_df.empty:
+#             fig_map = px.scatter_mapbox(
+#                 filtered_df,
+#                 lat="latitude",
+#                 lon="longitude",
+#                 hover_name="name",
+#                 color="sector",
+#                 zoom=4,
+#                 height=500,
+#                 color_discrete_map={'Public': 'blue', 'Private': 'light blue'}
+#             )
+#             fig_map.update_layout(mapbox_style="open-street-map")
+#             fig_map.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+#             st.plotly_chart(fig_map)
+#         else:
+#             st.write("No hospitals found with the selected criteria.")
+
+#     with col2:
+#         sector_counts = filtered_df['sector'].value_counts().reset_index()
+#         sector_counts.columns = ['Sector', 'Count']
+
+#         fig_pie = px.pie(sector_counts, names='Sector', values='Count', title=f"Total number of hospitals in {selected_state_hospital}")
+#         st.plotly_chart(fig_pie)
+
+
+def clean_year_column(year):
+    if isinstance(year, str):
+        return year.split('–')[0]
+    return year
 
 def display_hospitals():
     """Display hospitals on a map, as a pie chart, and in a table."""
@@ -261,53 +360,172 @@ def display_hospitals():
         st.session_state['page'] = 'home'
 
     # Fetch hospital data from the database
-    df = fetch_data('SELECT Latitude, Longitude, Name, Type, Sector, Open_Closed, State FROM hospitals')
-    df['latitude'] = pd.to_numeric(df['latitude'])
-    df['longitude'] = pd.to_numeric(df['longitude'])
-    df.dropna(subset=['latitude', 'longitude'], inplace=True)
+    hospital_df = fetch_data('SELECT Latitude, Longitude, Name, Type, Sector, Open_Closed, State FROM hospitals')
+    hospital_df['latitude'] = pd.to_numeric(hospital_df['latitude'])
+    hospital_df['longitude'] = pd.to_numeric(hospital_df['longitude'])
+    hospital_df.dropna(subset=['latitude', 'longitude'], inplace=True)
 
     hospital_map = folium.Map(location=[-25, 135], zoom_start=5)
-    for _, row in df.iterrows():
+    for _, row in hospital_df.iterrows():
         folium.Marker(
             [row['latitude'], row['longitude']],
             popup=row['name']
         ).add_to(hospital_map)
     folium_static(hospital_map)
 
-    state_sector_counts = df.groupby(['state', 'sector']).size().reset_index(name='Number of Hospitals')
+    state_sector_counts = hospital_df.groupby(['state', 'sector']).size().reset_index(name='Number of Hospitals')
 
     private_hospitals = state_sector_counts[state_sector_counts['sector'] == 'Private']
     public_hospitals = state_sector_counts[state_sector_counts['sector'] == 'Public']
 
     state_counts = pd.merge(private_hospitals, public_hospitals, on='state', suffixes=('_private', '_public'), how='outer').fillna(0)
 
-    #pie chart for the total private and public hospitals in Australia
-    total_private_hospitals = private_hospitals['Number of Hospitals'].sum() if not private_hospitals.empty else 0
-    total_public_hospitals = public_hospitals['Number of Hospitals'].sum() if not public_hospitals.empty else 0
-
-    fig_pie = px.pie(names=['Private', 'Public'], values=[total_private_hospitals, total_public_hospitals],
-                 title="Total Private and Public Hospitals in Australia")
-    st.plotly_chart(fig_pie)
-
-    #histogram for the number of private and public hospitals per state
+    # Histogram for the number of private and public hospitals per state
     fig_hist = px.bar(state_counts, x='state', y=['Number of Hospitals_private', 'Number of Hospitals_public'], barmode='group',
-                 title="Number of Private and Public Hospitals per State", labels={'value': 'Number of Hospitals', 'variable': 'Hospital Type'})
+                      title="Number of Private and Public Hospitals per State", labels={'value': 'Number of Hospitals', 'variable': 'Hospital Type'})
     fig_hist.update_layout(xaxis_title="State", yaxis_title="Count")
     st.plotly_chart(fig_hist)
 
-    # hospitals based on selected state, open/closed status, and sector
-    selected_state = st.selectbox("Select State", df['state'].unique())
-    selected_status = st.selectbox("Select Open/Closed", df['open_closed'].unique())
-    selected_sector = st.selectbox("Select Sector", df['sector'].unique())
+    # Load the Excel file
+    excel_file = '/app/Additional_data/AdmittedPatients.xlsx'
 
-    st.markdown(f"### Hospitals in {selected_state} - {selected_status} - {selected_sector}")
+    # Load Table 2.1
+    df_2_1 = pd.read_excel(excel_file, sheet_name='Table 2.1', skiprows=2)
+    df_2_1 = df_2_1.rename(columns={
+        'Unnamed: 0': 'Hospital Type',
+        '2018–19': '2018-19',
+        '2019–20': '2019-20',
+        '2020–21': '2020-21',
+        '2021–22(a)': '2021-22',
+        '2022–23': '2022-23'
+    }).drop(columns=['Average since 2018–19', 'Since 2021–22'])
+    df_2_1['Hospital Type'] = df_2_1['Hospital Type'].ffill()
+    df_2_1 = df_2_1[df_2_1['Hospital Type'].isin(['Total public hospitals', 'Total private hospitals'])]
+    df_melted_2_1 = df_2_1.melt(id_vars='Hospital Type', var_name='Year', value_name='Separations')
+    df_melted_2_1 = df_melted_2_1[~df_melted_2_1['Year'].str.contains('Unnamed')]
+    df_melted_2_1['Year'] = df_melted_2_1['Year'].apply(clean_year_column)
+    df_melted_2_1['Year'] = pd.to_datetime(df_melted_2_1['Year'], format='%Y', errors='coerce')
+    df_melted_2_1['Separations'] = pd.to_numeric(df_melted_2_1['Separations'], errors='coerce')
 
-    filtered_df = df[(df['state'] == selected_state) & (df['open_closed'] == selected_status) & (df['sector'] == selected_sector)]
+    # Plot the separations over time for private and public hospitals
+    fig_line = px.line(df_melted_2_1, x='Year', y='Separations', color='Hospital Type',
+                       title="Separations Over Time for Private and Public Hospitals",
+                       labels={'Year': 'Year', 'Separations': 'Number of Separations', 'Hospital Type': 'Hospital Type'})
+    st.plotly_chart(fig_line)
 
-    if not filtered_df.empty:
-        st.table(filtered_df)
-    else:
-        st.write("No hospitals found with the selected criteria.")
+    # # Load Table 2.2
+    # df_2_2 = pd.read_excel(excel_file, sheet_name='Table 2.2', skiprows=2)
+    # df_2_2 = df_2_2.rename(columns={
+    #     'Unnamed: 0': 'State',
+    #     '2018–19': '2018-19',
+    #     '2019–20': '2019-20',
+    #     '2020–21': '2020-21',
+    #     '2021–22(a)': '2021-22',
+    #     '2022–23': '2022-23',
+    #     'Average since 2018–19': 'Average',
+    #     'Since 2021–22': 'Change'
+    # })
+    # df_2_2 = df_2_2.replace('n.p.', pd.NA)
+    # df_2_2 = df_2_2[df_2_2['State'].notna() & df_2_2['State'].str.contains('All hospitals')]
+    # df_2_2 = df_2_2.melt(id_vars='State', var_name='Year', value_name='Separations')
+    # df_2_2 = df_2_2[~df_2_2['Year'].isin(['Average', 'Change'])]
+    # df_2_2['Year'] = df_2_2['Year'].apply(clean_year_column)
+    # df_2_2['Year'] = pd.to_datetime(df_2_2['Year'], format='%Y', errors='coerce')
+    # df_2_2['Separations'] = pd.to_numeric(df_2_2['Separations'], errors='coerce')
+
+    # # Plot the separations over time for each state
+    # fig_separations = px.line(df_2_2, x='Year', y='Separations', color='State',
+    #                           title="Separations Over Time by State",
+    #                           labels={'Year': 'Year', 'Separations': 'Number of Separations', 'State': 'State'})
+    # st.plotly_chart(fig_separations)
+
+    # # Hospitals based on selected state and open/closed status
+    selected_state_hospital = st.selectbox("Select State", hospital_df['state'].unique())
+    selected_status = st.selectbox("Select Open/Closed", hospital_df['open_closed'].unique())
+
+    st.markdown(f"### Hospitals in {selected_state_hospital}")
+
+    filtered_df = hospital_df[(hospital_df['state'] == selected_state_hospital) & (hospital_df['open_closed'] == selected_status)]
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        if not filtered_df.empty:
+            fig_map = px.scatter_mapbox(
+                filtered_df,
+                lat="latitude",
+                lon="longitude",
+                hover_name="name",
+                color="sector",
+                zoom=4,
+                height=500,
+                color_discrete_map={'Public': 'blue', 'Private': 'light blue'}
+            )
+            fig_map.update_layout(mapbox_style="open-street-map")
+            fig_map.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+            st.plotly_chart(fig_map)
+        else:
+            st.write("No hospitals found with the selected criteria.")
+
+    with col2:
+        sector_counts = filtered_df['sector'].value_counts().reset_index()
+        sector_counts.columns = ['Sector', 'Count']
+
+        fig_pie = px.pie(sector_counts, names='Sector', values='Count', title=f"Total number of hospitals in {selected_state_hospital}")
+        st.plotly_chart(fig_pie)
+
+    df_2_9 = pd.read_excel(excel_file, sheet_name='Table 2.9', skiprows=2)
+    df_2_9 = df_2_9.rename(columns={
+        'Unnamed: 0': 'Category',
+        '2018–19': '2018-19',
+        '2019–20': '2019-20',
+        '2020–21': '2020-21',
+        '2021–22(b)': '2021-22',
+        '2022–23': '2022-23',
+        'Average since 2018–19': 'Average since 2018-19',
+        'Since 2021–22': 'Since 2021-22'
+    })
+
+    total_public_hospitals = df_2_9[df_2_9['Category'] == 'Total public hospitals']
+    total_private_hospitals = df_2_9[df_2_9['Category'] == 'Total private hospitals']
+
+    # Melt the dataframes to long format, excluding columns 'Average since 2018-19' and 'Since 2021-22'
+    total_public_hospitals_melted = total_public_hospitals.melt(
+        id_vars='Category',
+        value_vars=['2018-19', '2019-20', '2020-21', '2021-22', '2022-23'],
+        var_name='Year',
+        value_name='Average Length of Stay'
+    )
+
+    total_private_hospitals_melted = total_private_hospitals.melt(
+        id_vars='Category',
+        value_vars=['2018-19', '2019-20', '2020-21', '2021-22', '2022-23'],
+        var_name='Year',
+        value_name='Average Length of Stay'
+    )
+
+    # Plot for total public hospitals
+    fig_total_public = px.line(
+        total_public_hospitals_melted, x='Year', y='Average Length of Stay', color='Category',
+        title="Average Length of Stay for Total Public Hospitals",
+        labels={'Year': 'Year', 'Average Length of Stay': 'Average Length of Stay (days)'}
+    )
+
+    # Plot for total private hospitals
+    fig_total_private = px.line(
+        total_private_hospitals_melted, x='Year', y='Average Length of Stay', color='Category',
+        title="Average Length of Stay for Total Private Hospitals",
+        labels={'Year': 'Year', 'Average Length of Stay': 'Average Length of Stay (days)'}
+    )
+
+    # Display the plots side by side
+    col1, col2 = st.columns(2)
+    with col1:
+        st.plotly_chart(fig_total_public)
+    with col2:
+        st.plotly_chart(fig_total_private)
+
+
 
 def display_contactus():
     st.title("Contact Us")

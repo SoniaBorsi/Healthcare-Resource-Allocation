@@ -1,17 +1,36 @@
+# FROM ubuntu:20.04
+
+# WORKDIR /app
+
+# RUN mkdir images
+
+# RUN apt-get update && apt-get install -y \
+#     python3 \
+#     python3-pip
+
+# RUN pip install streamlit streamlit_folium plotly pandas folium sqlalchemy psycopg2-binary numpy streamlit_option_menu
+
+# COPY dashboard/dashboard.py /app/dashboard.py
+
+#     COPY dashboard/logo.png /app/images/logo.png
+
+# CMD [ "streamlit", "run", "dashboard.py" ]
+
 FROM ubuntu:20.04
 
 WORKDIR /app
 
-RUN mkdir images
+# Create necessary directories
+RUN mkdir -p images utils/Additional_data
 
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip
 
-RUN pip install streamlit streamlit_folium plotly pandas folium sqlalchemy psycopg2-binary numpy streamlit_option_menu
+RUN pip install streamlit streamlit_folium plotly pandas folium sqlalchemy psycopg2-binary numpy streamlit_option_menu openpyxl
 
 COPY dashboard/dashboard.py /app/dashboard.py
-
 COPY dashboard/logo.png /app/images/logo.png
+COPY utils/Additional_data/AdmittedPatients.xlsx /app/Additional_data/AdmittedPatients.xlsx
 
-CMD [ "streamlit", "run", "dashboard.py" ]
+CMD ["streamlit", "run", "dashboard.py"]
