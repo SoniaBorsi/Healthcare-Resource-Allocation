@@ -14,6 +14,7 @@
 
 ## Repository guide
 
+```
 ├── README.md
 ├── app
 │   ├── Dockerfile
@@ -39,6 +40,7 @@
 │       └── values_lm.py
 ├── docker-compose.yml
 └── run.sh
+```
 
 ## Authors
 
