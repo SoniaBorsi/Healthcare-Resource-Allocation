@@ -9,7 +9,36 @@
 
 ## Project structure
 
+
+## Big Data Technologies used 
+
 ## Repository guide
+
+├── README.md
+├── app
+│   ├── Dockerfile
+│   ├── Dockerfile2
+│   ├── Dockerfile3
+│   ├── ETL.py
+│   ├── files
+│   │   ├── data
+│   │   │   ├── AdmittedPatients.xlsx
+│   │   │   ├── Expediture.xlsx
+│   │   │   ├── Population Projections.xlsx
+│   │   │   └── Population.xlsx
+│   │   └── images
+│   │       └── logo.png
+│   ├── postgresql-42.7.3.jar
+│   ├── requirements.txt
+│   └── utils
+│       ├── budget_lm.py
+│       ├── dashboard.py
+│       ├── tables.py
+│       ├── tools.py
+│       ├── values.py
+│       └── values_lm.py
+├── docker-compose.yml
+└── run.sh
 
 ## Authors
 
