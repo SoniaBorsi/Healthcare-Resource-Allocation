@@ -41,7 +41,12 @@ The repository is organized as follows:
 2. **Run the application**:
    ```bash
    bash run.sh
-3. **Access the dashbord at localhost:8080**
+3. **Wait for the the data to be loaded into the db**
+   This usually takes about 1 hour, depending on your internet connection
+4. **Access the dashboard**
+   Got to localhost:8080 and explore all the analytics
+
+Alternatevely, you can consult the hosted version without the need for configuring and downloading the data
 
 ## Authors
 
