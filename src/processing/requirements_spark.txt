@@ -1,0 +1,12 @@
+pika 
+py4j 
+requests 
+pandas 
+plotly 
+streamlit_folium 
+sqlalchemy
+streamlit_chat 
+psycopg2-binary 
+openpyxl 
+tqdm 
+streamlit
