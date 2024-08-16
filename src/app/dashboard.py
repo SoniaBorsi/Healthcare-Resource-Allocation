@@ -64,7 +64,7 @@ def display_home_page():
     with col1:
         st.write("")
     with col2:
-        st.image("/app/files/images/logo.png", use_column_width=True)  
+        st.image("/app/data/images/logo.png", use_column_width=True)  
     with col3:
         st.write("")
 
@@ -407,7 +407,7 @@ def display_hospitals():
     st.plotly_chart(fig_hist)   
 
     # Load the Excel file for further analysis
-    excel_file = '/app/files/data/AdmittedPatients.xlsx'
+    excel_file = '/app/data/AdmittedPatients.xlsx'
 
     # Filter hospitals based on selected state and open/closed status
     selected_state_hospital = st.selectbox("Select State", hospital_df['state'].unique())
@@ -515,7 +515,7 @@ def display_hospitals():
         
 def display_budget():
     # Define the file path
-    file_path = '/app/files/data/Expediture.xlsx'
+    file_path = '/app/data/Expediture.xlsx'
     st.title("Budget")
     # Load the Excel file
     xls = pd.ExcelFile(file_path)

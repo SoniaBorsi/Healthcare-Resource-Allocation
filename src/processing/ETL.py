@@ -1,18 +1,13 @@
-from pyspark.sql import SparkSession
+import utilities.tables 
 import utilities.values as values
 import logging
 import utilities.tools as tools
-import utilities.tables 
 from tqdm import tqdm
+from setup import spark
 
 utilities.tables.schema()
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
-spark = SparkSession.builder \
-    .appName("Healthcare-Resource-Allocation") \
-    .config("spark.driver.extraClassPath", "/opt/bitnami/spark/processing/jars/postgresql-42.7.3.jar") \
-    .getOrCreate()
 
 tools.map_hospitals(spark)
 datasets_csv = tools.download_datasetlist(spark)

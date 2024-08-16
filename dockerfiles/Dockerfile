@@ -16,3 +16,5 @@ RUN pip install --no-cache-dir -r /opt/bitnami/spark/processing/requirements_spa
 
 # Set the command to start the Spark master
 CMD ["bin/spark-class", "org.apache.spark.deploy.master.Master"]
+
+RUN python3 /opt/bitnami/spark/processing/setup.py
