@@ -3,7 +3,7 @@ services:
   spark-master:
     build:
       context: app
-      dockerfile: Dockerfile
+      dockerfile: dockerfiles/Dockerfile
     container_name: spark-master
     depends_on:
       - postgres
@@ -16,7 +16,7 @@ services:
   spark-worker-1:
     build:
       context: app
-      dockerfile: Dockerfile3
+      dockerfile: dockerfiles/Dockerfile3
     container_name: spark-worker-1
     command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
     depends_on:
@@ -32,7 +32,7 @@ services:
   spark-worker-2:
     build:
       context: app
-      dockerfile: Dockerfile3
+      dockerfile: dockerfiles/Dockerfile3
     container_name: spark-worker-2
     command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
     depends_on:

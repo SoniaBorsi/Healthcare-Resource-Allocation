@@ -1,7 +1,7 @@
 import logging
 import requests
 from tqdm import tqdm
-from utils.tools import insert_into_postgresql
+from utilities.tools import insert_into_postgresql
 import io
 from pyspark.sql.functions import concat, col
 

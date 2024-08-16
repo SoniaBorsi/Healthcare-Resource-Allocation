@@ -1,11 +1,11 @@
 from pyspark.sql import SparkSession
-import utils.values as values
+import utilities.values as values
 import logging
-import utils.tools as tools
-import utils.tables 
+import utilities.tools as tools
+import utilities.tables 
 from tqdm import tqdm
 
-utils.tables.schema()
+utilities.tables.schema()
 
 #logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
