@@ -2,7 +2,6 @@ version: '3.8'
 services:
   spark-master:
     build:
-      context: app
       dockerfile: dockerfiles/Dockerfile
     container_name: spark-master
     depends_on:
@@ -15,7 +14,6 @@ services:
 
   spark-worker-1:
     build:
-      context: app
       dockerfile: dockerfiles/Dockerfile3
     container_name: spark-worker-1
     command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
@@ -31,7 +29,6 @@ services:
 
   spark-worker-2:
     build:
-      context: app
       dockerfile: dockerfiles/Dockerfile3
     container_name: spark-worker-2
     command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
@@ -69,9 +66,8 @@ services:
       - postgres-data:/var/lib/postgresql/data
 
   dashboard:
-    build: 
-      context: app
-      dockerfile: Dockerfile2
+    build:
+      dockerfile: dockerfiles/Dockerfile2
     container_name: dashboard
     ports:
       - "8080:8501"

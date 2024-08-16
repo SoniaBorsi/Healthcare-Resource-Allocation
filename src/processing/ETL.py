@@ -7,11 +7,11 @@ from tqdm import tqdm
 
 utilities.tables.schema()
 
-#logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 spark = SparkSession.builder \
     .appName("Healthcare-Resource-Allocation") \
-    .config("spark.driver.extraClassPath", "/opt/bitnami/spark/jars/postgresql-42.7.3.jar") \
+    .config("spark.driver.extraClassPath", "/opt/bitnami/spark/processing/jars/postgresql-42.7.3.jar") \
     .getOrCreate()
 
 tools.map_hospitals(spark)

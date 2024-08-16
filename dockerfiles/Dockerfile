@@ -4,16 +4,10 @@ USER root
 
 RUN mkdir -p /.cache && chmod -R 777 /.cache
 
-COPY requirements.txt opt/bitnami/spark/requirements.txt
+RUN mkdir /opt/bitnami/spark/processing
 
-RUN pip install -r opt/bitnami/spark/requirements.txt
+COPY src/processing /opt/bitnami/spark/processing
 
-COPY ETL.py /opt/bitnami/spark/ETL.py
-
-COPY postgresql-42.7.3.jar /opt/bitnami/spark/jars/postgresql-42.7.3.jar
-
-RUN mkdir  /opt/bitnami/spark/utils 
-
-COPY utils /opt/bitnami/spark/utils/
+RUN pip install -r opt/bitnami/spark/processing/requirements_spark.txt
 
 CMD ["bin/spark-class", "org.apache.spark.deploy.master.Master"]

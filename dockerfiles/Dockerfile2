@@ -3,17 +3,12 @@ FROM ubuntu:20.04
 
 WORKDIR /app
 
-RUN mkdir -p images files/data utils
-RUN mkdir -p images files/images 
-
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip
 
-RUN pip install streamlit streamlit_folium plotly pandas folium sqlalchemy psycopg2-binary numpy streamlit_option_menu openpyxl statsmodels
+COPY src/app/ /app/
 
-COPY files/data /app/files/data
-COPY files/images /app/files/images
-COPY utils/dashboard.py /app/utils/dashboard.py
+RUN pip install -r requirements_dashboard.txt
 
-CMD ["streamlit", "run", "utils/dashboard.py"]
+CMD ["streamlit", "run", "dashboard.py"]
