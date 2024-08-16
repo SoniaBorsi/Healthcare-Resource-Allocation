@@ -263,62 +263,75 @@ def display_measures():
         )
         st.plotly_chart(fig_map)
 
+        # Plot Selection
+        st.markdown("### Choose Plots to Display")
+        plot_options = st.multiselect(
+            "Select the plots you want to see:",
+            ["Time Series Decomposition", "Forecasting", "Distribution of Values", "Value Distribution by Hospital", "Heatmap of Values Over Time", "Ranking of Hospitals", "Correlation Analysis"]
+        )
+
         # Time Series Decomposition
-        st.markdown("### Time Series Decomposition")
-        st.markdown("This section decomposes the time series into trend, seasonal, and residual components to analyze the underlying patterns in the data.")
-        if len(df_value_aggregated) >= 24:  # Check if there are enough observations
-            decomposition = seasonal_decompose(df_value_aggregated.set_index('reportingstartdate')['value'], model='additive', period=12)
-            fig_trend = px.line(decomposition.trend.dropna(), title='Trend Component')
-            fig_seasonal = px.line(decomposition.seasonal.dropna(), title='Seasonal Component')
-            fig_residual = px.line(decomposition.resid.dropna(), title='Residual Component')
-            st.plotly_chart(fig_trend)
-            st.plotly_chart(fig_seasonal)
-            st.plotly_chart(fig_residual)
-        else:
-            st.write("Not enough data for time series decomposition. At least 24 observations are required.")
+        if "Time Series Decomposition" in plot_options:
+            st.markdown("### Time Series Decomposition")
+            st.markdown("This section decomposes the time series into trend, seasonal, and residual components to analyze the underlying patterns in the data.")
+            if len(df_value_aggregated) >= 24:  # Check if there are enough observations
+                decomposition = seasonal_decompose(df_value_aggregated.set_index('reportingstartdate')['value'], model='additive', period=12)
+                fig_trend = px.line(decomposition.trend.dropna(), title='Trend Component')
+                fig_seasonal = px.line(decomposition.seasonal.dropna(), title='Seasonal Component')
+                fig_residual = px.line(decomposition.resid.dropna(), title='Residual Component')
+                st.plotly_chart(fig_trend)
+                st.plotly_chart(fig_seasonal)
+                st.plotly_chart(fig_residual)
+            else:
+                st.write("Not enough data for time series decomposition. At least 24 observations are required.")
 
         # Forecasting
-        st.markdown("### Forecasting")
-        st.markdown("This section provides a forecast of the selected measure for the upcoming months based on historical data.")
-        forecast_horizon = st.slider("Select Forecast Horizon (Months)", 1, 24, 12)
-        if len(df_value_aggregated) >= 12:
-            model = ExponentialSmoothing(df_value_aggregated['value'], trend='add', seasonal=None).fit()
-            forecast = model.forecast(forecast_horizon)
-            fig_forecast = px.line(df_value_aggregated, x='reportingstartdate', y='value', title='Forecasting')
-            fig_forecast.add_trace(go.Scatter(x=pd.date_range(df_value_aggregated['reportingstartdate'].iloc[-1], periods=forecast_horizon, freq='M'), y=forecast, mode='lines', name='Forecast'))
-            st.plotly_chart(fig_forecast)
-        else:
-            st.write("Not enough data for forecasting. At least 12 observations are required.")
+        if "Forecasting" in plot_options:
+            st.markdown("### Forecasting")
+            st.markdown("This section provides a forecast of the selected measure for the upcoming months based on historical data.")
+            forecast_horizon = st.slider("Select Forecast Horizon (Months)", 1, 24, 12, key="forecast_horizon")
+            if len(df_value_aggregated) >= 12:
+                model = ExponentialSmoothing(df_value_aggregated['value'], trend='add', seasonal=None).fit()
+                forecast = model.forecast(forecast_horizon)
+                fig_forecast = px.line(df_value_aggregated, x='reportingstartdate', y='value', title='Forecasting')
+                fig_forecast.add_trace(go.Scatter(x=pd.date_range(df_value_aggregated['reportingstartdate'].iloc[-1], periods=forecast_horizon, freq='M'), y=forecast, mode='lines', name='Forecast'))
+                st.plotly_chart(fig_forecast)
+            else:
+                st.write("Not enough data for forecasting. At least 12 observations are required.")
 
         # Histogram: Distribution of Values
-        st.markdown("### Distribution of Values")
-        st.markdown("This histogram shows the distribution of values for the selected measure across hospitals in the selected state.")
-        fig_hist = px.histogram(df_value, x='value', nbins=20, title=f'Distribution of {selected_measure} - {selected_reported_measure}')
-        st.plotly_chart(fig_hist)
+        if "Distribution of Values" in plot_options:
+            st.markdown("### Distribution of Values")
+            st.markdown("This histogram shows the distribution of values for the selected measure across hospitals in the selected state.")
+            fig_hist = px.histogram(df_value, x='value', nbins=20, title=f'Distribution of {selected_measure} - {selected_reported_measure}')
+            st.plotly_chart(fig_hist)
 
         # Box Plot: Value Distribution by Hospital
-        st.markdown("### Value Distribution by Hospital")
-        st.markdown("This box plot shows the distribution of the selected measure across different hospitals in the selected state.")
-        fig_box = px.box(df_value, x='hospital_name', y='value', title=f'{selected_measure} - {selected_reported_measure} Distribution by Hospital')
-        st.plotly_chart(fig_box)
+        if "Value Distribution by Hospital" in plot_options:
+            st.markdown("### Value Distribution by Hospital")
+            st.markdown("This box plot shows the distribution of the selected measure across different hospitals in the selected state.")
+            fig_box = px.box(df_value, x='hospital_name', y='value', title=f'{selected_measure} - {selected_reported_measure} Distribution by Hospital')
+            st.plotly_chart(fig_box)
 
         # Heatmap: Value Over Time by Hospital
-        st.markdown("### Heatmap of Values Over Time")
-        st.markdown("This heatmap shows the variation of the selected measure across different hospitals over time.")
-        fig_heatmap = px.density_heatmap(df_value, x='hospital_name', y='reportingstartdate', z='value', title=f'Heatmap of {selected_measure} - {selected_reported_measure} Over Time by Hospital')
-        st.plotly_chart(fig_heatmap)
+        if "Heatmap of Values Over Time" in plot_options:
+            st.markdown("### Heatmap of Values Over Time")
+            st.markdown("This heatmap shows the variation of the selected measure across different hospitals over time.")
+            fig_heatmap = px.density_heatmap(df_value, x='hospital_name', y='reportingstartdate', z='value', title=f'Heatmap of {selected_measure} - {selected_reported_measure} Over Time by Hospital')
+            st.plotly_chart(fig_heatmap)
 
         # Hospital Rankings
-        st.markdown("### Ranking of Hospitals")
-        st.markdown("This bar chart ranks hospitals based on the average value of the selected measure.")
-        df_ranked = df_value.groupby('hospital_name').agg({'value': 'mean'}).reset_index().sort_values(by='value', ascending=False)
-        fig_bar = px.bar(df_ranked, x='hospital_name', y='value', title=f'Ranking of Hospitals by {selected_measure} - {selected_reported_measure}')
-        st.plotly_chart(fig_bar)
+        if "Ranking of Hospitals" in plot_options:
+            st.markdown("### Ranking of Hospitals")
+            st.markdown("This bar chart ranks hospitals based on the average value of the selected measure.")
+            df_ranked = df_value.groupby('hospital_name').agg({'value': 'mean'}).reset_index().sort_values(by='value', ascending=False)
+            fig_bar = px.bar(df_ranked, x='hospital_name', y='value', title=f'Ranking of Hospitals by {selected_measure} - {selected_reported_measure}')
+            st.plotly_chart(fig_bar)
 
         # Scatter Plot for Correlation Analysis
-        st.markdown("### Correlation Analysis")
-        st.markdown("This scatter plot shows the correlation between the selected measure and another measure of your choice.")
-        if st.checkbox("Show Scatter Plot for Correlation Analysis"):
+        if "Correlation Analysis" in plot_options:
+            st.markdown("### Correlation Analysis")
+            st.markdown("This scatter plot shows the correlation between the selected measure and another measure of your choice.")
             another_metric = st.selectbox("Select Another Metric for Correlation", np.sort(df_measures['measurename'].unique()))
             sql_query_another_metric = f'''
             SELECT
@@ -362,7 +375,7 @@ def display_measures():
 
     if st.button("Return to Home"):
         st.session_state['page'] = 'home'
-
+        
 
 
 
@@ -406,8 +419,52 @@ def display_hospitals():
     fig_hist.update_layout(xaxis_title="State", yaxis_title="Count")
     st.plotly_chart(fig_hist)   
 
-    # Load the Excel file for further analysis
-    excel_file = '/app/data/AdmittedPatients.xlsx'
+    
+    excel_file = 'data/Admitted Patients.xlsx'
+    xls = pd.ExcelFile(excel_file)
+
+    # Load and clean the data for Table 2.9
+    table_2_9_cleaned = pd.read_excel(xls, sheet_name='Table 2.9', header=2)
+    table_2_9_cleaned = table_2_9_cleaned.drop(columns=['Average since 2018–19', 'Since 2021–22'])
+
+    # Retain only the rows related to public and private hospitals, up to the "All hospitals" row
+    public_hospitals = table_2_9_cleaned.iloc[[1, 2, 3]].copy()
+    private_hospitals = table_2_9_cleaned.iloc[[4, 5, 6]].copy()
+
+    # Convert the data to long format for easier plotting
+    public_hospitals_long = public_hospitals.melt(id_vars=['Unnamed: 0'], var_name='Year', value_name='Average Length of Stay')
+    private_hospitals_long = private_hospitals.melt(id_vars=['Unnamed: 0'], var_name='Year', value_name='Average Length of Stay')
+
+    # Rename the 'Unnamed: 0' column to 'Hospital Type'
+    public_hospitals_long = public_hospitals_long.rename(columns={'Unnamed: 0': 'Hospital Type'})
+    private_hospitals_long = private_hospitals_long.rename(columns={'Unnamed: 0': 'Hospital Type'})
+
+    # Plot for public hospitals using Plotly
+    st.markdown("### Average Length of Stay in Australian Hospitals")
+    fig_public = px.bar(public_hospitals_long, x='Year', y='Average Length of Stay', color='Hospital Type',
+                        title='Average Length of Stay for Public Hospitals')
+    fig_public.update_layout(xaxis_title="Year", yaxis_title="Average Length of Stay (Days)")
+    st.plotly_chart(fig_public)
+
+    fig_private = px.bar(private_hospitals_long, x='Year', y='Average Length of Stay', color='Hospital Type',
+                         title='Average Length of Stay for Private Hospitals')
+    fig_private.update_layout(xaxis_title="Year", yaxis_title="Average Length of Stay (Days)")
+    st.plotly_chart(fig_private)
+
+
+    # # Load the Excel file for further analysis
+    excel_file = 'data/Admitted Patients.xlsx'
+    # Add population data for each state
+    population_data = {
+        "New South Wales": 7317500,
+        "Victoria": 5640900,
+        "Queensland": 4599400,
+        "Western Australia": 2366900,
+        "South Australia": 1659800,
+        "Tasmania": 511000,
+        "Australian Capital Territory": 366900,
+        "Northern Territory": 231200
+    }
 
     # Filter hospitals based on selected state and open/closed status
     selected_state_hospital = st.selectbox("Select State", hospital_df['state'].unique())
@@ -416,9 +473,26 @@ def display_hospitals():
     
     filtered_df = hospital_df[(hospital_df['state'] == selected_state_hospital) & (hospital_df['open_closed'] == selected_status)]
     
+    # Display population and hospital statistics
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        population = population_data.get(selected_state_hospital, "N/A")
+        st.metric(label="Population", value=f"{population:,}" if population != "N/A" else population)
+
+    with col2:
+        total_hospitals = len(filtered_df)
+        st.metric(label="Total Number of Hospitals", value=total_hospitals)
+
+    with col3:
+        # Use float division to calculate the ratio
+        ratio = (total_hospitals / population) * 1000 if population != "N/A" else "N/A"
+        st.metric(label="Hospitals per 1,000 Population", value=f"{ratio:.2f}" if ratio != "N/A" else ratio)
+
+    # Plot the map and pie chart
     col1, col2 = st.columns(2)
 
-    with col1:
+    with col1:  
         if not filtered_df.empty:
             fig_map = px.scatter_mapbox(
                 filtered_df,
@@ -443,79 +517,12 @@ def display_hospitals():
         fig_pie = px.pie(sector_counts, names='Sector', values='Count', title=f"Total number of hospitals in {selected_state_hospital}")
         st.plotly_chart(fig_pie)
 
-    # Load and clean the Excel data for average length of stay analysis
-    df_2_9 = pd.read_excel(excel_file, sheet_name='Table 2.9', skiprows=2)
-    df_2_9 = df_2_9.rename(columns={
-        'Unnamed: 0': 'Category',
-        '2018–19': '2018-19',
-        '2019–20': '2019-20',
-        '2020–21': '2020-21',
-        '2021–22(b)': '2021-22',
-        '2022–23': '2022-23',
-        'Average since 2018–19': 'Average since 2018-19',
-        'Since 2021–22': 'Since 2021-22'
-    })
-
-    # Clean the year column in the melted DataFrame
-    def clean_year_column(year):
-        if isinstance(year, str):
-            return year.split('–')[0]
-        return year
-
-    # Analyze the total public and private hospitals
-    total_public_hospitals = df_2_9[df_2_9['Category'] == 'Total public hospitals']
-    total_private_hospitals = df_2_9[df_2_9['Category'] == 'Total private hospitals']
-
-    # Melt the dataframes to long format, excluding columns 'Average since 2018-19' and 'Since 2021-22'
-    total_public_hospitals_melted = total_public_hospitals.melt(
-        id_vars='Category',
-        value_vars=['2018-19', '2019-20', '2020-21', '2021-22', '2022-23'],
-        var_name='Year',
-        value_name='Average Length of Stay'
-    )
-
-    total_private_hospitals_melted = total_private_hospitals.melt(
-        id_vars='Category',
-        value_vars=['2018-19', '2019-20', '2020-21', '2021-22', '2022-23'],
-        var_name='Year',
-        value_name='Average Length of Stay'
-    )
-
-    # Apply the clean_year_column function
-    total_public_hospitals_melted['Year'] = total_public_hospitals_melted['Year'].apply(clean_year_column)
-    total_private_hospitals_melted['Year'] = total_private_hospitals_melted['Year'].apply(clean_year_column)
-
-    total_public_hospitals_melted['Rolling Avg Length of Stay'] = total_public_hospitals_melted.groupby('Category')['Average Length of Stay'].transform(lambda x: x.rolling(window=2, min_periods=1).mean())
-    total_private_hospitals_melted['Rolling Avg Length of Stay'] = total_private_hospitals_melted.groupby('Category')['Average Length of Stay'].transform(lambda x: x.rolling(window=2, min_periods=1).mean())
-
-    # Plot for total public hospitals
-    fig_total_public = px.line(
-        total_public_hospitals_melted, x='Year', y='Rolling Avg Length of Stay', color='Category',
-        title="Average Length of Stay for Total Public Hospitals (Smoothed)",
-        labels={'Year': 'Year', 'Rolling Avg Length of Stay': 'Average Length of Stay (days)'}
-    )
-
-    # Plot for total private hospitals
-    fig_total_private = px.line(
-        total_private_hospitals_melted, x='Year', y='Rolling Avg Length of Stay', color='Category',
-        title="Average Length of Stay for Total Private Hospitals (Smoothed)",
-        labels={'Year': 'Year', 'Rolling Avg Length of Stay': 'Average Length of Stay (days)'}
-    )
-
-    # Display the plots side by side
-    col1, col2 = st.columns(2)
-    with col1:
-        st.plotly_chart(fig_total_public)
-    with col2:
-        st.plotly_chart(fig_total_private)
-
-
 
 # budget 
         
 def display_budget():
     # Define the file path
-    file_path = '/app/data/Expediture.xlsx'
+    file_path = 'data/Expediture.xlsx'
     st.title("Budget")
     # Load the Excel file
     xls = pd.ExcelFile(file_path)
@@ -592,7 +599,6 @@ def display_budget():
     st.plotly_chart(fig_gdp)
     st.plotly_chart(fig_ratio)
 
-    st.markdown("""Budget Predictions""")
 
 
 # Contact us 
