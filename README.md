@@ -1,11 +1,14 @@
 # Healthcare Resource Allocation
 
+The primary goal of the application is to provide a comprehensive, data-driven view of the Australian healthcare ecosystem, revealing trends and variations in resource utilisation across hospitals and regions.
 
 <br>
 
 <p align="center">
   <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/7da3dd9f425534fce06b3f21a67059a9697cf7b8/logo.png?raw=true" width="400"/>  
 </p>
+
+Designed for government decision-makers, this app enables informed policy-making by providing a clear, real-time snapshot of healthcare performance.
 
 ## Contents:
 - [Project Structure](https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/tree/main?tab=readme-ov-file#project-structure)
@@ -49,7 +52,26 @@ This application is designed to facilitate healthcare resource allocation throug
 
 ### Data Sources
 
-Alternatevely, you can consult the hosted version without the need for configuring and downloading the data
+Healthcare data utilized in this project is primarily extracted from the [Australian Institute of Health and Welfare (AIHW) API](https://www.aihw.gov.au/reports-data/myhospitals/content/api), an open and freely accessible resource. The available data includes:
+
+- **Hospital Data**: Information on elective surgery, emergency department care, hospital admissions, length of stay, available services, and additional healthcare metrics.
+- **Multi-Level Data**: Data available across multiple levels, from individual hospitals to aggregated figures at the local hospital network, state or territory, and national levels. The availability of data may vary across different data collections.
+- **Geographic Data**: Location data and mappings for Australian hospitals, provided through the AIHW API.
+
+In addition, this project integrates healthcare data with supplementary datasets provided by the [Australian Bureau of Statistics (ABS)](https://www.abs.gov.au) to enrich the analysis and ensure comprehensive insights.
+
+
+<table border="0">
+<tr>
+    <td>
+    <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/5bb61624bfaddd9e336dd68eefd9d855e7db5a79/ABS_logo.jpeg" width="100%" />
+    </td>
+    <td>
+    <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/5bb61624bfaddd9e336dd68eefd9d855e7db5a79/AIHW_logo.png", width="100%" />
+    </td>
+</tr>
+</table>
+
 
 ### Authors
 
