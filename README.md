@@ -8,11 +8,11 @@
 </p>
 
 ## Contents:
-- [Project Structure]()
-- [Getting Started]()
-- [Dashboard Demo]()
-- [Data Sources]()
-- [Authors]()
+- [Project Structure](https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/tree/main?tab=readme-ov-file#project-structure)
+- [Getting Started](https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/tree/main?tab=readme-ov-file#getting-started)
+- [Dashboard Demo](https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/tree/main?tab=readme-ov-file#dashboard-demo)
+- [Data Sources](https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/tree/main?tab=readme-ov-file#data-sources)
+- [Authors](https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/tree/main?tab=readme-ov-file#authors)
 
 ### Project Structure
 
@@ -47,7 +47,7 @@ This application is designed to facilitate healthcare resource allocation throug
   <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/dbae5fe6ec43d075a8c1b61d76fe9a312faec0ae/Dashboard%20demo.gif?raw=true" width="600"/>  
 </p>
 
-
+### Data Sources
 
 Alternatevely, you can consult the hosted version without the need for configuring and downloading the data
 
