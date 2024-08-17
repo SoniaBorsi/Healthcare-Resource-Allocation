@@ -43,7 +43,10 @@ The repository is organized as follows:
    Got to localhost:8080 and explore all the analytics
 
 ## Dashboard Demo
-This application is designed to facilitate healthcare resource allocation through data-driven insights. Navigate through the various sections using the sidebar to explore different metrics and tools available to you.
+This application is designed to facilitate healthcare resource allocation through data-driven insights. Navigate through the various sections using the sidebar to explore different metrics and tools available to you:
+- *Measures*: for detailed metrics for various healthcare measures across different states in Australia
+- *Hospitals*: for a comprehensive analysis of hospitals across different states
+- *Budget*: for a a comprehensive visual analysis of healthcare expenditure data
 
 <table border="0">
 <tr>
