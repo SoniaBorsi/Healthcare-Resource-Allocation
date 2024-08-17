@@ -15,6 +15,7 @@ import plotly.graph_objs as go
 
 
 # Database Connection Details
+
 POSTGRES_CONNECTION = {
     "dialect": "postgresql",
     "host": "postgres",
@@ -53,13 +54,11 @@ def setup_sidebar():
     return selected
 
 
-
 # Home Page
 
 def display_home_page():
-    st.title("Welcome to Healthcare Resource Allocation")
+    st.title("Welcome to Australian Healthcare Resource Allocation App")
 
-    # Display a healthcare-related image
     col1, col2, col3 = st.columns([1, 2, 1])
     with col1:
         st.write("")
@@ -73,7 +72,6 @@ def display_home_page():
         Navigate through the various sections using the sidebar to explore different metrics and tools available to you.
     """)
 
-
     st.markdown("### Overview")
     st.write("""
         Efficient allocation of healthcare resources is critical to improving patient outcomes and optimizing costs. 
@@ -81,13 +79,45 @@ def display_home_page():
         and making informed decisions about resource distribution.
     """)
 
-
     st.markdown("### Getting Started")
     st.write("""
         - **Step 1:** Use the sidebar to select a section (e.g., Measures, Hospitals, etc.).
         - **Step 2:** Choose the relevant options and filters to explore the data.
         - **Step 3:** View visualizations and insights to assist in decision-making.
     """)
+
+    # Fetch the total number of datasets
+    total_query = "SELECT COUNT(*) FROM datasets;"
+    total_count_df = fetch_data(total_query)
+    
+    # Fetch the number of stored datasets
+    stored_query = "SELECT COUNT(*) FROM datasets WHERE stored = TRUE;"
+    stored_count_df = fetch_data(stored_query)
+    
+    # Extract the counts from the dataframes
+    total_count = total_count_df.iloc[0, 0] if not total_count_df.empty else 0
+    stored_count = stored_count_df.iloc[0, 0] if not stored_count_df.empty else 0
+    
+    # Calculate the percentage of stored datasets
+    if total_count > 0:
+        stored_percentage = stored_count / total_count
+        stored_percentage_text = f"{stored_percentage * 100:.2f}%"
+    else:
+        stored_percentage = 0
+        stored_percentage_text = "0.00%"
+
+
+    st.markdown("### Data Storage Overview")
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.metric(label="Stored Datasets", value=stored_count)
+
+    with col2:
+        st.metric(label="Total Datasets", value=total_count)
+
+    with col3:
+        st.metric(label="Percentage Stored", value=stored_percentage_text)
 
     with st.expander('Learn More', expanded=True):
         st.write('''
@@ -101,6 +131,7 @@ def display_home_page():
     # Optional: Add a button to navigate to the main dashboard
     if st.button("Go to Dashboard"):
         st.session_state['page'] = 'dashboard'
+
 
 
 
@@ -452,7 +483,7 @@ def display_hospitals():
     st.plotly_chart(fig_private)
 
 
-    # # Load the Excel file for further analysis
+    # Load the Excel file for further analysis
     excel_file = 'data/Admitted Patients.xlsx'
     # Add population data for each state
     population_data = {
@@ -602,7 +633,7 @@ def display_budget():
 
 
 # Contact us 
-
+    
 def display_contactus():
     st.title("Contact Us")
 
@@ -612,7 +643,7 @@ def display_contactus():
 
     # Display contact information
     st.write("**Sonia Borsi**")
-    st.write("[Sonia.borsi@studenti.unitn.it](mailto:sonia.borsi@studenti.unitn.it) | [Linkedin](https://www.linkedin.com/in/sonia-borsi-824998260/)")
+    st.write("[Sonia Borsi](mailto:sonia.borsi@studenti.unitn.it) | [Linkedin](https://www.linkedin.com/in/sonia-borsi-824998260/)")
     st.write("**Filippo Costamagna**")
     st.write("[Filippo.costamagna](mailto:filippo.costamagna@studenti.unitn.it) | [Linkedin](https://www.linkedin.com/in/filippo-costamagna-a439b3303/)")
 
@@ -620,18 +651,21 @@ def display_contactus():
     We look forward to hearing from you and will respond as soon as possible.
     """)
 
-        # User feedback section
-    st.markdown("### We Value Your Feedback")
-    feedback = st.text_area("Please share your thoughts or suggestions:")
-    if st.button("Submit Feedback"):
-        st.write("Thank you for your feedback!")
-
     st.markdown("#### Learn more")
-    st.button(
-        "  Visit our repository",
-        "https://github.com/SoniaBorsi/Healthcare-Resource-Allocation.git",
-        use_container_width=True,
-    )
+
+    # Markdown with a link that opens in a new tab
+    st.markdown(
+        """
+        <a href="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation.git" target="_blank" style="text-decoration: none;">
+            <button style="display: block; width: 100%; padding: 10px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; text-align: center; font-size: 16px; cursor: pointer;">
+                Visit our repository
+            </button>
+        </a>
+        """,
+        unsafe_allow_html=True
+)
+
+
 
 
 
