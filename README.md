@@ -6,20 +6,10 @@
 <p align="center">
   <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/7da3dd9f425534fce06b3f21a67059a9697cf7b8/logo.png?raw=true" width="400"/>  
 </p>
-# Healthcare Analytics Platform
 
-Welcome to the **Healthcare Analytics Platform** repository! This project is a comprehensive solution designed to extract, transform, analyze, and visualize healthcare data. It leverages a multi-container Docker setup to manage various services including a database, message queue, Spark cluster, and a Flask-based dashboard. The platform is built with scalability, modularity, and ease of use in mind, making it ideal for healthcare data scientists, analysts, and engineers.
+## Healthcare Analytics Platform
 
-## Key Features
-- **ETL Pipeline**: Efficient extraction, transformation, and loading (ETL) of healthcare data using Python scripts.
-- **Scalable Data Processing**: Distributed data processing using Apache Spark, with a master and multiple worker nodes configured in Docker.
-- **Interactive Dashboard**: A Flask-based web dashboard for visualizing healthcare analytics, including patient data, outcomes, and trends.
-- **Multi-Container Architecture**: Microservices architecture managed via Docker Compose, with dedicated containers for each service:
-  - **Database**: Persistent storage for processed and raw healthcare data.
-  - **Message Queue**: Asynchronous task management using rabbitmq
-  - **Spark Cluster**: Distributed data processing with a master node and worker nodes .
-  - **Dashboard**: User-facing dashboard for analytics and reporting.
-- **Automated Setup**: Setup scripts and Dockerfiles are provided for seamless installation and deployment.
+Welcome to the **Healthcare Resource Allocation* repository! This project is a comprehensive solution designed to extract, transform, analyze, and visualize healthcare data. It leverages a multi-container Docker setup to manage various services including a database, message queue, Spark cluster, and a Flask-based dashboard. The platform is built with scalability, modularity, and ease of use in mind, making it ideal for healthcare data scientists, analysts, and engineers.
 
 ## Project Structure
 
