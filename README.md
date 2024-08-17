@@ -64,9 +64,9 @@ The repository is organized as follows:
             └── values_lm.py
 ```
 
-- **`data/`**: Directory for storing raw, processed, and supplementary data files.
-- **`dockerfiles/`**: Dockerfiles and related configuration for each service (DB, Message Queue, Spark Master/Worker, Dashboard).
-- - **`src/`**: Source code for the dashboard application and analytics modules.
+- **`data/`**: Directory for storing images supplementary data files (ABS data).
+- **`dockerfiles/`**: Dockerfiles and related configuration for each service of the app.
+- **`src/`**: Source code for the dashboard application and analytics modules.
 - **`media/`**: Files for the repository.
 
 ## Getting Started
