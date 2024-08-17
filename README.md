@@ -1,4 +1,5 @@
 # Healthcare Resource Allocation
+## Big Data Technologies Project
 
 The primary goal of the application is to provide a comprehensive, data-driven view of the Australian healthcare ecosystem, revealing trends and variations in resource utilisation across hospitals and regions.
 
