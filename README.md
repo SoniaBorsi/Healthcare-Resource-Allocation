@@ -60,18 +60,11 @@ Healthcare data utilized in this project is primarily extracted from the [Austra
 
 In addition, this project integrates healthcare data with supplementary datasets provided by the [Australian Bureau of Statistics (ABS)](https://www.abs.gov.au) to enrich the analysis and ensure comprehensive insights.
 
+<br>
 
-<table border="0">
-<tr>
-    <td>
-    <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/5bb61624bfaddd9e336dd68eefd9d855e7db5a79/ABS_logo.jpeg" width="100%" />
-    </td>
-    <td>
-    <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/5bb61624bfaddd9e336dd68eefd9d855e7db5a79/AIHW_logo.png", width="100%" />
-    </td>
-</tr>
-</table>
-
+<p align="center">
+  <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/5bb61624bfaddd9e336dd68eefd9d855e7db5a79/AIHW_logo.png?raw=true" width="400"/>  
+</p>
 
 ### Authors
 
