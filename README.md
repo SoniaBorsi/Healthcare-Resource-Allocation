@@ -50,6 +50,29 @@ This application is designed to facilitate healthcare resource allocation throug
   <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/dbae5fe6ec43d075a8c1b61d76fe9a312faec0ae/Dashboard%20demo.gif?raw=true" width="600"/>  
 </p>
 
+<table border="0">
+<tr>
+    <td>
+    <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/dbae5fe6ec43d075a8c1b61d76fe9a312faec0ae/Dashboard%20demo.gif" width="100%" />
+    </td>
+    <td>
+    <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/b9d838cc5ddf62201667c8bbc80f4005dc64ebe5/Dashboard%20measures.gif", width="100%" />
+    </td>
+</tr>
+</table>
+
+<table border="0">
+<tr>
+    <td>
+    <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/b9d838cc5ddf62201667c8bbc80f4005dc64ebe5/Dashboard%20hospitals.gif" width="100%" />
+    </td>
+    <td>
+    <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/b9d838cc5ddf62201667c8bbc80f4005dc64ebe5/Dashboard%20budget.gif", width="100%" />
+    </td>
+</tr>
+</table>
+
+
 ## Data Sources
 
 Healthcare data utilized in this project is primarily extracted from the [Australian Institute of Health and Welfare (AIHW) API](https://www.aihw.gov.au/reports-data/myhospitals/content/api), an open and freely accessible resource. The available data includes:
