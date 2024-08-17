@@ -13,6 +13,13 @@ Welcome to the **Healthcare Resource Allocation* repository! This project is a c
 
 
 ![Dashboard Demo](https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/dbae5fe6ec43d075a8c1b61d76fe9a312faec0ae/Dashboard%20demo.gif)
+
+<br>
+
+<p align="center">
+  <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/dbae5fe6ec43d075a8c1b61d76fe9a312faec0ae/Dashboard%20demo.gif?raw=true" width="400"/>  
+</p>
+
 ## Project Structure
 
 The repository is organized as follows:
