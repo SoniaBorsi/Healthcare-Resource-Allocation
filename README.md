@@ -11,6 +11,8 @@
 
 Welcome to the **Healthcare Resource Allocation* repository! This project is a comprehensive solution designed to extract, transform, analyze, and visualize healthcare data. It leverages a multi-container Docker setup to manage various services including a database, message queue, Spark cluster, and a Flask-based dashboard. The platform is built with scalability, modularity, and ease of use in mind, making it ideal for healthcare data scientists, analysts, and engineers.
 
+
+![Dashboard Demo](https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/dbae5fe6ec43d075a8c1b61d76fe9a312faec0ae/Dashboard%20demo.gif)
 ## Project Structure
 
 The repository is organized as follows:
