@@ -46,22 +46,22 @@ The repository is organized as follows:
 This application is designed to facilitate healthcare resource allocation through data-driven insights. Navigate through the various sections using the sidebar to explore different metrics and tools available to you:
 
 <p align="center">
-  <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/dbae5fe6ec43d075a8c1b61d76fe9a312faec0ae/Dashboard%20demo.gif?raw=true" width="400"/>  
+  <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/dbae5fe6ec43d075a8c1b61d76fe9a312faec0ae/Dashboard%20demo.gif?raw=true" width="512"/>  
 </p>
 
 - **Measures**: for detailed metrics for various healthcare measures across different states in Australia
 <p align="center">
-  <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/b9d838cc5ddf62201667c8bbc80f4005dc64ebe5/Dashboard%20measures.gif?raw=true" width="400"/>  
+  <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/b9d838cc5ddf62201667c8bbc80f4005dc64ebe5/Dashboard%20measures.gif?raw=true" width="512"/>  
 </p>
 
 - **Hospitals**: for a comprehensive analysis of hospitals across different states
 <p align="center">
-  <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/b9d838cc5ddf62201667c8bbc80f4005dc64ebe5/Dashboard%20hospitals.gif?raw=true" width="400"/>  
+  <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/b9d838cc5ddf62201667c8bbc80f4005dc64ebe5/Dashboard%20hospitals.gif?raw=true" width="512"/>  
 </p>
 
 - **Budget**: for a a comprehensive visual analysis of healthcare expenditure data
 <p align="center">
-  <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/b9d838cc5ddf62201667c8bbc80f4005dc64ebe5/Dashboard%20budget.gif?raw=true" width="400"/>  
+  <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/b9d838cc5ddf62201667c8bbc80f4005dc64ebe5/Dashboard%20budget.gif?raw=true" width="512"/>  
 </p>
 
 
