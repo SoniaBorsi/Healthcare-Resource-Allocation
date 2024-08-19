@@ -66,10 +66,23 @@ The repository is organized as follows:
             └── values_lm.py
 ```
 
-- **`data/`**: Directory for storing images supplementary data files (ABS data).
-- **`dockerfiles/`**: Dockerfiles and related configuration for each service of the app.
-- **`src/`**: Source code for the dashboard application and analytics modules.
-- **`media/`**: Files for the repository.
+The repository is organized into several key directories and files:
+
+- **`data/`**: This folder contains all the relevant datasets in Excel format, along with an `images/` subdirectory for logos and other visual assets.
+
+- **`dockerfiles/`**: Contains multiple Dockerfiles to support the various environments required by the project.
+
+- **`media/`**: Includes media assets such as logos, workflow diagrams, and animated GIFs demonstrating the dashboard features.
+
+- **`src/`**: The core source code is located here. It is divided into:
+  - **`app/`**: Contains the dashboard application script and its dependencies.
+  - **`processing/`**: ETL scripts, utility functions, and supporting libraries, including JAR files for data processing.
+
+- **Root Files**: 
+  - `LICENSE`: The licensing information for the project.
+  - `README.md`: The main documentation file.
+  - `docker-compose.yml`: Configuration file for Docker Compose to orchestrate the containerized environment.
+  - `run.sh`: A shell script to execute the project setup.
 
 ## Getting Started
 
