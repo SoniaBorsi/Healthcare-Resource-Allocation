@@ -108,6 +108,22 @@ The development of the Australian Efficient Resource Allocation App has been sup
 
 These technologies work seamlessly together to create a robust, scalable application capable of efficiently processing large volumes of health data. 
 
+## Data Sources
+
+Healthcare data utilized in this project is primarily extracted from the [Australian Institute of Health and Welfare (AIHW) API](https://www.aihw.gov.au/reports-data/myhospitals/content/api), an open and freely accessible resource. The available data includes:
+
+- **Hospital Data**
+- **Multi-Level Data**
+- **Geographic Data**
+
+In addition, this project integrates healthcare data with supplementary datasets provided by the [Australian Bureau of Statistics (ABS)](https://www.abs.gov.au) to enrich the analysis and ensure comprehensive insights.
+
+<br>
+
+<p align="center">
+  <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/5bb61624bfaddd9e336dd68eefd9d855e7db5a79/AIHW_logo.png?raw=true" width="400"/>  
+</p>
+
 
 ## Dashboard Demo
 This application is designed to facilitate healthcare resource allocation through data-driven insights. Navigate through the various sections using the sidebar to explore different metrics and tools available to you:
@@ -131,22 +147,6 @@ This application is designed to facilitate healthcare resource allocation throug
   <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/b9d838cc5ddf62201667c8bbc80f4005dc64ebe5/Dashboard%20budget.gif?raw=true" width="512"/>  
 </p>
 
-
-## Data Sources
-
-Healthcare data utilized in this project is primarily extracted from the [Australian Institute of Health and Welfare (AIHW) API](https://www.aihw.gov.au/reports-data/myhospitals/content/api), an open and freely accessible resource. The available data includes:
-
-- **Hospital Data**
-- **Multi-Level Data**
-- **Geographic Data**
-
-In addition, this project integrates healthcare data with supplementary datasets provided by the [Australian Bureau of Statistics (ABS)](https://www.abs.gov.au) to enrich the analysis and ensure comprehensive insights.
-
-<br>
-
-<p align="center">
-  <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/5bb61624bfaddd9e336dd68eefd9d855e7db5a79/AIHW_logo.png?raw=true" width="400"/>  
-</p>
 
 ### Authors
 
