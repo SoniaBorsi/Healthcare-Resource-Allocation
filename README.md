@@ -101,7 +101,7 @@ The repository is organized into several key directories and files:
 The development of the Australian Efficient Resource Allocation App has been supported by a carefully selected suite of big data technologies, each chosen for its ability to address specific aspects of the system's architecture.
 
 <p align="center">
-  <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/26f81704c13bc23eaac4f085db01d614d50dc531/media/App%20Workflow.png?raw=true" width="600"/>  
+  <img src="https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/blob/37bea7b0cef33684c724d18915b2af0d80de200c/media/BDT%20Diagram.png?raw=true" width="600"/>  
 </p>
 
 These technologies work seamlessly together to create a robust, scalable application capable of efficiently processing large volumes of health data. 
