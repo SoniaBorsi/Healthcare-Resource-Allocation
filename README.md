@@ -146,7 +146,7 @@ This application is designed to facilitate healthcare resource allocation throug
 </p>
 
 
-### 6. Authors
+## 6. Authors
 
 - [Borsi Sonia](https://github.com/SoniaBorsi/)
 - [Filippo Costamagna](https://github.com/pippotek)
