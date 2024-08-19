@@ -96,6 +96,8 @@ The repository is organized into several key directories and files:
 4. **Access the dashboard**
    Got to localhost:8080 and explore all the analytics
 
+Note: It is recommended that the dashboard is run once the data storing process is complete, in line with the current project status. This will be improved in a future update.
+
 
 ## 3. Workflow
 The development of the Australian Efficient Resource Allocation App has been supported by a carefully selected suite of big data technologies, each chosen for its ability to address specific aspects of the system's architecture.
