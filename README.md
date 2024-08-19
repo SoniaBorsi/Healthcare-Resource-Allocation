@@ -12,17 +12,15 @@ The primary goal of the application is to provide a comprehensive, data-driven v
 Designed for government decision-makers, this app enables informed policy-making by providing a clear, real-time snapshot of healthcare performance.
 
 ## Contents:
-- [Project Structure](https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/tree/main?tab=readme-ov-file#project-structure)
-- [Getting Started](https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/tree/main?tab=readme-ov-file#getting-started)
-- [Workflow](https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/tree/main?tab=readme-ov-file#workflow)
-- [Dashboard Demo](https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/tree/main?tab=readme-ov-file#dashboard-demo)
-- [Data Sources](https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/tree/main?tab=readme-ov-file#data-sources)
-- [Authors](https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/tree/main?tab=readme-ov-file#authors)
+1. [Project Structure](https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/tree/main?tab=readme-ov-file#project-structure)
+2. [Getting Started](https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/tree/main?tab=readme-ov-file#getting-started)
+3. [Workflow](https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/tree/main?tab=readme-ov-file#workflow)
+4. [Dashboard Demo](https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/tree/main?tab=readme-ov-file#dashboard-demo)
+5. [Data Sources](https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/tree/main?tab=readme-ov-file#data-sources)
+6. [Authors](https://github.com/SoniaBorsi/Healthcare-Resource-Allocation/tree/main?tab=readme-ov-file#authors)
 
 
-## Project Structure
-
-The repository is organized as follows:
+## 1. Project Structure
 ```
 .
 ├── LICENSE
@@ -84,7 +82,7 @@ The repository is organized into several key directories and files:
   - `docker-compose.yml`: Configuration file for Docker Compose to orchestrate the containerized environment.
   - `run.sh`: A shell script to execute the project setup.
 
-## Getting Started
+## 2. Getting Started
 
 1. **Clone the Repository**:
    ```bash
@@ -99,7 +97,7 @@ The repository is organized into several key directories and files:
    Got to localhost:8080 and explore all the analytics
 
 
-## Workflow
+## 3. Workflow
 The development of the Australian Efficient Resource Allocation App has been supported by a carefully selected suite of big data technologies, each chosen for its ability to address specific aspects of the system's architecture.
 
 <p align="center">
@@ -108,7 +106,7 @@ The development of the Australian Efficient Resource Allocation App has been sup
 
 These technologies work seamlessly together to create a robust, scalable application capable of efficiently processing large volumes of health data. 
 
-## Data Sources
+## 4. Data Sources
 
 Healthcare data utilized in this project is primarily extracted from the [Australian Institute of Health and Welfare (AIHW) API](https://www.aihw.gov.au/reports-data/myhospitals/content/api), an open and freely accessible resource. The available data includes:
 
@@ -125,7 +123,7 @@ In addition, this project integrates healthcare data with supplementary datasets
 </p>
 
 
-## Dashboard Demo
+## 5. Dashboard Demo
 This application is designed to facilitate healthcare resource allocation through data-driven insights. Navigate through the various sections using the sidebar to explore different metrics and tools available to you:
 
 <p align="center">
@@ -148,7 +146,7 @@ This application is designed to facilitate healthcare resource allocation throug
 </p>
 
 
-### Authors
+### 6. Authors
 
 - [Borsi Sonia](https://github.com/SoniaBorsi/)
 - [Filippo Costamagna](https://github.com/pippotek)
