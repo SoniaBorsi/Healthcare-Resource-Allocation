@@ -47,7 +47,7 @@ def map_hospitals(spark_session):
     # API endpoint and headers for authentication
     url = "https://myhospitalsapi.aihw.gov.au/api/v1/reporting-units-downloads/mappings"
     headers = {
-        'Authorization': 'Bearer YOUR_ACCESS_TOKEN',  # Replace with a valid access token
+        'Authorization': 'Bearer YOUR_ACCESS_TOKEN',  # A personal token is not actually reuired, you can leave this as it is
         'User-Agent': 'MyApp/1.0',
         'accept': 'application/json'
     }
@@ -236,7 +236,7 @@ def download_datasetlist(spark_session):
     # API endpoint and headers for authentication
     url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
     headers = {
-        'Authorization': 'Bearer YOUR_ACCESS_TOKEN',  # Replace with a valid access token
+        'Authorization': 'Bearer YOUR_ACCESS_TOKEN',  # A personal token is not actually reuired, you can leave this as it is
         'User-Agent': 'MyApp/1.0',
         'accept': 'text/csv'
     }

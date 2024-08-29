@@ -19,9 +19,9 @@ def get_values(dataset_ids):
     # Base URL for the API endpoint
     base_url = "https://myhospitalsapi.aihw.gov.au/api/v1/datasets/"
     
-    # Headers for the API request, including authorization token
+    # Headers for the API request
     headers = {
-        'Authorization': 'Bearer YOUR_ACCESS_TOKEN',  # Replace with your actual access token
+        'Authorization': 'Bearer YOUR_ACCESS_TOKEN',  # A personal token is not actually reuired, you can leave this as it is
         'User-Agent': 'MyApp/1.0',
         'accept': 'text/csv'  # Expecting CSV response
     }
