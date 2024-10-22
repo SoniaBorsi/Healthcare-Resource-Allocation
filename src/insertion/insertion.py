@@ -2,14 +2,12 @@ import pika
 import psycopg2
 import logging
 import json
-import io
 import time
-import csv 
 
-# PostgreSQL connection parameters (use container service name for `host`)
+# PostgreSQL connection parameters
 POSTGRES_PARAMS = {
-    "host": "postgres",  # Use the Docker service name for the PostgreSQL container
-    "port": 5432,  # Default PostgreSQL port
+    "host": "postgres",  # Use the Docker service name if running in Docker
+    "port": 5432,
     "database": "mydatabase",
     "user": "myuser",
     "password": "mypassword"
@@ -17,46 +15,22 @@ POSTGRES_PARAMS = {
 
 # RabbitMQ connection parameters
 RABBITMQ_PARAMS = {
-    "host": "rabbitmq",  # Use the Docker service name for the RabbitMQ container
+    "host": "rabbitmq",  # Use the Docker service name if running in Docker
     "queue": "values"
 }
 
-processed_counts = {}
-
-def increment_processed_records(dataset_id):
-    try:
-        connection = psycopg2.connect(**POSTGRES_PARAMS)
-        cursor = connection.cursor()
-        update_query = """
-        UPDATE datasets
-        SET processed_records = processed_records + 1
-        WHERE datasetid = %s
-        """
-        cursor.execute(update_query, (dataset_id,))
-        connection.commit()
-    except Exception as e:
-        logging.error(f"Failed to increment processed_records for dataset {dataset_id}: {e}")
-    finally:
-        cursor.close()
-        connection.close()
-
+# Global dictionaries to keep track of counts per dataset
+processed_counts = {}           # In-memory count of processed records not yet committed to DB
+database_processed_counts = {}  # Count of records already committed to the database
+total_records = {}              # Total number of records per dataset
 
 def insert_into_postgresql_values(record):
     """
-    Insert a record into the PostgreSQL database hosted on the container.
-
-    Parameters:
-    record (dict): A dictionary containing the values to insert into the database.
+    Insert a record into the PostgreSQL database and update processed counts.
     """
     try:
         # Establish connection to PostgreSQL
-        connection = psycopg2.connect(
-            host=POSTGRES_PARAMS['host'],
-            port=POSTGRES_PARAMS['port'],
-            database=POSTGRES_PARAMS['database'],
-            user=POSTGRES_PARAMS['user'],
-            password=POSTGRES_PARAMS['password']
-        )
+        connection = psycopg2.connect(**POSTGRES_PARAMS)
         cursor = connection.cursor()
 
         # Prepare the SQL query
@@ -65,57 +39,109 @@ def insert_into_postgresql_values(record):
         VALUES (%s, %s, %s, %s, %s)
         """
 
-        # Convert the 'value' field to a valid numeric value or NULL if empty
+        # Convert 'value' to a numeric type or set to None
         value = record['value']
         if value == "" or value is None:
-            value = None  # Set to None so that PostgreSQL will treat it as NULL
+            value = None
+        else:
+            try:
+                value = float(value)
+            except ValueError:
+                value = None
 
-        # Extract 'CaveatName' from the 'caveats' field
-        caveats = record.get('caveats', [])
+        # Extract 'CaveatName' from 'caveats'
+        caveats = record.get('caveats', "")
         caveat_name = None
         if caveats:
             try:
-                caveat_list = json.loads(caveats)  # Ensure it's properly parsed as JSON
+                caveat_list = json.loads(caveats)
                 if isinstance(caveat_list, list) and len(caveat_list) > 0:
-                    caveat_name = caveat_list[0].get('CaveatName', None)  # Extract 'CaveatName'
+                    caveat_name = caveat_list[0].get('CaveatName')
             except json.JSONDecodeError as e:
                 logging.error(f"Failed to decode caveats JSON: {e}")
 
-        # Generate the 'id' column by concatenating 'datasetid' and 'reportingunitcode'
-        record_id = str(record['datasetid']) + record['reportingunitcode']
+        # Generate 'id' by concatenating 'datasetid' and 'reportingunitcode'
+        record_id = f"{record['datasetid']}{record['reportingunitcode']}"
 
-        # Tuple containing the values to insert
+        # Values to insert
         values = (
-            record['datasetid'],                # Numeric dataset ID
-            record['reportingunitcode'],         # Text reporting unit code
-            value,                               # Handle numeric 'value', set as NULL if empty
-            caveat_name,                         # Insert only the CaveatName
-            record_id                            # Unique ID generated from datasetid and reportingunitcode
+            record['datasetid'],
+            record['reportingunitcode'],
+            value,
+            caveat_name,
+            record_id
         )
 
+        # Execute the insert query
         cursor.execute(insert_query, values)
         connection.commit()
 
         cursor.close()
         connection.close()
-
         logging.info(f"Successfully inserted record with ID: {record_id}")
 
-        # Update processed_records count
-        global processed_counts  # Declare as global since we're modifying it
+        # Update processed counts
         dataset_id = record['datasetid']
-        processed_counts[dataset_id] = processed_counts.get(dataset_id, 0) + 1
 
-        # Optionally, update the database every N records (e.g., every 100 records)
-        if processed_counts[dataset_id] % 100 == 0:
-            bulk_update_processed_records(dataset_id, processed_counts[dataset_id])
+        # Initialize counts if necessary
+        if dataset_id not in processed_counts:
+            processed_counts[dataset_id] = 0
+            database_processed_counts[dataset_id] = 0
+            total_records[dataset_id] = get_total_records(dataset_id)
+
+        # Increment in-memory processed count
+        processed_counts[dataset_id] += 1
+
+        # Total processed records
+        total_processed = database_processed_counts[dataset_id] + processed_counts[dataset_id]
+
+        # Check if it's time to update the database
+        if processed_counts[dataset_id] >= 100 or total_processed == total_records[dataset_id]:
+            # Update the 'processed_records' in the database
+            update_processed_records(dataset_id, processed_counts[dataset_id])
+
+            # Update the database_processed_counts
+            database_processed_counts[dataset_id] += processed_counts[dataset_id]
+
+            # Reset the in-memory processed count
+            processed_counts[dataset_id] = 0
+
+            # Log progress
+            percentage = calculate_percentage(dataset_id)
+            logging.info(f"Dataset {dataset_id}: {percentage:.2f}% of data stored.")
+
+            # If dataset is fully processed, update 'stored' to TRUE
+            if total_processed == total_records[dataset_id]:
+                set_dataset_stored(dataset_id, True)
+                logging.info(f"Dataset {dataset_id} fully stored.")
 
     except Exception as e:
         logging.error(f"Failed to insert record into PostgreSQL: {e}")
 
-def bulk_update_processed_records(dataset_id, count):
+def get_total_records(dataset_id):
     """
-    Bulk update the processed_records count in the datasets table.
+    Fetch 'total_records' for a 'dataset_id' from the 'datasets' table.
+    """
+    try:
+        connection = psycopg2.connect(**POSTGRES_PARAMS)
+        cursor = connection.cursor()
+        query = "SELECT totalrecords FROM datasets WHERE datasetid = %s"
+        cursor.execute(query, (dataset_id,))
+        result = cursor.fetchone()
+        cursor.close()
+        connection.close()
+        if result:
+            return result[0]
+        else:
+            logging.error(f"No total_records found for dataset_id {dataset_id}")
+            return 0
+    except Exception as e:
+        logging.error(f"Failed to get total_records for dataset {dataset_id}: {e}")
+        return 0
+
+def update_processed_records(dataset_id, count):
+    """
+    Update the 'processed_records' count in the 'datasets' table by 'count'.
     """
     try:
         connection = psycopg2.connect(**POSTGRES_PARAMS)
@@ -127,19 +153,52 @@ def bulk_update_processed_records(dataset_id, count):
         """
         cursor.execute(update_query, (count, dataset_id))
         connection.commit()
-        logging.info(f"Updated processed_records for dataset {dataset_id} by {count}")
-
-        # Reset the local counter after updating
-        global processed_counts  # Declare as global since we're modifying it
-        processed_counts[dataset_id] = 0
-
-    except Exception as e:
-        logging.error(f"Failed to bulk update processed_records for dataset {dataset_id}: {e}")
-    finally:
         cursor.close()
         connection.close()
+        logging.info(f"Updated processed_records for dataset {dataset_id} by {count}")
+    except Exception as e:
+        logging.error(f"Failed to update processed_records for dataset {dataset_id}: {e}")
 
+def set_dataset_stored(dataset_id, stored):
+    """
+    Update the 'stored' column in the 'datasets' table for the 'dataset_id'.
+    """
+    try:
+        connection = psycopg2.connect(**POSTGRES_PARAMS)
+        cursor = connection.cursor()
+        update_query = "UPDATE datasets SET stored = %s WHERE datasetid = %s"
+        cursor.execute(update_query, (stored, dataset_id))
+        connection.commit()
+        cursor.close()
+        connection.close()
+        logging.info(f"Set stored = {stored} for dataset {dataset_id}")
+    except Exception as e:
+        logging.error(f"Failed to set stored = {stored} for dataset {dataset_id}: {e}")
 
+def calculate_percentage(dataset_id):
+    """
+    Calculate and return the percentage of data stored for a given dataset.
+    """
+    try:
+        connection = psycopg2.connect(**POSTGRES_PARAMS)
+        cursor = connection.cursor()
+        query = "SELECT processedrecords, totalrecords FROM datasets WHERE datasetid = %s"
+        cursor.execute(query, (dataset_id,))
+        result = cursor.fetchone()
+        cursor.close()
+        connection.close()
+        if result and result[1] > 0:
+            processed_records_db, total_records_db = result
+            # Include in-memory counts
+            in_memory_count = processed_counts.get(dataset_id, 0)
+            total_processed = processed_records_db + in_memory_count
+            percentage = (total_processed / total_records_db) * 100
+            return percentage
+        else:
+            return 0.0
+    except Exception as e:
+        logging.error(f"Failed to calculate percentage for dataset {dataset_id}: {e}")
+        return 0.0
 
 def callback(ch, method, properties, body):
     """
@@ -153,13 +212,13 @@ def callback(ch, method, properties, body):
         # Parse the message as a dictionary (assuming it's in JSON format)
         message_dict = json.loads(message)
 
-        # Map the parsed CSV values to the expected record fields
+        # Map the parsed values to the expected record fields
         record = {
-            'datasetid': message_dict['datasetid'],    
-            'reportingunitcode': message_dict['reportingunitcode'],            
-            'caveats': message_dict['caveats'],                
-            'value': message_dict['value'],                    
-            }
+            'datasetid': message_dict['datasetid'],
+            'reportingunitcode': message_dict['reportingunitcode'],
+            'value': message_dict['value'],
+            'caveats': message_dict['caveats']
+        }
 
         # Insert the record into PostgreSQL
         insert_into_postgresql_values(record)
@@ -169,10 +228,11 @@ def callback(ch, method, properties, body):
 
     except Exception as e:
         logging.error(f"Failed to process message: {e}")
-
+        # Optionally, reject the message or requeue it
+        ch.basic_nack(delivery_tag=method.delivery_tag, requeue=False)
 
 MAX_RETRIES = 10
-RETRY_DELAY = 5
+RETRY_DELAY = 5  # seconds
 
 def start_rabbitmq_consumer():
     """
@@ -183,17 +243,22 @@ def start_rabbitmq_consumer():
     while retries < MAX_RETRIES:
         try:
             # Establish connection to RabbitMQ
-            connection = pika.BlockingConnection(pika.ConnectionParameters(host=RABBITMQ_PARAMS['host']))
+            connection = pika.BlockingConnection(
+                pika.ConnectionParameters(host=RABBITMQ_PARAMS['host'])
+            )
             channel = connection.channel()
 
-            # Declare the queue (in case it doesn't exist)
+            # Declare the queue
             channel.queue_declare(queue=RABBITMQ_PARAMS['queue'])
 
             # Start consuming messages from the queue
-            channel.basic_consume(queue=RABBITMQ_PARAMS['queue'], on_message_callback=callback)
+            channel.basic_consume(
+                queue=RABBITMQ_PARAMS['queue'],
+                on_message_callback=callback
+            )
             logging.info(f"Waiting for messages in queue '{RABBITMQ_PARAMS['queue']}'...")
 
-            # Start consuming messages (this will block and keep waiting for messages)
+            # Start consuming (this will block and keep waiting for messages)
             channel.start_consuming()
 
         except pika.exceptions.AMQPConnectionError as e:
@@ -210,7 +275,6 @@ def start_rabbitmq_consumer():
             # Handle other possible exceptions
             logging.error(f"An unexpected error occurred: {e}")
             break  # Exit on any unexpected error
-
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
