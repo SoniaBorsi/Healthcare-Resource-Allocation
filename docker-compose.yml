@@ -1,56 +1,7 @@
 version: '3.8'
+
 services:
-  spark-master:
-    build:
-      dockerfile: dockerfiles/Dockerfile
-    container_name: spark-master
-    depends_on:
-      - postgres
-    ports:
-      - "9090:8080"
-      - "7077:7077"
-    networks:
-      - app-network
-
-  spark-worker-1:
-    build:
-      dockerfile: dockerfiles/Dockerfile3
-    container_name: spark-worker-1
-    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
-    depends_on:
-      - spark-master
-    environment:
-      SPARK_MODE: worker
-      SPARK_WORKER_CORES: 2
-      SPARK_WORKER_MEMORY: 2g
-      SPARK_MASTER_URL: spark://spark-master:7077
-    networks:
-      - app-network
-
-  spark-worker-2:
-    build:
-      dockerfile: dockerfiles/Dockerfile3
-    container_name: spark-worker-2
-    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
-    depends_on:
-      - spark-master
-    environment:
-      SPARK_MODE: worker
-      SPARK_WORKER_CORES: 2
-      SPARK_WORKER_MEMORY: 2g
-      SPARK_MASTER_URL: spark://spark-master:7077
-    networks:
-      - app-network
-
-  rabbitmq:
-    image: rabbitmq:3.13.4-management-alpine
-    container_name: rabbitmq
-    ports:
-      - "5673:5672"
-      - "15673:15672"
-    networks:
-      - app-network
-
+  # PostgreSQL Service
   postgres:
     image: postgres:15.7-alpine3.20
     container_name: postgres
@@ -63,11 +14,58 @@ services:
     networks:
       - app-network
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - ./NEW/init.sql:/docker-entrypoint-initdb.d/init.sql  # Mount the init.sql script
 
+  # RabbitMQ Service
+  rabbitmq:
+    image: rabbitmq:3.13.4-management-alpine
+    container_name: rabbitmq
+    ports:
+      - "5673:5672"       # AMQP port
+      - "15673:15672"     # Management port
+    networks:
+      - app-network
+
+  # RabbitMQ Consumer Service
+  rabbitmq-consumer:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.insertion  # Adjust the path if necessary
+    container_name: rabbitmq-consumer
+    depends_on:
+      - rabbitmq
+      - postgres
+    environment:
+      RABBITMQ_HOST: rabbitmq    # RabbitMQ service name in Docker network
+      POSTGRES_HOST: postgres    # PostgreSQL service name in Docker network
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    networks:
+      - app-network
+
+  # Hospital Mapping Service
+  hospital-mapping:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.fetching  # Adjust the path if necessary
+    container_name: hospital-mapping
+    depends_on:
+      - postgres
+      - rabbitmq
+    environment:
+      POSTGRES_HOST: postgres    # PostgreSQL service name in Docker network
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    networks:
+      - app-network
+
+  # Dashboard Service
   dashboard:
     build:
-      dockerfile: dockerfiles/Dockerfile2
+      context: .
+      dockerfile: dockerfiles/Dockerfile.dashboard  # Adjust the path if necessary
     container_name: dashboard
     ports:
       - "8080:8501"
@@ -79,7 +77,3 @@ services:
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  postgres-data:
-    driver: local
