@@ -6,7 +6,9 @@ CREATE TABLE IF NOT EXISTS datasets (
     datasetid INT PRIMARY KEY,
     measurecode VARCHAR,
     datasetname TEXT,
-    stored BOOLEAN DEFAULT FALSE
+    stored BOOLEAN DEFAULT FALSE,
+    totalrecords INTEGER DEFAULT 0,
+    processedrecords INTEGER DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS hospitals (

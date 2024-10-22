@@ -269,6 +269,18 @@ def get_ids():
         cursor.close()
         conn.close()
 
+def update_total_records(dataset_id, total_records):
+    try:
+        connection = psycopg2.connect(**POSTGRES_PARAMS)
+        cursor = connection.cursor()
+        update_query = "UPDATE datasets SET totalrecords = %s WHERE datasetid = %s"
+        cursor.execute(update_query, (total_records, dataset_id))
+        connection.commit()
+    except Exception as e:
+        logging.error(f"Failed to update totalrecords for dataset {dataset_id}: {e}")
+    finally:
+        cursor.close()
+        connection.close()
 
 def fetch_values(dataset_id):
     """
@@ -294,21 +306,24 @@ def fetch_values(dataset_id):
         # Send GET request to the API
         response = requests.get(url, headers=headers)
         if response.status_code == 200:
-            # If the request is successful, process CSV data
+        # Process CSV data
             csv_data = StringIO(response.text)
             csv_reader = csv.DictReader(csv_data)
+            rows = list(csv_reader)  # Convert to list to count total records
+            total_records = len(rows)
 
-            # Loop through each row in the CSV
-            for row in csv_reader:
-                # Extract necessary fields, ensuring the correct case-sensitive field names
+            # Update the total_records in the datasets table
+            update_total_records(dataset_id, total_records)
+
+            # Loop through each row and send to RabbitMQ
+            for row in rows:
+                # Extract necessary fields
                 record = {
-                    'datasetid': row.get('DatasetID', dataset_id),  # Default to dataset_id if not present
+                    'datasetid': dataset_id,
                     'reportingunitcode': row.get('ReportingUnitCode'),
                     'value': row.get('Value'),
                     'caveats': row.get('Caveats')
                 }
-
-                # Send the extracted fields as a message to RabbitMQ
                 send_to_rabbitmq(record, RABBITMQ_PARAMS['queue'])
         else:
             logging.error(f"Failed to fetch dataset {dataset_id}. Status code: {response.status_code}")

@@ -1,6 +1,47 @@
 version: '3.8'
 
 services:
+  spark-master:
+    build:
+      dockerfile: dockerfiles/Dockerfile.MLMaster
+    container_name: spark-master
+    depends_on:
+      - postgres
+    ports:
+      - "9090:8080"
+      - "7077:7077"
+    networks:
+      - app-network
+
+  spark-worker-1:
+    build:
+      dockerfile: dockerfiles/Dockerfile.MLWorker
+    container_name: spark-worker-1
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    depends_on:
+      - spark-master
+    environment:
+      SPARK_MODE: worker
+      SPARK_WORKER_CORES: 2
+      SPARK_WORKER_MEMORY: 2g
+      SPARK_MASTER_URL: spark://spark-master:7077
+    networks:
+      - app-network
+
+  spark-worker-2:
+    build:
+      dockerfile: dockerfiles/Dockerfile.MLWorker
+    container_name: spark-worker-2
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    depends_on:
+      - spark-master
+    environment:
+      SPARK_MODE: worker
+      SPARK_WORKER_CORES: 2
+      SPARK_WORKER_MEMORY: 2g
+      SPARK_MASTER_URL: spark://spark-master:7077
+    networks:
+      - app-network
   # PostgreSQL Service
   postgres:
     image: postgres:15.7-alpine3.20
@@ -14,7 +55,7 @@ services:
     networks:
       - app-network
     volumes:
-      - ./NEW/init.sql:/docker-entrypoint-initdb.d/init.sql  # Mount the init.sql script
+      - ./src/init.sql:/docker-entrypoint-initdb.d/init.sql  # Mount the init.sql script
 
   # RabbitMQ Service
   rabbitmq:

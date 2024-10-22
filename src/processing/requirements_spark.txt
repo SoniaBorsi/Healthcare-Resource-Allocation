@@ -1,9 +1,0 @@
-pika 
-py4j 
-requests 
-pandas 
-plotly 
-sqlalchemy
-psycopg2-binary 
-openpyxl 
-tqdm 

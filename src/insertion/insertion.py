@@ -21,6 +21,25 @@ RABBITMQ_PARAMS = {
     "queue": "values"
 }
 
+processed_counts = {}
+
+def increment_processed_records(dataset_id):
+    try:
+        connection = psycopg2.connect(**POSTGRES_PARAMS)
+        cursor = connection.cursor()
+        update_query = """
+        UPDATE datasets
+        SET processed_records = processed_records + 1
+        WHERE datasetid = %s
+        """
+        cursor.execute(update_query, (dataset_id,))
+        connection.commit()
+    except Exception as e:
+        logging.error(f"Failed to increment processed_records for dataset {dataset_id}: {e}")
+    finally:
+        cursor.close()
+        connection.close()
+
 
 def insert_into_postgresql_values(record):
     """
@@ -79,11 +98,46 @@ def insert_into_postgresql_values(record):
 
         cursor.close()
         connection.close()
+
         logging.info(f"Successfully inserted record with ID: {record_id}")
+
+        # Update processed_records count
+        global processed_counts  # Declare as global since we're modifying it
+        dataset_id = record['datasetid']
+        processed_counts[dataset_id] = processed_counts.get(dataset_id, 0) + 1
+
+        # Optionally, update the database every N records (e.g., every 100 records)
+        if processed_counts[dataset_id] % 100 == 0:
+            bulk_update_processed_records(dataset_id, processed_counts[dataset_id])
 
     except Exception as e:
         logging.error(f"Failed to insert record into PostgreSQL: {e}")
 
+def bulk_update_processed_records(dataset_id, count):
+    """
+    Bulk update the processed_records count in the datasets table.
+    """
+    try:
+        connection = psycopg2.connect(**POSTGRES_PARAMS)
+        cursor = connection.cursor()
+        update_query = """
+        UPDATE datasets
+        SET processedrecords = processedrecords + %s
+        WHERE datasetid = %s
+        """
+        cursor.execute(update_query, (count, dataset_id))
+        connection.commit()
+        logging.info(f"Updated processed_records for dataset {dataset_id} by {count}")
+
+        # Reset the local counter after updating
+        global processed_counts  # Declare as global since we're modifying it
+        processed_counts[dataset_id] = 0
+
+    except Exception as e:
+        logging.error(f"Failed to bulk update processed_records for dataset {dataset_id}: {e}")
+    finally:
+        cursor.close()
+        connection.close()
 
 
 
@@ -101,10 +155,10 @@ def callback(ch, method, properties, body):
 
         # Map the parsed CSV values to the expected record fields
         record = {
-            'datasetid': message_dict['datasetid'],    # Use dataset_id from the main message
-            'reportingunitcode': message_dict['reportingunitcode'],            # Assuming 'reportingunitcode' is the third column
-            'caveats': message_dict['caveats'],                # Assuming hospital name is the fourth column
-            'value': message_dict['value'],                    # Assuming latitude is the 15th column (adjust as needed)
+            'datasetid': message_dict['datasetid'],    
+            'reportingunitcode': message_dict['reportingunitcode'],            
+            'caveats': message_dict['caveats'],                
+            'value': message_dict['value'],                    
             }
 
         # Insert the record into PostgreSQL
@@ -117,7 +171,7 @@ def callback(ch, method, properties, body):
         logging.error(f"Failed to process message: {e}")
 
 
-MAX_RETRIES = 5
+MAX_RETRIES = 10
 RETRY_DELAY = 5
 
 def start_rabbitmq_consumer():

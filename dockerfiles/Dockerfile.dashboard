@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
     python3-pip
 
 # Copy the application source code into the container
-COPY src/app/ /app/
+COPY src/dashboard/ /app/
 
 # Install the dependencies
 RUN pip install -r requirements_dashboard.txt
