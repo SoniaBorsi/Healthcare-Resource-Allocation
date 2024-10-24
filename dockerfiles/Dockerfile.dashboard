@@ -9,11 +9,13 @@ RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip
 
-# Copy the application source code into the container
-COPY src/dashboard/ /app/
+COPY src/dashboard/requirements_dashboard.txt /app/requirements_dashboard.txt
 
 # Install the dependencies
 RUN pip install -r requirements_dashboard.txt
+
+# Copy the application source code into the container
+COPY src/dashboard/ /app/
 
 # Create a directory to store data files
 RUN mkdir data
@@ -21,6 +23,8 @@ RUN mkdir data
 # Copy data into the container
 COPY data data
 
+EXPOSE 8050
+
 # Set the default command to run the Streamlit dashboard
-CMD ["streamlit", "run", "dashboard.py"]
+CMD ["python3", "app.py"]
 

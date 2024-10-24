@@ -1,0 +1,49 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    margin-bottom: 20px;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+/* Ensure the dropdown expands to full width and contains long text */
+.Select {
+    width: 100% !important;
+}
+
+.Select__control {
+    min-width: 300px;  /* Set a reasonable minimum width */
+    max-width: 500px;  /* Set a maximum width for the dropdown */
+}
+
+.Select__menu {
+    max-width: 500px; /* Control the maximum width of the dropdown options */
+}
+
+.Select__option {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block; /* Ensure it's block-level to maintain spacing */
+    max-width: 480px; /* Adjust as necessary */
+}
+
+.Select__single-value {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 450px;
+}
+
+/* Adjust the dropdown height if too long */
+.Select__menu-list {
+    max-height: 300px; /* Set a maximum height to avoid too much overflow */
+    overflow-y: auto;  /* Add a scroll bar for overflow */
+}
+

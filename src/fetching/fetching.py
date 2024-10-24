@@ -340,6 +340,6 @@ if __name__ == "__main__":
 
     dataset_ids = get_ids()
 
-    for id in dataset_ids:
+    for id in dataset_ids[-1:0:-1]:
 
         fetch_values(id)

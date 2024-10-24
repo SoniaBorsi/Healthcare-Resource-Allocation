@@ -109,7 +109,7 @@ services:
       dockerfile: dockerfiles/Dockerfile.dashboard  # Adjust the path if necessary
     container_name: dashboard
     ports:
-      - "8080:8501"
+      - "8050:8050"
     networks:
       - app-network
     depends_on:
